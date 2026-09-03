@@ -81,3 +81,15 @@ python3 -m http.server 8000
 
 `file://` 로 직접 열면 브라우저 보안 정책 때문에 `data/notices.json` 을 못 읽고
 파일 안의 샘플 데이터로 표시됩니다. 반드시 위처럼 서버로 띄우세요.
+
+---
+
+## 첫 수집에서 확인된 API 필드 의미
+
+실제 응답을 확인한 결과, 주택형별 응답의 `SUPLY_HSHLDCO` 는 **총 세대수가 아니라 일반공급 세대수**였습니다.
+(검증: 25개 단지 전부에서 `TOT_SUPLY_HSHLDCO = Σ SUPLY_HSHLDCO + Σ SPSPLY_HSHLDCO` 성립)
+
+- `units[].n` = 타입별 총 세대수 (일반 + 특별)
+- `units[].gen` = 그중 일반공급 세대수
+
+수집기가 이 기준으로 수정되었으므로, **Actions에서 "Run workflow"를 한 번 더 돌려** 데이터를 새로 받으세요.

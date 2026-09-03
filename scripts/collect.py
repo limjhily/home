@@ -84,19 +84,23 @@ def district_of(addr, region):
 def build(rec, models):
     units = []
     for m in models:
-        price = i(m.get("LTTOT_TOP_AMOUNT"))
+        # SUPLY_HSHLDCO 는 '일반공급' 세대수, SPSPLY_HSHLDCO 는 '특별공급' 세대수다.
+        # (데이터 검증 결과: 총세대 = 일반 + 특별)
+        gen = i(m.get("SUPLY_HSHLDCO"))
+        sp = i(m.get("SPSPLY_HSHLDCO"))
         units.append({
             "t": (m.get("HOUSE_TY") or "").strip(),
             "area": round(f(m.get("SUPLY_AR")), 2),
-            "n": i(m.get("SUPLY_HSHLDCO")),
-            "price": price,
+            "n": gen + sp,      # 타입별 총 세대수
+            "gen": gen,         # 그중 일반공급
+            "price": i(m.get("LTTOT_TOP_AMOUNT")),
         })
     units = [u for u in units if u["area"] > 0 and u["price"] > 0]
     if not units:
         return None  # 분양가 없는 공고는 표시할 게 없으므로 제외
 
     total = i(rec.get("TOT_SUPLY_HSHLDCO")) or sum(u["n"] for u in units)
-    special = sum(i(m.get("SPSPLY_HSHLDCO")) for m in models)
+    general = sum(u["gen"] for u in units)
     region = (rec.get("SUBSCRPT_AREA_CODE_NM") or "").strip()
     addr = (rec.get("HSSPLY_ADRES") or "").strip()
 
@@ -116,7 +120,7 @@ def build(rec, models):
         "district": district_of(addr, region),
         "type": kind_of(rec),
         "total": total,
-        "general": max(total - special, 0),
+        "general": general,
         "builder": (rec.get("CNSTRCT_ENTRPS_NM") or "").strip(),
         "zone": zone_of(rec),
         "special": d(rec.get("SPSPLY_RCEPT_BGNDE")) or d(rec.get("RCEPT_BGNDE")),
@@ -196,7 +200,7 @@ FIXTURE_REC = {
     "HOUSE_MANAGE_NO": "2026000123", "PBLANC_NO": "2026000123",
     "HOUSE_NM": "○○지구 테스트아파트", "SUBSCRPT_AREA_CODE_NM": "경기",
     "HSSPLY_ADRES": "경기도 성남시 수정구 창곡동 123", "HOUSE_DTL_SECD_NM": "민영주택",
-    "TOT_SUPLY_HSHLDCO": "500", "CNSTRCT_ENTRPS_NM": "테스트건설",
+    "TOT_SUPLY_HSHLDCO": "770", "CNSTRCT_ENTRPS_NM": "테스트건설",
     "SPECLT_RDN_EARTH_AT": "N", "MDAT_TRGET_AREA_SECD": "Y", "PARCPRC_ULS_AT": "Y",
     "BSNS_MBY_NM": "테스트개발", "SPSPLY_RCEPT_BGNDE": "20260907",
     "GNRL_RNK1_CRSPAREA_RCPTDE": "20260908", "GNRL_RNK2_CRSPAREA_RCPTDE": "20260909",
@@ -220,7 +224,8 @@ def main():
     if a.selftest:
         item = build(FIXTURE_REC, FIXTURE_MDL)
         assert item and item["special"] == "2026-09-07", item
-        assert item["total"] == 500 and item["general"] == 230, item
+        assert item["total"] == 770 and item["general"] == 500, item
+        assert item["units"][0]["n"] == 310 and item["units"][0]["gen"] == 200, item
         assert item["zone"] == "조정대상지역" and item["type"] == "민영", item
         assert item["district"] == "성남시 수정구", item
         assert len(item["units"]) == 2 and item["units"][0]["price"] == 78400, item
