@@ -4,6 +4,15 @@ on:
   schedule:
     - cron: "0 21 * * *"   # 매일 06:00 KST (UTC 21:00)
   workflow_dispatch:        # 수동 실행 버튼
+  push:
+    branches: [main]
+    # 수집 로직이나 수동 보정값이 바뀌면 데이터를 다시 만든다.
+    # 이 워크플로가 커밋하는 파일(data/notices.json, data/pdf_cache.json)은
+    # 아래 목록에 없으므로 자기 자신을 다시 트리거하지 않는다.
+    paths:
+      - "scripts/**"
+      - "data/overrides.json"
+      - ".github/workflows/collect.yml"
 
 permissions:
   contents: write
