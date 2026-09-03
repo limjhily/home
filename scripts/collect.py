@@ -183,6 +183,7 @@ def enrich_from_pdf(items, force=False):
             print(f"[PDF] {it['name'][:20]}: {e}", file=sys.stderr)
 
         if got and (got["resale"] is not None or got["live"] is not None):
+            got.pop("source", None)
             it.update(got); cache[key] = got; hit += 1
         else:
             fail += 1

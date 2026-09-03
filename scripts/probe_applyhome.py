@@ -99,12 +99,26 @@ def probe(no):
         if is_pdf:
             open("probe.pdf", "wb").write(body)
             try:
-                text = pblanc_pdf.pdf_text("probe.pdf", max_pages=25)
-                print(f"    텍스트 {len(text):,}자 추출")
-                print(f"    ▶ 파싱 결과: {pblanc_pdf.parse_text(text)}")
-                for kw in ("전매", "거주의무"):
-                    for m in list(re.finditer(kw, text))[:3]:
-                        print(f"      …{text[max(0,m.start()-50):m.start()+90].replace(chr(10),' ')}…")
+                result = pblanc_pdf.parse_pdf("probe.pdf")
+                print(f"    ▶ 파싱 결과: {result}")
+
+                # 실제로 어떤 표를 읽었는지 보여준다 (파싱이 틀렸을 때 원인 파악용)
+                tables = pblanc_pdf.pdf_tables("probe.pdf")
+                print(f"    표 {len(tables)}개 발견. 관련 표:")
+                shown = 0
+                for t in tables:
+                    flat = " ".join(str(c or "") for row in t for c in row)
+                    if "전매제한" in flat.replace(" ", "") and shown < 2:
+                        for row in t[:4]:
+                            print(f"      | " + " | ".join((str(c or "").replace(chr(10), " "))[:18] for c in row))
+                        print("      " + "-" * 40)
+                        shown += 1
+                if not shown:
+                    print("      (전매제한이 든 표를 못 찾음 → 본문 텍스트로 처리)")
+                    text = pblanc_pdf.pdf_text("probe.pdf", max_pages=25)
+                    for kw in ("전매제한", "거주의무"):
+                        for m in list(re.finditer(kw, text))[:2]:
+                            print(f"      …{text[max(0,m.start()-50):m.start()+90].replace(chr(10),' ')}…")
             except Exception as e:
                 print(f"    ✗ PDF 파싱 실패: {e}")
             return

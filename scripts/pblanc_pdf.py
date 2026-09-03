@@ -57,6 +57,69 @@ def _pick(cands):
     return best
 
 
+# ── 공고문 표에서 읽기 (주 경로) ──────────────────────────────────
+# 청약홈 공고문 첫 장에는 아래 표가 거의 항상 들어 있다.
+#   재당첨제한 | 전매제한 | 거주의무기간 | 분양가상한제 | 택지유형
+#     10년     |   3년    |    없음      |    미적용    |  민간택지
+# 라벨과 값이 다른 행에 있으므로 "라벨 바로 뒤 숫자"를 찾으면 옆 칸을 집는다.
+
+# 상식 범위를 벗어난 값은 옆 칸을 잘못 읽은 것으로 보고 버린다.
+MAX_RESALE_MONTHS = 60   # 전매제한 최장 5년
+MAX_LIVE_YEARS = 5       # 거주의무 최장 5년
+
+
+def _cell_period(cell):
+    """표 한 칸 → 개월 수. '3년(2029.08.31. 까지)' → 36, '없음' → 0, 값 없으면 None"""
+    if cell is None: return None
+    t = re.sub(r"\([^)]*\)", " ", str(cell))      # 괄호 안 날짜는 버린다
+    t = re.sub(r"\s+", "", t)
+    if not t: return None
+    if re.search(_NONE_WORDS, t): return 0
+    m = re.search(_PERIOD, t)
+    if not m: return None
+    months = _to_months(m.group(1), m.group(2))
+    tail = re.match(r"(\d{1,2})\s*(개월|월)", t[m.end():])
+    if tail and m.group(2) == "년":
+        months += int(tail.group(1))
+    return months
+
+
+def _sane(resale_m, live_y):
+    if resale_m is not None and not (0 <= resale_m <= MAX_RESALE_MONTHS): resale_m = None
+    if live_y is not None and not (0 <= live_y <= MAX_LIVE_YEARS): live_y = None
+    return resale_m, live_y
+
+
+def parse_tables(tables):
+    """pdfplumber 가 뽑은 표 목록에서 전매제한·거주의무를 읽는다.
+
+    tables: [[ [셀,셀,...], ... ], ...]  (표 → 행 → 칸)
+    """
+    for table in tables or []:
+        for r, row in enumerate(table):
+            cols = {}
+            for c, cell in enumerate(row):
+                t = re.sub(r"\s+", "", str(cell or ""))
+                if not t: continue
+                if "전매제한" in t and "불법" not in t and len(t) <= 8:
+                    cols["resale"] = c
+                elif ("거주의무기간" in t or "실거주의무" in t or "의무거주기간" in t) and len(t) <= 10:
+                    cols["live"] = c
+            if not cols: continue
+            # 라벨 행 다음 두 행 안에서 값을 찾는다
+            for nxt in table[r + 1: r + 3]:
+                resale = live = None
+                if "resale" in cols and cols["resale"] < len(nxt):
+                    resale = _cell_period(nxt[cols["resale"]])
+                if "live" in cols and cols["live"] < len(nxt):
+                    lm = _cell_period(nxt[cols["live"]])
+                    live = None if lm is None else (0 if lm == 0 else round(lm / 12))
+                resale, live = _sane(resale, live)
+                if resale is not None or live is not None:
+                    return {"resale": resale, "live": live}
+    return None
+
+
 RESALE_LABELS = [
     r"전매\s*행위\s*제한\s*기간", r"전매\s*제한\s*기간", r"전매\s*행위\s*제한",
     r"전매\s*제한", r"전매\s*행위의?\s*제한",
@@ -73,6 +136,7 @@ def parse_text(text):
     resale = _pick(_scan(text, RESALE_LABELS))
     live_m = _pick(_scan(text, LIVE_LABELS))
     live = None if live_m is None else (0 if live_m == 0 else round(live_m / 12))
+    resale, live = _sane(resale, live)
     return {"resale": resale, "live": live}
 
 
@@ -87,8 +151,28 @@ def pdf_text(path, max_pages=25):
     return "\n".join(parts)
 
 
+def pdf_tables(path, max_pages=8):
+    """표는 공고문 앞쪽에 있으므로 기본 8쪽만 훑는다(느린 작업)."""
+    import pdfplumber
+    out = []
+    with pdfplumber.open(path) as pdf:
+        for page in pdf.pages[:max_pages]:
+            out += page.extract_tables() or []
+    return out
+
+
 def parse_pdf(path, max_pages=25):
-    return parse_text(pdf_text(path, max_pages))
+    """표에서 먼저 읽고, 못 찾으면 본문 텍스트로 넘어간다."""
+    try:
+        hit = parse_tables(pdf_tables(path))
+        if hit and (hit["resale"] is not None or hit["live"] is not None):
+            hit["source"] = "table"
+            return hit
+    except Exception:
+        pass
+    out = parse_text(pdf_text(path, max_pages))
+    out["source"] = "text"
+    return out
 
 
 # ── 자체 검증 ───────────────────────────────────────────────────────
@@ -114,8 +198,33 @@ CASES = [
 ]
 
 
+# 실제 공고문에서 관측된 표 (2026000364 · 2026000371)
+TABLE_CASES = [
+    ([[["재당첨제한", "전매제한", "거주의무기간", "분양가상한제", "택지유형"],
+       ["10년", "3년", "없음", "미적용", "민간택지"]]],
+     {"resale": 36, "live": 0}),
+    ([[["재당첨제한", "전매제한", "거주의무기간", "분양가상한제", "택지유형"],
+       ["10년", "3년(2029.08.31. 까지)", "3년", "적용", "공공택지"]]],
+     {"resale": 36, "live": 3}),
+    # 라벨 행과 값 행 사이에 빈 행이 끼는 경우
+    ([[["구분", "전매제한", "거주의무기간"], [None, None, None], ["", "6개월", "없음"]]],
+     {"resale": 6, "live": 0}),
+    # 값이 상식 범위를 벗어나면(옆 칸 오독) 버린다
+    ([[["재당첨제한", "전매제한", "거주의무기간"], ["10년", "10년", "없음"]]],
+     {"resale": None, "live": 0}),
+    # 표에 관련 라벨이 없으면 None
+    ([[["단지명", "세대수"], ["테스트", "500"]]], None),
+]
+
+
 def selftest():
     ok = True
+    for i, (tables, want) in enumerate(TABLE_CASES, 1):
+        got = parse_tables(tables)
+        mark = "OK " if got == want else "실패"
+        if got != want: ok = False
+        print(f"[{mark}] 표{i}. {str(tables[0][0])[:44]:46} → {got}")
+    print()
     for i, (text, want) in enumerate(CASES, 1):
         got = parse_text(text)
         mark = "OK " if got == want else "실패"
