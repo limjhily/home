@@ -33,6 +33,25 @@ def get(url, referer=None):
         return r.status, r.headers.get("Content-Type", ""), r.read()
 
 
+def all_links(html, base):
+    """필터 없이 페이지 안의 모든 링크·스크립트 이동 대상을 모은다."""
+    hits = []
+    for p in [r'href\s*=\s*["\']([^"\']+)["\']',
+              r'onclick\s*=\s*["\']([^"\']+)["\']',
+              r'location\.href\s*=\s*["\']([^"\']+)["\']',
+              r'window\.open\s*\(\s*["\']([^"\']+)["\']',
+              r'src\s*=\s*["\']([^"\']+)["\']']:
+        hits += re.findall(p, html, re.I)
+    seen, out = set(), []
+    for h in hits:
+        h = h.strip()
+        if not h or h.startswith(("#", "javascript:void")): continue
+        u = parse.urljoin(base, h) if not h.startswith("javascript:") else h
+        if u not in seen:
+            seen.add(u); out.append(u)
+    return out
+
+
 def find_links(html, base):
     """href / onclick / data-* 안에서 파일 다운로드로 보이는 후보를 모은다."""
     pats = [
@@ -86,6 +105,17 @@ def probe(no):
     for u in links[:25]:
         print(f"    - {u}")
 
+    if not links:
+        # LH 공공분양처럼 청약홈에 첨부가 없는 경우, 페이지의 모든 링크를 살펴본다
+        every = all_links(html, url)
+        print(f"  ── 첨부가 없어 전체 링크 {len(every)}개를 확인합니다 ──")
+        for u in every[:35]:
+            print(f"    · {u[:150]}")
+        for kw in ("공고문", "모집공고", "바로가기", "lh.or.kr", "청약플러스"):
+            for m in list(re.finditer(kw, html))[:2]:
+                seg = re.sub(r"\s+", " ", html[max(0, m.start()-160): m.start()+160])
+                print(f"    [{kw}] …{seg}…")
+
     for u in links:
         if not any(k in u.lower() for k in ("pdf", "download", "file", "atch")):
             continue
@@ -125,6 +155,6 @@ def probe(no):
 
 
 if __name__ == "__main__":
-    nos = sys.argv[1:] or ["2026000364", "2026000358", "2026000371"]
+    nos = sys.argv[1:] or ["2026820006", "2026000409", "2026000414"]
     for n in nos:
         probe(n)

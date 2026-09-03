@@ -1,6 +1,10 @@
 name: 공고문 PDF 구조 정찰
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/probe_applyhome.py"
   workflow_dispatch:
     inputs:
       house_nos:
