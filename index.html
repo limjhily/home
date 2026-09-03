@@ -1,0 +1,464 @@
+<title>청약달력</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap">
+
+<style>
+:root{
+  --bg:#F4F6F9; --surface:#FFFFFF; --surface-2:#EDF1F6; --line:#DBE2EC; --line-2:#C6D0DE;
+  --ink:#141A24; --ink-2:#4B5667; --ink-3:#78859A;
+  --navy:#1B2A4A; --accent:#2F5DAE; --accent-soft:#E4EBF8;
+  --ok:#0F6B52; --ok-bg:#E1F1EA; --warn:#8E5D08; --warn-bg:#F9EFDA; --off:#6E7B8D; --off-bg:#E9EEF4;
+  --shadow:0 1px 2px rgba(20,26,36,.06), 0 8px 24px -16px rgba(20,26,36,.28);
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1219; --surface:#151B24; --surface-2:#1D2530; --line:#28323F; --line-2:#374354;
+    --ink:#E6EBF2; --ink-2:#A6B2C2; --ink-3:#7A8697;
+    --navy:#C6D5F2; --accent:#82A8EA; --accent-soft:#1B2740;
+    --ok:#63D0A7; --ok-bg:#123125; --warn:#E5B15E; --warn-bg:#332810; --off:#8A96A7; --off-bg:#222B36;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1219; --surface:#151B24; --surface-2:#1D2530; --line:#28323F; --line-2:#374354;
+  --ink:#E6EBF2; --ink-2:#A6B2C2; --ink-3:#7A8697;
+  --navy:#C6D5F2; --accent:#82A8EA; --accent-soft:#1B2740;
+  --ok:#63D0A7; --ok-bg:#123125; --warn:#E5B15E; --warn-bg:#332810; --off:#8A96A7; --off-bg:#222B36;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"IBM Plex Sans KR",-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.6; -webkit-text-size-adjust:100%;
+}
+a{color:var(--accent)}
+.wrap{max-width:940px; margin:0 auto; padding:0 16px}
+.num{font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace; font-variant-numeric:tabular-nums}
+
+/* ── 헤더 ── */
+header{background:var(--navy); color:#EEF3FB; border-bottom:1px solid var(--line)}
+:root[data-theme="dark"] header, :root:not([data-theme="light"]) header{}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header{background:#131A27; color:var(--ink)}}
+:root[data-theme="dark"] header{background:#131A27; color:var(--ink)}
+.hd{display:flex; align-items:baseline; gap:12px; padding:18px 0 16px; flex-wrap:wrap}
+.logo{font-family:"Noto Serif KR",serif; font-weight:700; font-size:22px; letter-spacing:-.02em; color:inherit}
+.logo b{color:#8FB4F5}
+.tag{font-size:12.5px; color:#A9BCDC; letter-spacing:.02em}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag{color:var(--ink-3)}}
+:root[data-theme="dark"] .tag{color:var(--ink-3)}
+.hd .spacer{flex:1}
+.themebtn{background:transparent; border:1px solid rgba(255,255,255,.28); color:inherit; border-radius:99px;
+  font:inherit; font-size:12.5px; padding:4px 12px; cursor:pointer}
+.themebtn:hover{border-color:rgba(255,255,255,.6)}
+
+/* ── 광고 ── */
+.ad{border:1px dashed var(--line-2); border-radius:var(--r); background:var(--surface-2);
+  color:var(--ink-3); font-size:12px; letter-spacing:.06em; text-align:center;
+  display:flex; align-items:center; justify-content:center}
+.ad-top{height:90px; margin:16px 0}
+.ad-infeed{height:110px; margin:6px 0 14px}
+
+/* ── 필터 ── */
+.filters{position:sticky; top:0; z-index:20; background:var(--bg);
+  border-bottom:1px solid var(--line); padding:10px 0 8px}
+.frow{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.frow + .frow{margin-top:8px}
+.flabel{font-size:11.5px; color:var(--ink-3); letter-spacing:.08em; min-width:38px}
+.chip{border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2);
+  border-radius:99px; font:inherit; font-size:13px; padding:4px 12px; cursor:pointer; white-space:nowrap}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#0E1219}}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#0E1219}
+.search{flex:1; min-width:150px; border:1px solid var(--line-2); background:var(--surface);
+  color:var(--ink); border-radius:99px; font:inherit; font-size:13.5px; padding:5px 14px}
+.search::placeholder{color:var(--ink-3)}
+.count{font-size:12.5px; color:var(--ink-3); padding:8px 0 0}
+
+/* ── 타임라인 ── */
+.day{display:grid; grid-template-columns:92px 1fr; gap:16px; padding:18px 0 4px;
+  border-top:1px solid var(--line)}
+.day:first-of-type{border-top:none}
+.daymark{position:sticky; top:96px; align-self:start; padding-top:2px}
+.dnum{font-family:"Noto Serif KR",serif; font-weight:700; font-size:26px; line-height:1; letter-spacing:-.03em}
+.dmon{font-size:12px; color:var(--ink-3); margin-top:3px}
+.dday{font-size:11.5px; color:var(--ink-3)}
+.drel{display:inline-block; margin-top:6px; font-size:11px; padding:1px 7px; border-radius:99px;
+  background:var(--accent-soft); color:var(--accent)}
+.dpast .dnum,.dpast .dmon{color:var(--ink-3)}
+
+.cards{display:flex; flex-direction:column; gap:10px}
+
+/* ── 카드 ── */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow)}
+.card.open{border-color:var(--line-2)}
+.chead{width:100%; text-align:left; background:none; border:0; font:inherit; color:inherit;
+  padding:13px 14px; cursor:pointer; display:block; border-radius:var(--r)}
+.chead:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.ctop{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.cname{font-weight:600; font-size:16px; letter-spacing:-.01em; flex:1; min-width:0}
+.st{font-size:11.5px; padding:2px 9px; border-radius:99px; font-weight:500; white-space:nowrap}
+.st-open{background:var(--ok-bg); color:var(--ok)}
+.st-soon{background:var(--warn-bg); color:var(--warn)}
+.st-done{background:var(--off-bg); color:var(--off)}
+.cmeta{color:var(--ink-2); font-size:13px; margin-top:3px}
+.cmeta .sep{color:var(--line-2); margin:0 6px}
+.cstat{display:flex; gap:18px; margin-top:9px; flex-wrap:wrap}
+.cstat div{font-size:12px; color:var(--ink-3)}
+.cstat strong{display:block; font-size:14.5px; color:var(--ink); font-weight:600;
+  font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace; font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+.flags{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap}
+.flag{font-size:11.5px; padding:2px 8px; border-radius:5px; border:1px solid var(--line);
+  background:var(--surface-2); color:var(--ink-2)}
+.flag.no{color:var(--ok); border-color:color-mix(in srgb, var(--ok) 30%, var(--line)); background:var(--ok-bg)}
+.flag.yes{color:var(--warn); border-color:color-mix(in srgb, var(--warn) 30%, var(--line)); background:var(--warn-bg)}
+
+/* ── 상세 ── */
+.body{border-top:1px solid var(--line); padding:14px}
+.sechd{font-size:11.5px; letter-spacing:.1em; color:var(--ink-3); margin:0 0 7px}
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px}
+table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:400px}
+th,td{padding:7px 10px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap}
+th{background:var(--surface-2); color:var(--ink-3); font-weight:500; font-size:12px; letter-spacing:.02em}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.hi{color:var(--ink); font-weight:600}
+.sched{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden; margin-top:16px}
+.sched div{background:var(--surface); padding:8px 10px}
+.sched dt{font-size:11.5px; color:var(--ink-3); margin:0}
+.sched dd{margin:2px 0 0; font-size:13.5px; font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace}
+.notes{margin:16px 0 0; padding:0; list-style:none; font-size:13px; color:var(--ink-2)}
+.notes li{padding-left:14px; position:relative; margin-bottom:3px}
+.notes li::before{content:"—"; position:absolute; left:0; color:var(--ink-3)}
+.golink{display:inline-block; margin-top:14px; background:var(--accent); color:#fff;
+  text-decoration:none; font-size:13.5px; font-weight:500; padding:8px 16px; border-radius:8px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .golink{color:#0E1219}}
+:root[data-theme="dark"] .golink{color:#0E1219}
+
+/* ── 링크 모음 ── */
+.links{margin:34px 0 0; padding:22px 0 0; border-top:1px solid var(--line)}
+.links h2{font-family:"Noto Serif KR",serif; font-size:17px; margin:0 0 12px; font-weight:600}
+.lgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px}
+.lgrid a{display:block; padding:10px 12px; background:var(--surface); border:1px solid var(--line);
+  border-radius:8px; text-decoration:none; color:var(--ink)}
+.lgrid a:hover{border-color:var(--accent)}
+.lgrid strong{display:block; font-size:14px; font-weight:600}
+.lgrid span{font-size:12px; color:var(--ink-3)}
+
+footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--ink-3)}
+.empty{padding:40px 0; text-align:center; color:var(--ink-3); font-size:14px}
+.sample{margin:14px 0 0; padding:10px 13px; border-radius:8px; background:var(--warn-bg);
+  color:var(--warn); font-size:12.5px; border:1px solid color-mix(in srgb, var(--warn) 25%, transparent)}
+
+@media (max-width:640px){
+  .day{grid-template-columns:1fr; gap:8px; padding-top:14px}
+  .daymark{position:static; display:flex; align-items:baseline; gap:8px}
+  .dnum{font-size:19px}
+  .dmon,.dday{margin:0}
+  .cstat{gap:14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<header>
+  <div class="wrap hd">
+    <span class="logo">청약<b>달력</b></span>
+    <span class="tag">분양가 · 세대수 · 전매제한 · 실거주의무를 날짜순으로</span>
+    <span class="spacer"></span>
+    <button class="themebtn" id="tbtn" type="button">화면 전환</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 구글 애드센스 상단 배너: 승인 후 아래 자리에 <ins class="adsbygoogle"> 코드 삽입 -->
+  <div class="ad ad-top">광고 영역 · 728×90</div>
+
+  <div class="filters">
+    <div class="frow">
+      <span class="flabel">지역</span>
+      <span id="f-region"></span>
+    </div>
+    <div class="frow">
+      <span class="flabel">유형</span>
+      <span id="f-type"></span>
+      <input class="search" id="q" type="search" placeholder="단지명 · 지역 검색" autocomplete="off">
+    </div>
+    <div class="count" id="count"></div>
+  </div>
+
+  <div id="list"></div>
+
+  <p class="sample">현재 표시된 내용은 화면 구성을 확인하기 위한 <b>샘플 데이터</b>입니다. 실제 공고는 청약홈에서 확인하세요.</p>
+
+  <section class="links">
+    <h2>청약 관련 사이트</h2>
+    <div class="lgrid" id="links"></div>
+  </section>
+
+  <footer>
+    청약달력 · 정보 제공 목적이며 법적 효력이 없습니다. 청약 자격과 일정은 반드시 입주자모집공고문 원문을 확인하세요.
+  </footer>
+</main>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   데이터: 아래 배열만 수정하면 사이트 내용이 바뀝니다.
+   price 단위 = 만원(최고가 기준), area = 전용면적 ㎡
+   ───────────────────────────────────────────────────────────── */
+const NOTICES = [
+ {name:"위례 리버센트 아이파크", region:"경기", district:"성남시 수정구", type:"민영",
+  total:842, general:311, builder:"HDC현대산업개발", zone:"조정대상지역",
+  special:"2026-09-07", first:"2026-09-08", second:"2026-09-09", result:"2026-09-16", contract:"2026-09-28 ~ 09-30",
+  resale:36, live:2, link:"https://www.applyhome.co.kr",
+  units:[{t:"59A", area:59.94, n:198, price:78400},{t:"74B", area:74.87, n:264, price:94200},
+         {t:"84A", area:84.96, n:290, price:106500},{t:"101P", area:101.22, n:90, price:128900}],
+  notes:["전용 85㎡ 이하 특별공급 비율 약 58%","발코니 확장비 별도(1,180만원 ~ 1,740만원)"]},
+
+ {name:"검단신도시 파크에듀포레", region:"인천", district:"서구 원당동", type:"민영",
+  total:1204, general:604, builder:"대우건설", zone:"비규제지역",
+  special:"2026-09-08", first:"2026-09-09", second:"2026-09-10", result:"2026-09-17", contract:"2026-09-29 ~ 10-02",
+  resale:6, live:0, link:"https://www.applyhome.co.kr",
+  units:[{t:"59A", area:59.98, n:322, price:41800},{t:"84A", area:84.92, n:640, price:56300},
+         {t:"84C", area:84.71, n:242, price:55100}],
+  notes:["비규제지역으로 세대주·세대원 모두 청약 가능","중도금 60% 무이자 조건"]},
+
+ {name:"동탄2 레이크팰리스", region:"경기", district:"화성시 오산동", type:"민영",
+  total:576, general:240, builder:"롯데건설", zone:"비규제지역",
+  special:"2026-09-14", first:"2026-09-15", second:"2026-09-16", result:"2026-09-23", contract:"2026-10-06 ~ 10-08",
+  resale:12, live:0, link:"https://www.applyhome.co.kr",
+  units:[{t:"74A", area:74.55, n:180, price:52700},{t:"84A", area:84.98, n:306, price:61400},
+         {t:"99A", area:99.31, n:90, price:74800}],
+  notes:["호수공원 조망 세대 별도 가점 없음","계약금 10%, 중도금 이자후불제"]},
+
+ {name:"서초 방배 센트럴하임", region:"서울", district:"서초구 방배동", type:"민영",
+  total:398, general:112, builder:"삼성물산", zone:"투기과열지구",
+  special:"2026-09-15", first:"2026-09-16", second:"2026-09-17", result:"2026-09-24", contract:"2026-10-12 ~ 10-14",
+  resale:36, live:3, link:"https://www.applyhome.co.kr",
+  units:[{t:"59A", area:59.87, n:96, price:184000},{t:"84A", area:84.94, n:220, price:246500},
+         {t:"114A", area:114.55, n:82, price:331000}],
+  notes:["분양가상한제 적용 단지 · 실거주의무 3년","9억 초과 중도금 대출 불가 구간 확인 필요"]},
+
+ {name:"고양 창릉 A-3BL 공공분양", region:"경기", district:"고양시 덕양구", type:"공공",
+  total:704, general:352, builder:"LH", zone:"조정대상지역",
+  special:"2026-09-21", first:"2026-09-22", second:"2026-09-23", result:"2026-09-30", contract:"2026-10-19 ~ 10-21",
+  resale:60, live:5, link:"https://apply.lh.or.kr",
+  units:[{t:"55A", area:55.72, n:280, price:38900},{t:"59A", area:59.91, n:284, price:42600},
+         {t:"84A", area:84.88, n:140, price:58200}],
+  notes:["뉴:홈 나눔형 · 시세 대비 저렴한 대신 의무거주 5년","LH 청약플러스에서 별도 접수(청약홈 아님)"]},
+
+ {name:"부산 명지 오션브릿지", region:"부산", district:"강서구 명지동", type:"민영",
+  total:918, general:512, builder:"포스코이앤씨", zone:"비규제지역",
+  special:"2026-09-22", first:"2026-09-23", second:"2026-09-24", result:"2026-10-01", contract:"2026-10-20 ~ 10-22",
+  resale:6, live:0, link:"https://www.applyhome.co.kr",
+  units:[{t:"59A", area:59.72, n:240, price:39400},{t:"84A", area:84.96, n:528, price:52100},
+         {t:"84B", area:84.55, n:150, price:50800}],
+  notes:["전매제한 6개월 이후 분양권 전매 가능","발코니 확장 무상 제공"]},
+
+ {name:"세종 6-3생활권 자이", region:"세종", district:"세종시 산울동", type:"민영",
+  total:462, general:198, builder:"GS건설", zone:"비규제지역",
+  special:"2026-09-28", first:"2026-09-29", second:"2026-09-30", result:"2026-10-07", contract:"2026-10-26 ~ 10-28",
+  resale:12, live:0, link:"https://www.applyhome.co.kr",
+  units:[{t:"84A", area:84.93, n:322, price:48700},{t:"99A", area:99.44, n:140, price:58900}],
+  notes:["세종시 1년 이상 거주자 우선공급 50%","전용 85㎡ 초과는 추첨제 비중 높음"]},
+
+ {name:"광명 철산 리버뷰자이", region:"경기", district:"광명시 철산동", type:"민영",
+  total:1088, general:386, builder:"GS건설", zone:"조정대상지역",
+  special:"2026-08-24", first:"2026-08-25", second:"2026-08-26", result:"2026-09-02", contract:"2026-09-14 ~ 09-16",
+  resale:36, live:2, link:"https://www.applyhome.co.kr",
+  units:[{t:"59A", area:59.96, n:402, price:86200},{t:"84A", area:84.98, n:546, price:112400},
+         {t:"110A", area:110.28, n:140, price:143700}],
+  notes:["오늘 당첨자 발표 · 서류제출 기간 확인","예비당첨자 500% 선정"]},
+
+ {name:"청주 오송 더퍼스트", region:"충북", district:"청주시 흥덕구", type:"민영",
+  total:534, general:298, builder:"중흥토건", zone:"비규제지역",
+  special:"2026-08-31", first:"2026-09-01", second:"2026-09-02", result:"2026-09-09", contract:"2026-09-21 ~ 09-23",
+  resale:6, live:0, link:"https://www.applyhome.co.kr",
+  units:[{t:"75A", area:75.12, n:220, price:32800},{t:"84A", area:84.87, n:314, price:36900}],
+  notes:["오늘 2순위 접수 마감(17:30)","계약금 정액제 1,000만원"]},
+
+ {name:"대전 도안 2-3지구 푸르지오", region:"대전", district:"유성구 복용동", type:"민영",
+  total:672, general:344, builder:"대우건설", zone:"비규제지역",
+  special:"2026-10-05", first:"2026-10-06", second:"2026-10-07", result:"2026-10-14", contract:"2026-11-02 ~ 11-04",
+  resale:6, live:0, link:"https://www.applyhome.co.kr",
+  units:[{t:"59A", area:59.88, n:186, price:37600},{t:"84A", area:84.92, n:396, price:49300},
+         {t:"101A", area:101.55, n:90, price:60100}],
+  notes:["공고 예정 · 일정은 변경될 수 있음"]}
+];
+
+const LINKS = [
+ {t:"청약홈", d:"한국부동산원 · 민영/국민주택 청약 접수", u:"https://www.applyhome.co.kr"},
+ {t:"LH 청약플러스", d:"공공분양·공공임대 접수", u:"https://apply.lh.or.kr"},
+ {t:"SH 서울주택도시공사", d:"서울시 공공주택 공급", u:"https://www.i-sh.co.kr"},
+ {t:"경기주택도시공사 GH", d:"경기도 공공분양·임대", u:"https://www.gh.or.kr"},
+ {t:"마이홈 포털", d:"주거복지 · 자격 자가진단", u:"https://www.myhome.go.kr"},
+ {t:"부동산공시가격 알리미", d:"공시가격 조회(자산요건 확인)", u:"https://www.realtyprice.kr"},
+ {t:"실거래가 공개시스템", d:"주변 시세 비교", u:"https://rt.molit.go.kr"},
+ {t:"주택도시기금 기금e든든", d:"디딤돌·버팀목 대출 신청", u:"https://enhuf.molit.go.kr"}
+];
+
+/* ── 렌더링 ── */
+const TODAY = new Date(new Date().toISOString().slice(0,10));
+const DOW = ["일","월","화","수","목","금","토"];
+const won = v => v >= 10000 ? (v/10000).toFixed(1).replace(/\.0$/,"") + "억" : v.toLocaleString() + "만";
+const d = s => new Date(s);
+
+function status(n){
+  const end = d(n.second), start = d(n.special);
+  if (TODAY > d(n.contract.slice(0,10))) return ["종료","st-done"];
+  if (TODAY > end) return ["발표 대기","st-done"];
+  if (TODAY >= start) return ["접수중","st-open"];
+  const days = Math.round((start - TODAY)/864e5);
+  return [days <= 7 ? "D-"+days : "예정", days <= 7 ? "st-open" : "st-soon"];
+}
+const priceRange = n => {
+  const p = n.units.map(u=>u.price);
+  return won(Math.min(...p)) + " ~ " + won(Math.max(...p));
+};
+
+const state = {region:"전체", type:"전체", q:""};
+const regions = ["전체", ...new Set(NOTICES.map(n=>n.region))];
+const types = ["전체","민영","공공"];
+
+function chips(el, list, key){
+  el.innerHTML = "";
+  list.forEach(v=>{
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.textContent = v;
+    b.setAttribute("aria-pressed", state[key] === v);
+    b.onclick = () => { state[key] = v; chips(el, list, key); render(); };
+    el.appendChild(b);
+  });
+}
+
+function render(){
+  const q = state.q.trim();
+  const rows = NOTICES.filter(n =>
+    (state.region === "전체" || n.region === state.region) &&
+    (state.type === "전체" || n.type === state.type) &&
+    (!q || (n.name + n.region + n.district + n.builder).includes(q))
+  ).sort((a,b) => d(a.special) - d(b.special));
+
+  document.getElementById("count").textContent =
+    rows.length ? `단지 ${rows.length}곳 · 특별공급일 순` : "";
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  if (!rows.length){ list.innerHTML = '<p class="empty">조건에 맞는 청약 단지가 없습니다.</p>'; return; }
+
+  let cur = "", box = null, idx = 0;
+  rows.forEach(n => {
+    if (n.special !== cur){
+      cur = n.special;
+      const dt = d(cur), past = dt < TODAY;
+      const diff = Math.round((dt - TODAY)/864e5);
+      const day = document.createElement("section");
+      day.className = "day" + (past ? " dpast" : "");
+      day.innerHTML = `<div class="daymark">
+          <div><div class="dnum num">${dt.getDate()}</div>
+          <div class="dmon">${dt.getMonth()+1}월 · ${DOW[dt.getDay()]}</div></div>
+          ${diff === 0 ? '<span class="drel">오늘</span>' :
+            diff > 0 && diff <= 14 ? `<span class="drel">D-${diff}</span>` : ""}
+        </div><div class="cards"></div>`;
+      list.appendChild(day);
+      box = day.querySelector(".cards");
+    }
+    box.appendChild(card(n));
+    if (++idx === 3){
+      const ad = document.createElement("div");
+      ad.className = "ad ad-infeed"; ad.textContent = "인피드 광고 영역";
+      box.appendChild(ad);
+    }
+  });
+}
+
+function card(n){
+  const [label, cls] = status(n);
+  const jeonse = n.live === 0;
+  const el = document.createElement("article");
+  el.className = "card";
+  el.innerHTML = `
+    <button class="chead" type="button" aria-expanded="false">
+      <span class="ctop">
+        <span class="cname">${n.name}</span>
+        <span class="st ${cls}">${label}</span>
+      </span>
+      <div class="cmeta">${n.region} ${n.district}<span class="sep">|</span>${n.type}<span class="sep">|</span>${n.zone}</div>
+      <div class="cstat">
+        <div>총 세대<strong>${n.total.toLocaleString()}</strong></div>
+        <div>일반공급<strong>${n.general.toLocaleString()}</strong></div>
+        <div>분양가<strong>${priceRange(n)}</strong></div>
+        <div>전용면적<strong>${Math.min(...n.units.map(u=>u.area)).toFixed(0)}~${Math.max(...n.units.map(u=>u.area)).toFixed(0)}㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag ${n.resale <= 12 ? "no" : "yes"}">전매제한 ${n.resale === 0 ? "없음" : n.resale + "개월"}</span>
+        <span class="flag ${n.live ? "yes" : "no"}">실거주의무 ${n.live ? n.live + "년" : "없음"}</span>
+        <span class="flag ${jeonse ? "no" : "yes"}">전세 ${jeonse ? "가능" : "불가"}</span>
+      </div>
+    </button>`;
+
+  const btn = el.querySelector(".chead");
+  btn.onclick = () => {
+    const open = el.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open);
+    if (open) el.appendChild(detail(n, jeonse));
+    else el.querySelector(".body").remove();
+  };
+  return el;
+}
+
+function detail(n, jeonse){
+  const b = document.createElement("div");
+  b.className = "body";
+  b.innerHTML = `
+    <p class="sechd">평형별 공급 · 분양가(최고가 기준)</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>타입</th><th>전용면적</th><th>세대수</th><th>분양가</th><th>3.3㎡당</th></tr></thead>
+      <tbody>${n.units.map(u=>`<tr>
+        <td class="hi">${u.t}</td>
+        <td class="n">${u.area.toFixed(2)}㎡</td>
+        <td class="n">${u.n.toLocaleString()}</td>
+        <td class="n hi">${won(u.price)}</td>
+        <td class="n">${Math.round(u.price / (u.area/3.3058)).toLocaleString()}만</td>
+      </tr>`).join("")}</tbody>
+    </table></div>
+
+    <p class="sechd" style="margin-top:16px">청약 일정</p>
+    <dl class="sched">
+      <div><dt>특별공급</dt><dd>${n.special.slice(5)}</dd></div>
+      <div><dt>1순위</dt><dd>${n.first.slice(5)}</dd></div>
+      <div><dt>2순위</dt><dd>${n.second.slice(5)}</dd></div>
+      <div><dt>당첨자 발표</dt><dd>${n.result.slice(5)}</dd></div>
+      <div><dt>계약</dt><dd>${n.contract.slice(5)}</dd></div>
+    </dl>
+
+    <ul class="notes">
+      <li>시공사 ${n.builder} · ${n.zone}</li>
+      <li>전매제한 ${n.resale === 0 ? "없음" : n.resale + "개월"} · 실거주의무 ${n.live ? n.live + "년" : "없음"}
+          → 입주 후 <b>전세 ${jeonse ? "놓을 수 있음" : "놓을 수 없음"}</b></li>
+      ${n.notes.map(t=>`<li>${t}</li>`).join("")}
+    </ul>
+    <a class="golink" href="${n.link}" target="_blank" rel="noopener">공고문 보러 가기 →</a>`;
+  return b;
+}
+
+document.getElementById("links").innerHTML = LINKS.map(l =>
+  `<a href="${l.u}" target="_blank" rel="noopener"><strong>${l.t}</strong><span>${l.d}</span></a>`).join("");
+
+chips(document.getElementById("f-region"), regions, "region");
+chips(document.getElementById("f-type"), types, "type");
+document.getElementById("q").oninput = e => { state.q = e.target.value; render(); };
+
+document.getElementById("tbtn").onclick = () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  const dark = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+};
+
+render();
+</script>
