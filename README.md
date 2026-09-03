@@ -36,3 +36,16 @@
 2. **v2** 관심단지 저장(브라우저 저장), 알림 신청
 3. **v3** 로그인 + 내 정보 입력(무주택 기간, 부양가족, 청약통장 가입기간, 소득·자산, 혼인·출산 여부)
    → 가점 자동 계산, 특별공급 유형별(신혼부부·생애최초·다자녀·노부모) 자격 판정과 유리한 유형 추천
+
+## 저장소 구성
+```
+index.html                     사이트 전체 (샘플 데이터 포함)
+data/notices.json              수집 결과 (자동 생성, 있으면 샘플 대신 사용)
+data/overrides.json            API에 없는 전매제한·실거주의무 수동 보정
+scripts/collect.py             청약홈 OpenAPI 수집기
+.github/workflows/collect.yml  매일 06:00 KST 자동 수집
+_headers                       Cloudflare Pages 캐시/보안 헤더
+DEPLOY.md                      배포·운영 가이드
+```
+
+배포 방법과 API 키 발급 절차는 **[DEPLOY.md](DEPLOY.md)** 참고.
