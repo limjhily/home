@@ -1,0 +1,1517 @@
+{
+ "updated": "2026-09-03",
+ "count": 25,
+ "items": [
+  {
+   "id": "2026820006-2026820006",
+   "name": "시흥거모 A-5블록 신혼희망타운(공공분양)(본청약)",
+   "region": "경기",
+   "district": "시흥시 군자동",
+   "type": "공공",
+   "total": 290,
+   "general": 6,
+   "builder": "(주)신영씨앤디",
+   "zone": "비규제지역",
+   "special": "2026-08-18",
+   "first": "2026-08-18",
+   "second": "2026-08-26",
+   "result": "2026-09-02",
+   "contract": "2026-12-01 ~ 12-03",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026820006&pblancNo=2026820006",
+   "units": [
+    {
+     "t": "055.0000B",
+     "area": 81.38,
+     "n": 0,
+     "price": 44555
+    },
+    {
+     "t": "055.0000A",
+     "area": 82.21,
+     "n": 0,
+     "price": 44812
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 경기남부지역본부"
+   ]
+  },
+  {
+   "id": "2026000374-2026000374",
+   "name": "더샵 신길센트럴시티(조합원 취소분)",
+   "region": "서울",
+   "district": "영등포구 신길동",
+   "type": "민영",
+   "total": 67,
+   "general": 31,
+   "builder": "(주) 포스코이앤씨",
+   "zone": "투기과열지구",
+   "special": "2026-08-18",
+   "first": "2026-08-19",
+   "second": "2026-08-21",
+   "result": "2026-08-27",
+   "contract": "2026-09-07 ~ 09-09",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000374&pblancNo=2026000374",
+   "units": [
+    {
+     "t": "051.9927C",
+     "area": 73.41,
+     "n": 1,
+     "price": 122000
+    },
+    {
+     "t": "051.9953E",
+     "area": 73.87,
+     "n": 1,
+     "price": 118000
+    },
+    {
+     "t": "051.9981A",
+     "area": 73.92,
+     "n": 1,
+     "price": 124000
+    },
+    {
+     "t": "051.9931B",
+     "area": 74.17,
+     "n": 5,
+     "price": 125000
+    },
+    {
+     "t": "051.9909D",
+     "area": 74.25,
+     "n": 2,
+     "price": 124000
+    },
+    {
+     "t": "059.9973A",
+     "area": 84.64,
+     "n": 2,
+     "price": 145000
+    },
+    {
+     "t": "059.9903C",
+     "area": 84.75,
+     "n": 1,
+     "price": 144000
+    },
+    {
+     "t": "059.9945B",
+     "area": 85.09,
+     "n": 6,
+     "price": 144000
+    },
+    {
+     "t": "059.9987D",
+     "area": 85.46,
+     "n": 1,
+     "price": 145000
+    },
+    {
+     "t": "074.9920C",
+     "area": 104.93,
+     "n": 2,
+     "price": 165000
+    },
+    {
+     "t": "074.9944B",
+     "area": 105.42,
+     "n": 1,
+     "price": 168000
+    },
+    {
+     "t": "074.9939A",
+     "area": 106.69,
+     "n": 2,
+     "price": 170000
+    },
+    {
+     "t": "084.9993A",
+     "area": 118.98,
+     "n": 6,
+     "price": 184000
+    }
+   ],
+   "notes": [
+    "시행사 신길5동지역주택조합"
+   ]
+  },
+  {
+   "id": "2026000371-2026000371",
+   "name": "용인반도체클러스터 동일하이빌 파크밸리(D1-1블록)",
+   "region": "경기",
+   "district": "용인시 처인구",
+   "type": "민영",
+   "total": 589,
+   "general": 129,
+   "builder": "(주)동일토건",
+   "zone": "비규제지역",
+   "special": "2026-08-18",
+   "first": "2026-08-20",
+   "second": "2026-08-21",
+   "result": "2026-08-27",
+   "contract": "2026-09-07 ~ 09-09",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000371&pblancNo=2026000371",
+   "units": [
+    {
+     "t": "059.8977B",
+     "area": 80.64,
+     "n": 24,
+     "price": 40800
+    },
+    {
+     "t": "059.5027C",
+     "area": 80.64,
+     "n": 7,
+     "price": 39700
+    },
+    {
+     "t": "059.9390A",
+     "area": 81.01,
+     "n": 40,
+     "price": 41600
+    },
+    {
+     "t": "071.2889A",
+     "area": 95.74,
+     "n": 7,
+     "price": 47800
+    },
+    {
+     "t": "071.8211B",
+     "area": 95.89,
+     "n": 17,
+     "price": 47600
+    },
+    {
+     "t": "084.7577A",
+     "area": 112.9,
+     "n": 34,
+     "price": 53400
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "시행사 (주)동일코퍼레이션"
+   ]
+  },
+  {
+   "id": "2026000364-2026000364",
+   "name": "써밋 클라비온",
+   "region": "서울",
+   "district": "영등포구 신길동",
+   "type": "민영",
+   "total": 176,
+   "general": 83,
+   "builder": "(주)대우건설",
+   "zone": "투기과열지구",
+   "special": "2026-08-18",
+   "first": "2026-08-19",
+   "second": "2026-08-21",
+   "result": "2026-08-28",
+   "contract": "2026-09-08 ~ 09-10",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000364&pblancNo=2026000364",
+   "units": [
+    {
+     "t": "049.9779",
+     "area": 67.28,
+     "n": 5,
+     "price": 146600
+    },
+    {
+     "t": "044.5894B",
+     "area": 67.89,
+     "n": 4,
+     "price": 130370
+    },
+    {
+     "t": "044.9631A",
+     "area": 68.31,
+     "n": 7,
+     "price": 132510
+    },
+    {
+     "t": "059.9245D",
+     "area": 80.77,
+     "n": 30,
+     "price": 185080
+    },
+    {
+     "t": "059.9025A",
+     "area": 80.88,
+     "n": 5,
+     "price": 172900
+    },
+    {
+     "t": "059.9030B",
+     "area": 80.94,
+     "n": 12,
+     "price": 183790
+    },
+    {
+     "t": "059.8890C",
+     "area": 81.28,
+     "n": 20,
+     "price": 186630
+    }
+   ],
+   "notes": [
+    "시행사 (주)한국토지신탁"
+   ]
+  },
+  {
+   "id": "2026000358-2026000358",
+   "name": "충정로역자이르네",
+   "region": "서울",
+   "district": "중구 중림동",
+   "type": "민영",
+   "total": 186,
+   "general": 84,
+   "builder": "자이에스앤디(주), 지에스건설(주)",
+   "zone": "투기과열지구",
+   "special": "2026-08-18",
+   "first": "2026-08-19",
+   "second": "2026-08-21",
+   "result": "2026-08-31",
+   "contract": "2026-09-15 ~ 09-17",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000358&pblancNo=2026000358",
+   "units": [
+    {
+     "t": "039.9972A",
+     "area": 56.62,
+     "n": 2,
+     "price": 103500
+    },
+    {
+     "t": "039.9814B",
+     "area": 56.97,
+     "n": 3,
+     "price": 100400
+    },
+    {
+     "t": "059.9882",
+     "area": 84.96,
+     "n": 35,
+     "price": 188500
+    },
+    {
+     "t": "084.9972A",
+     "area": 118.24,
+     "n": 12,
+     "price": 245500
+    },
+    {
+     "t": "084.9965B",
+     "area": 118.67,
+     "n": 32,
+     "price": 229500
+    }
+   ],
+   "notes": [
+    "시행사 (주)이노디앤씨"
+   ]
+  },
+  {
+   "id": "2026000376-2026000376",
+   "name": "달서자이 제니크",
+   "region": "대구",
+   "district": "달서구 본리동",
+   "type": "민영",
+   "total": 360,
+   "general": 164,
+   "builder": "지에스건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-08-18",
+   "first": "2026-08-19",
+   "second": "2026-08-20",
+   "result": "2026-08-26",
+   "contract": "2026-09-07 ~ 09-09",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000376&pblancNo=2026000376",
+   "units": [
+    {
+     "t": "084.7506A",
+     "area": 116.35,
+     "n": 82,
+     "price": 58660
+    },
+    {
+     "t": "084.8664B",
+     "area": 116.99,
+     "n": 82,
+     "price": 59730
+    }
+   ],
+   "notes": [
+    "시행사 교보자산신탁(주)"
+   ]
+  },
+  {
+   "id": "2026000382-2026000382",
+   "name": "두산위브더제니스 부천",
+   "region": "경기",
+   "district": "부천시 소사구",
+   "type": "민영",
+   "total": 1158,
+   "general": 525,
+   "builder": "두산건설 주식회사, 쌍용건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-08-19",
+   "first": "2026-08-20",
+   "second": "2026-08-21",
+   "result": "2026-08-28",
+   "contract": "2026-09-08 ~ 09-10",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000382&pblancNo=2026000382",
+   "units": [
+    {
+     "t": "059.9800B",
+     "area": 86.26,
+     "n": 77,
+     "price": 86400
+    },
+    {
+     "t": "059.9400A",
+     "area": 87.49,
+     "n": 145,
+     "price": 87500
+    },
+    {
+     "t": "074.9900B",
+     "area": 108.66,
+     "n": 72,
+     "price": 101500
+    },
+    {
+     "t": "074.9500A",
+     "area": 109.72,
+     "n": 72,
+     "price": 105500
+    },
+    {
+     "t": "084.9400B",
+     "area": 122.01,
+     "n": 110,
+     "price": 112300
+    },
+    {
+     "t": "084.9500A",
+     "area": 123.72,
+     "n": 49,
+     "price": 118200
+    }
+   ],
+   "notes": [
+    "시행사 소사본1의1구역 재개발정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000383-2026000383",
+   "name": "포레나힐스테이트 진주",
+   "region": "경남",
+   "district": "진주시 이현동",
+   "type": "민영",
+   "total": 398,
+   "general": 182,
+   "builder": "주식회사 한화, 현대건설 주식회사",
+   "zone": "비규제지역",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-26",
+   "result": "2026-09-01",
+   "contract": "2026-09-14 ~ 09-16",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000383&pblancNo=2026000383",
+   "units": [
+    {
+     "t": "059.6771A",
+     "area": 87.53,
+     "n": 63,
+     "price": 42000
+    },
+    {
+     "t": "059.7292B",
+     "area": 88.6,
+     "n": 8,
+     "price": 41300
+    },
+    {
+     "t": "072.8120A",
+     "area": 101.18,
+     "n": 30,
+     "price": 49000
+    },
+    {
+     "t": "072.9569B",
+     "area": 102.33,
+     "n": 34,
+     "price": 48600
+    },
+    {
+     "t": "084.9944A",
+     "area": 111.52,
+     "n": 21,
+     "price": 57700
+    },
+    {
+     "t": "084.9331B",
+     "area": 112.32,
+     "n": 26,
+     "price": 57100
+    }
+   ],
+   "notes": [
+    "시행사 이현1-5구역재건축정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000372-2026000372",
+   "name": "쌍용 더 플래티넘 서대문",
+   "region": "서울",
+   "district": "서대문구 홍은동",
+   "type": "민영",
+   "total": 62,
+   "general": 28,
+   "builder": "쌍용건설(주)",
+   "zone": "투기과열지구",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-27",
+   "result": "2026-09-02",
+   "contract": "2026-09-14 ~ 09-16",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000372&pblancNo=2026000372",
+   "units": [
+    {
+     "t": "059.9883A",
+     "area": 78.49,
+     "n": 2,
+     "price": 108650
+    },
+    {
+     "t": "084.9722B",
+     "area": 110.06,
+     "n": 3,
+     "price": 135340
+    },
+    {
+     "t": "084.9458A",
+     "area": 110.28,
+     "n": 23,
+     "price": 137330
+    }
+   ],
+   "notes": [
+    "시행사 홍은동355번지일대 가로주택정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000368-2026000368",
+   "name": "아르티엠 라 테라스",
+   "region": "전북",
+   "district": "전주시 덕진구",
+   "type": "민영",
+   "total": 300,
+   "general": 135,
+   "builder": "세영건설 주식회사",
+   "zone": "비규제지역",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-26",
+   "result": "2026-09-01",
+   "contract": "2026-09-14 ~ 09-16",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000368&pblancNo=2026000368",
+   "units": [
+    {
+     "t": "084.6201A",
+     "area": 113.86,
+     "n": 58,
+     "price": 51200
+    },
+    {
+     "t": "084.6558D",
+     "area": 114.58,
+     "n": 10,
+     "price": 50500
+    },
+    {
+     "t": "084.6663C",
+     "area": 116.71,
+     "n": 22,
+     "price": 52500
+    },
+    {
+     "t": "084.8907B",
+     "area": 117.09,
+     "n": 45,
+     "price": 52600
+    }
+   ],
+   "notes": [
+    "시행사 주식회사 우경주택건설"
+   ]
+  },
+  {
+   "id": "2026000354-2026000354",
+   "name": "상동역 롯데캐슬 시그니처",
+   "region": "경기",
+   "district": "부천시 원미구",
+   "type": "민영",
+   "total": 1859,
+   "general": 1044,
+   "builder": "롯데건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-26",
+   "result": "2026-09-01",
+   "contract": "2026-09-14 ~ 09-17",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000354&pblancNo=2026000354",
+   "units": [
+    {
+     "t": "084.9074D",
+     "area": 115.88,
+     "n": 40,
+     "price": 159900
+    },
+    {
+     "t": "084.9874C",
+     "area": 115.98,
+     "n": 159,
+     "price": 159800
+    },
+    {
+     "t": "084.9872E",
+     "area": 116.48,
+     "n": 80,
+     "price": 163800
+    },
+    {
+     "t": "084.9928F",
+     "area": 116.84,
+     "n": 195,
+     "price": 159900
+    },
+    {
+     "t": "084.9199A",
+     "area": 117.42,
+     "n": 103,
+     "price": 163000
+    },
+    {
+     "t": "084.7123B",
+     "area": 118.95,
+     "n": 39,
+     "price": 149900
+    },
+    {
+     "t": "113.0966A",
+     "area": 154.85,
+     "n": 196,
+     "price": 224200
+    },
+    {
+     "t": "113.0705B",
+     "area": 155.76,
+     "n": 74,
+     "price": 224900
+    },
+    {
+     "t": "121.5813",
+     "area": 167.0,
+     "n": 155,
+     "price": 234900
+    },
+    {
+     "t": "153.9148P",
+     "area": 209.36,
+     "n": 1,
+     "price": 475000
+    },
+    {
+     "t": "187.5097P",
+     "area": 252.39,
+     "n": 1,
+     "price": 572700
+    },
+    {
+     "t": "192.1528P",
+     "area": 266.11,
+     "n": 1,
+     "price": 603800
+    }
+   ],
+   "notes": [
+    "시행사 한국자산신탁(주)"
+   ]
+  },
+  {
+   "id": "2026000342-2026000342",
+   "name": "제일풍경채 첨단3지구(A6BL)",
+   "region": "광주",
+   "district": "첨단3지구 A6블록(전남광주통합특별시",
+   "type": "민영",
+   "total": 638,
+   "general": 398,
+   "builder": "제일건설 주식회사",
+   "zone": "비규제지역",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-26",
+   "result": "2026-09-01",
+   "contract": "2026-09-14 ~ 09-16",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000342&pblancNo=2026000342",
+   "units": [
+    {
+     "t": "084.9900A",
+     "area": 111.05,
+     "n": 100,
+     "price": 51800
+    },
+    {
+     "t": "084.9900B",
+     "area": 111.44,
+     "n": 16,
+     "price": 51460
+    },
+    {
+     "t": "115.9900A",
+     "area": 150.83,
+     "n": 112,
+     "price": 69810
+    },
+    {
+     "t": "129.9900A",
+     "area": 168.83,
+     "n": 170,
+     "price": 79600
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "시행사 첨단678피에프브이 주식회사"
+   ]
+  },
+  {
+   "id": "2026000377-2026000377",
+   "name": "의왕역 한신더휴",
+   "region": "경기",
+   "district": "의왕시 삼동",
+   "type": "민영",
+   "total": 108,
+   "general": 49,
+   "builder": "한신공영(주)",
+   "zone": "투기과열지구",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-27",
+   "result": "2026-09-02",
+   "contract": "2026-09-14 ~ 09-16",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000377&pblancNo=2026000377",
+   "units": [
+    {
+     "t": "049.9881",
+     "area": 70.28,
+     "n": 25,
+     "price": 56300
+    },
+    {
+     "t": "059.9920B",
+     "area": 84.07,
+     "n": 6,
+     "price": 72500
+    },
+    {
+     "t": "074.9930",
+     "area": 104.25,
+     "n": 9,
+     "price": 85700
+    },
+    {
+     "t": "084.9861B",
+     "area": 117.9,
+     "n": 9,
+     "price": 94000
+    }
+   ],
+   "notes": [
+    "시행사 우성4차아파트 및 주변가로주택정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000365-2026000365",
+   "name": "오남역 서희스타힐스 여의재 1단지",
+   "region": "경기",
+   "district": "남양주시 오남읍",
+   "type": "민영",
+   "total": 180,
+   "general": 91,
+   "builder": "(주)서희건설",
+   "zone": "비규제지역",
+   "special": "2026-08-24",
+   "first": "2026-08-25",
+   "second": "2026-08-26",
+   "result": "2026-09-01",
+   "contract": "2026-09-14 ~ 09-16",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000365&pblancNo=2026000365",
+   "units": [
+    {
+     "t": "059.7153A",
+     "area": 83.95,
+     "n": 40,
+     "price": 55400
+    },
+    {
+     "t": "059.9642B",
+     "area": 84.99,
+     "n": 31,
+     "price": 54800
+    },
+    {
+     "t": "075.4603",
+     "area": 104.83,
+     "n": 11,
+     "price": 65900
+    },
+    {
+     "t": "084.9596",
+     "area": 117.93,
+     "n": 9,
+     "price": 71900
+    }
+   ],
+   "notes": [
+    "시행사 양지7지구 1단지 지역주택조합"
+   ]
+  },
+  {
+   "id": "2026000404-2026000404",
+   "name": "검암역 푸르지오 프라베뉴 (B-1BL) 공공분양주택",
+   "region": "인천",
+   "district": "서해구 공공주택지구",
+   "type": "공공",
+   "total": 441,
+   "general": 105,
+   "builder": "㈜대우건설, 동부건설㈜, ㈜비에스한양, 경화건설㈜, 브니엘네이처㈜",
+   "zone": "비규제지역",
+   "special": "2026-08-31",
+   "first": "2026-09-01",
+   "second": "2026-09-02",
+   "result": "2026-09-08",
+   "contract": "2026-11-02 ~ 11-04",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000404&pblancNo=2026000404",
+   "units": [
+    {
+     "t": "060.9495A",
+     "area": 81.3,
+     "n": 2,
+     "price": 48630
+    },
+    {
+     "t": "060.6527B",
+     "area": 81.63,
+     "n": 11,
+     "price": 47930
+    },
+    {
+     "t": "060.9646C",
+     "area": 81.86,
+     "n": 16,
+     "price": 46250
+    },
+    {
+     "t": "084.4783B",
+     "area": 111.96,
+     "n": 10,
+     "price": 62940
+    },
+    {
+     "t": "084.9079A",
+     "area": 112.03,
+     "n": 63,
+     "price": 63910
+    },
+    {
+     "t": "084.9219C",
+     "area": 112.54,
+     "n": 3,
+     "price": 62340
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 인천도시공사,(주)대우건설,동부건설(주),(주)비에스한양,경화건설(주),브니엘네이처(주)"
+   ]
+  },
+  {
+   "id": "2026000388-2026000388",
+   "name": "시티오씨엘 9단지 오션파크뷰",
+   "region": "인천",
+   "district": "미추홀구 학익동",
+   "type": "민영",
+   "total": 1949,
+   "general": 1006,
+   "builder": "아이파크현대산업개발(주),현대건설(주),(주)포스코이앤씨",
+   "zone": "비규제지역",
+   "special": "2026-08-31",
+   "first": "2026-09-01",
+   "second": "2026-09-02",
+   "result": "2026-09-08",
+   "contract": "2026-09-20 ~ 09-22",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000388&pblancNo=2026000388",
+   "units": [
+    {
+     "t": "059.9801",
+     "area": 84.58,
+     "n": 88,
+     "price": 48560
+    },
+    {
+     "t": "075.9096",
+     "area": 104.7,
+     "n": 64,
+     "price": 60090
+    },
+    {
+     "t": "084.9771A",
+     "area": 116.64,
+     "n": 444,
+     "price": 71290
+    },
+    {
+     "t": "084.8878B",
+     "area": 116.94,
+     "n": 168,
+     "price": 67590
+    },
+    {
+     "t": "095.3740",
+     "area": 130.22,
+     "n": 70,
+     "price": 77340
+    },
+    {
+     "t": "101.9303A",
+     "area": 138.56,
+     "n": 40,
+     "price": 81790
+    },
+    {
+     "t": "101.9535B",
+     "area": 138.67,
+     "n": 86,
+     "price": 81850
+    },
+    {
+     "t": "110.0371",
+     "area": 150.94,
+     "n": 44,
+     "price": 88980
+    },
+    {
+     "t": "133.7832P",
+     "area": 187.11,
+     "n": 1,
+     "price": 166900
+    },
+    {
+     "t": "136.2904P",
+     "area": 190.65,
+     "n": 1,
+     "price": 170000
+    }
+   ],
+   "notes": [
+    "시행사 코리아신탁(주)"
+   ]
+  },
+  {
+   "id": "2026820008-2026820008",
+   "name": "성남복정2 A1블록 신혼희망타운(공공분양)(본청약)",
+   "region": "경기",
+   "district": "성남시 수정구",
+   "type": "공공",
+   "total": 594,
+   "general": 428,
+   "builder": "(주)케이알산업, 동성건설(주)",
+   "zone": "투기과열지구",
+   "special": "2026-08-31",
+   "first": "2026-08-31",
+   "second": "2026-09-07",
+   "result": "2026-09-17",
+   "contract": "2026-12-07 ~ 12-10",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026820008&pblancNo=2026820008",
+   "units": [
+    {
+     "t": "055.9700A",
+     "area": 83.65,
+     "n": 0,
+     "price": 79831
+    },
+    {
+     "t": "055.9700B",
+     "area": 83.65,
+     "n": 0,
+     "price": 79831
+    },
+    {
+     "t": "055.9800C",
+     "area": 83.66,
+     "n": 0,
+     "price": 79845
+    },
+    {
+     "t": "056.9400T",
+     "area": 85.1,
+     "n": 0,
+     "price": 81214
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 서울지역본부"
+   ]
+  },
+  {
+   "id": "2026000401-2026000401",
+   "name": "문수데시앙2단지 공가세대 일반공급",
+   "region": "울산",
+   "district": "울주군 청량읍",
+   "type": "공공",
+   "total": 22,
+   "general": 22,
+   "builder": "(주)태영건설",
+   "zone": "비규제지역",
+   "special": "2026-09-07",
+   "first": "2026-09-07",
+   "second": "2026-09-08",
+   "result": "2026-09-14",
+   "contract": "2026-09-28 ~ 09-30",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000401&pblancNo=2026000401",
+   "units": [
+    {
+     "t": "059.8041A",
+     "area": 88.8,
+     "n": 11,
+     "price": 22100
+    },
+    {
+     "t": "059.9289B",
+     "area": 89.23,
+     "n": 9,
+     "price": 22350
+    },
+    {
+     "t": "074.8096A",
+     "area": 110.11,
+     "n": 2,
+     "price": 27900
+    }
+   ],
+   "notes": [
+    "공공택지",
+    "시행사 울산광역시도시공사"
+   ]
+  },
+  {
+   "id": "2026000399-2026000399",
+   "name": "브라운스톤 월곡 센트럴",
+   "region": "서울",
+   "district": "성북구 하월곡동",
+   "type": "민영",
+   "total": 62,
+   "general": 27,
+   "builder": "이수건설 주식회사",
+   "zone": "투기과열지구",
+   "special": "2026-09-07",
+   "first": "2026-09-08",
+   "second": "2026-09-10",
+   "result": "2026-09-16",
+   "contract": "2026-09-28 ~ 09-30",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000399&pblancNo=2026000399",
+   "units": [
+    {
+     "t": "059.9293C",
+     "area": 81.51,
+     "n": 9,
+     "price": 86200
+    },
+    {
+     "t": "059.9442A",
+     "area": 81.7,
+     "n": 7,
+     "price": 91000
+    },
+    {
+     "t": "059.9442B",
+     "area": 81.7,
+     "n": 6,
+     "price": 89200
+    },
+    {
+     "t": "074.9610",
+     "area": 102.51,
+     "n": 5,
+     "price": 107500
+    }
+   ],
+   "notes": [
+    "시행사 동신아파트 소규모재건축정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000409-2026000409",
+   "name": "의정부우정 A2블록 공공분양주택(본청약)",
+   "region": "경기",
+   "district": "의정부시 녹양동",
+   "type": "공공",
+   "total": 463,
+   "general": 305,
+   "builder": "남광토건 주식회사, 금광기업(주), 경안종합건설 주식회사, 중앙건설 주식회사",
+   "zone": "비규제지역",
+   "special": "2026-09-07",
+   "first": "2026-09-07",
+   "second": "2026-09-16",
+   "result": "2026-10-08",
+   "contract": "2026-12-10 ~ 12-15",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000409&pblancNo=2026000409",
+   "units": [
+    {
+     "t": "059.9200A",
+     "area": 83.98,
+     "n": 20,
+     "price": 40646
+    },
+    {
+     "t": "059.9600B",
+     "area": 84.03,
+     "n": 7,
+     "price": 40419
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 경기북부지역본부"
+   ]
+  },
+  {
+   "id": "2026820009-2026820009",
+   "name": "남양주진접2지구 A-4블록 신혼희망타운(공공분양) 잔여세대 추가입주자모집공고",
+   "region": "경기",
+   "district": "남양주시 진접읍",
+   "type": "공공",
+   "total": 5,
+   "general": 0,
+   "builder": "",
+   "zone": "비규제지역",
+   "special": "2026-09-08",
+   "first": "2026-09-08",
+   "second": "2026-09-09",
+   "result": "2026-09-16",
+   "contract": "2026-12-10 ~ 12-11",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026820009&pblancNo=2026820009",
+   "units": [
+    {
+     "t": "055.0000O",
+     "area": 78.45,
+     "n": 0,
+     "price": 38446
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 경기북부지역본부"
+   ]
+  },
+  {
+   "id": "2026000419-2026000419",
+   "name": "올 뉴 챔피언스시티 1차",
+   "region": "광주",
+   "district": "북구 임동",
+   "type": "민영",
+   "total": 3216,
+   "general": 1736,
+   "builder": "우미건설(주), 신영씨앤디(주)",
+   "zone": "비규제지역",
+   "special": "2026-09-14",
+   "first": "2026-09-15",
+   "second": "2026-09-16",
+   "result": "2026-09-22",
+   "contract": "2026-10-05 ~ 10-09",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000419&pblancNo=2026000419",
+   "units": [
+    {
+     "t": "084.9769D",
+     "area": 112.43,
+     "n": 237,
+     "price": 86500
+    },
+    {
+     "t": "084.9730A",
+     "area": 113.13,
+     "n": 141,
+     "price": 87000
+    },
+    {
+     "t": "084.9819C",
+     "area": 113.49,
+     "n": 242,
+     "price": 84200
+    },
+    {
+     "t": "084.9809E",
+     "area": 113.64,
+     "n": 138,
+     "price": 85400
+    },
+    {
+     "t": "084.9479B",
+     "area": 113.82,
+     "n": 141,
+     "price": 87000
+    },
+    {
+     "t": "084.9849F",
+     "area": 114.46,
+     "n": 241,
+     "price": 85400
+    },
+    {
+     "t": "103.2718B",
+     "area": 138.8,
+     "n": 200,
+     "price": 103600
+    },
+    {
+     "t": "103.0590A",
+     "area": 139.22,
+     "n": 195,
+     "price": 105300
+    },
+    {
+     "t": "112.3407A",
+     "area": 150.44,
+     "n": 115,
+     "price": 119500
+    },
+    {
+     "t": "128.5318A",
+     "area": 171.67,
+     "n": 80,
+     "price": 135500
+    },
+    {
+     "t": "200.4768B",
+     "area": 272.68,
+     "n": 1,
+     "price": 292000
+    },
+    {
+     "t": "207.9807F",
+     "area": 280.45,
+     "n": 1,
+     "price": 295000
+    },
+    {
+     "t": "209.5090C",
+     "area": 281.02,
+     "n": 1,
+     "price": 304000
+    },
+    {
+     "t": "211.8099E",
+     "area": 286.86,
+     "n": 1,
+     "price": 303000
+    },
+    {
+     "t": "214.6183A",
+     "area": 290.08,
+     "n": 1,
+     "price": 316000
+    },
+    {
+     "t": "214.8717D",
+     "area": 291.31,
+     "n": 1,
+     "price": 313000
+    }
+   ],
+   "notes": [
+    "시행사 (주) 챔피언스시티복합개발피에프브이"
+   ]
+  },
+  {
+   "id": "2026000403-2026000403",
+   "name": "그랑라크 에일린의 뜰",
+   "region": "울산",
+   "district": "남구 야음동",
+   "type": "민영",
+   "total": 1153,
+   "general": 540,
+   "builder": "아이에스동서(주)",
+   "zone": "비규제지역",
+   "special": "2026-09-14",
+   "first": "2026-09-15",
+   "second": "2026-09-16",
+   "result": "2026-09-22",
+   "contract": "2026-10-06 ~ 10-08",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000403&pblancNo=2026000403",
+   "units": [
+    {
+     "t": "059.9700C",
+     "area": 83.55,
+     "n": 23,
+     "price": 56600
+    },
+    {
+     "t": "059.8300A",
+     "area": 83.71,
+     "n": 40,
+     "price": 57600
+    },
+    {
+     "t": "059.9900B",
+     "area": 85.1,
+     "n": 53,
+     "price": 57600
+    },
+    {
+     "t": "074.8300",
+     "area": 100.57,
+     "n": 62,
+     "price": 68700
+    },
+    {
+     "t": "084.9000",
+     "area": 111.02,
+     "n": 319,
+     "price": 76600
+    },
+    {
+     "t": "102.8800A",
+     "area": 130.66,
+     "n": 25,
+     "price": 86900
+    },
+    {
+     "t": "102.5600B",
+     "area": 132.19,
+     "n": 18,
+     "price": 85000
+    }
+   ],
+   "notes": [
+    "시행사 남구비14구역주택재개발정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000416-2026000416",
+   "name": "양주회천지구 A-26블록 공공분양주택",
+   "region": "경기",
+   "district": "양주시 덕정동",
+   "type": "공공",
+   "total": 792,
+   "general": 119,
+   "builder": "양우종합건설 주식회사, (주)우호건설, 주식회사 대명건설",
+   "zone": "비규제지역",
+   "special": "2026-09-14",
+   "first": "2026-09-14",
+   "second": "2026-09-16",
+   "result": "2026-10-07",
+   "contract": "2026-12-10 ~ 12-15",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000416&pblancNo=2026000416",
+   "units": [
+    {
+     "t": "059.7400A",
+     "area": 82.67,
+     "n": 41,
+     "price": 35708
+    },
+    {
+     "t": "059.9100B",
+     "area": 82.91,
+     "n": 20,
+     "price": 35093
+    },
+    {
+     "t": "074.6100A",
+     "area": 103.25,
+     "n": 13,
+     "price": 43704
+    },
+    {
+     "t": "074.9700B",
+     "area": 103.75,
+     "n": 12,
+     "price": 43718
+    },
+    {
+     "t": "084.8600A",
+     "area": 117.43,
+     "n": 33,
+     "price": 49201
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 경기북부지역본부"
+   ]
+  },
+  {
+   "id": "2026000414-2026000414",
+   "name": "인천계양지구 A6블록 공공분양주택(본청약)",
+   "region": "인천",
+   "district": "계양구 상야동",
+   "type": "공공",
+   "total": 663,
+   "general": 450,
+   "builder": "(주)케이알산업, 우암건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-09-17",
+   "first": "2026-09-17",
+   "second": "2026-10-01",
+   "result": "2026-10-21",
+   "contract": "2026-12-15 ~ 12-18",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000414&pblancNo=2026000414",
+   "units": [
+    {
+     "t": "059.7100D",
+     "area": 81.49,
+     "n": 3,
+     "price": 50466
+    },
+    {
+     "t": "059.7200E",
+     "area": 81.5,
+     "n": 3,
+     "price": 50474
+    },
+    {
+     "t": "059.8100B",
+     "area": 81.62,
+     "n": 8,
+     "price": 52656
+    },
+    {
+     "t": "059.8200H",
+     "area": 81.64,
+     "n": 1,
+     "price": 52665
+    },
+    {
+     "t": "059.8300C",
+     "area": 81.65,
+     "n": 0,
+     "price": 51578
+    },
+    {
+     "t": "059.8400A",
+     "area": 81.66,
+     "n": 13,
+     "price": 53736
+    },
+    {
+     "t": "059.9700G",
+     "area": 81.84,
+     "n": 0,
+     "price": 53853
+    },
+    {
+     "t": "069.8200P",
+     "area": 95.28,
+     "n": 2,
+     "price": 59625
+    },
+    {
+     "t": "074.9300O",
+     "area": 102.26,
+     "n": 4,
+     "price": 64649
+    },
+    {
+     "t": "077.4100A",
+     "area": 105.64,
+     "n": 3,
+     "price": 66107
+    },
+    {
+     "t": "077.4100C",
+     "area": 105.64,
+     "n": 0,
+     "price": 65453
+    },
+    {
+     "t": "084.7800A",
+     "area": 115.7,
+     "n": 1,
+     "price": 71654
+    },
+    {
+     "t": "084.9900B",
+     "area": 115.99,
+     "n": 0,
+     "price": 70395
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 인천지역본부"
+   ]
+  }
+ ]
+}
