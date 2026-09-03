@@ -138,6 +138,35 @@ def build(rec, models):
     }
 
 
+def _diagnose(pdf_path, pblanc_pdf):
+    """값을 못 읽은 PDF의 표와 문맥을 로그로 남겨 원인을 추적한다."""
+    try:
+        tables = pblanc_pdf.pdf_tables(pdf_path)
+        shown = 0
+        for t in tables:
+            flat = " ".join(str(c or "") for row in t for c in row).replace(" ", "")
+            if ("전매" in flat or "거주의무" in flat) and shown < 2:
+                for row in t[:4]:
+                    cells = " | ".join(str(c or "").replace("\n", " ")[:16] for c in row)
+                    print(f"        | {cells}", file=sys.stderr)
+                print("        " + "-" * 34, file=sys.stderr)
+                shown += 1
+        if not shown:
+            print(f"        표 {len(tables)}개 중 관련 표 없음. 본문 문맥:", file=sys.stderr)
+            text = pblanc_pdf.pdf_text(pdf_path, max_pages=25)
+            import re as _re
+            found = False
+            for kw in ("전매", "거주의무", "실거주"):
+                for m in list(_re.finditer(kw, text))[:2]:
+                    found = True
+                    ctx = text[max(0, m.start() - 45): m.start() + 85].replace("\n", " ")
+                    print(f"        …{ctx}…", file=sys.stderr)
+            if not found:
+                print(f"        본문 {len(text):,}자에 관련 단어 자체가 없음", file=sys.stderr)
+    except Exception as e:
+        print(f"        진단 실패: {e}", file=sys.stderr)
+
+
 def enrich_from_pdf(items, force=False):
     """각 공고의 상세 페이지에서 공고문 PDF를 찾아 전매제한·거주의무를 채운다.
 
@@ -164,29 +193,36 @@ def enrich_from_pdf(items, force=False):
         if key in cache:
             it.update(cache[key]); cached += 1; continue
         got = None
+        why = "링크 없음"
         try:
             _, _, body = get(it["link"])
             html = body.decode("utf-8", "replace")
-            for u in find_links(html, it["link"]):
-                if not any(k in u.lower() for k in ("pdf", "download", "file", "atch")):
-                    continue
+            cands = [u for u in find_links(html, it["link"])
+                     if any(k in u.lower() for k in ("pdf", "download", "file", "atch"))]
+            if not cands:
+                why = "상세 페이지에 파일 링크 없음"
+            for u in cands:
                 try:
                     _, ct, blob = get(u, referer=it["link"])
-                except Exception:
-                    continue
+                except Exception as e:
+                    why = f"다운로드 실패 {e}"; continue
                 if blob[:5] != b"%PDF-" and "pdf" not in ct.lower():
-                    continue
+                    why = f"PDF 아님({ct[:30]}, {len(blob)}B)"; continue
                 with open(tmp, "wb") as fp: fp.write(blob)
                 got = pblanc_pdf.parse_pdf(tmp)
+                if got["resale"] is None and got["live"] is None:
+                    why = f"PDF는 받았으나 값 못 읽음(source={got.get('source')})"
+                    _diagnose(tmp, pblanc_pdf)
                 break
         except Exception as e:
-            print(f"[PDF] {it['name'][:20]}: {e}", file=sys.stderr)
+            why = f"예외 {e}"
 
         if got and (got["resale"] is not None or got["live"] is not None):
             got.pop("source", None)
             it.update(got); cache[key] = got; hit += 1
         else:
             fail += 1
+            print(f"[PDF] 실패: {it['name'][:26]} — {why}", file=sys.stderr)
     if os.path.exists(tmp): os.remove(tmp)
 
     with open(cache_path, "w", encoding="utf-8") as fp:
