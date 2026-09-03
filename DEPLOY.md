@@ -93,3 +93,35 @@ python3 -m http.server 8000
 - `units[].gen` = 그중 일반공급 세대수
 
 수집기가 이 기준으로 수정되었으므로, **Actions에서 "Run workflow"를 한 번 더 돌려** 데이터를 새로 받으세요.
+
+---
+
+## 공고문 PDF에서 전매제한 · 거주의무 읽어오기
+
+청약홈 OpenAPI에 없는 이 두 항목은 **입주자모집공고문 원문에서 직접 읽습니다.**
+
+| 파일 | 역할 |
+|---|---|
+| `scripts/pblanc_pdf.py` | PDF 텍스트에서 기간을 뽑는 파서 (`--selftest` 로 검증 가능) |
+| `scripts/probe_applyhome.py` | 청약홈 페이지에서 PDF 링크를 어떻게 찾는지 확인하는 정찰 도구 |
+| `.github/workflows/probe.yml` | 위 정찰을 Actions에서 실행 |
+| `data/pdf_cache.json` | 이미 읽은 공고를 건너뛰기 위한 캐시 (자동 생성) |
+
+### 순서
+1. Actions → **"공고문 PDF 구조 정찰"** → Run workflow
+   → 로그에서 PDF 링크가 실제로 잡히는지, 파싱 결과가 맞는지 확인
+2. 로그가 정상이면 **"청약 데이터 수집"** 을 돌리면 값이 자동으로 채워집니다
+3. 잘못 읽힌 단지는 `data/overrides.json` 에 적으면 **수동 값이 항상 우선**합니다
+
+### 값의 우선순위
+```
+data/overrides.json  (수동)  >  공고문 PDF 자동 추출  >  없음 = "확인 필요"
+```
+
+자동 추출값에는 사이트 상세에 "공고문에서 자동으로 읽은 값" 안내가 함께 표시됩니다.
+
+### 파서만 따로 시험하기
+```bash
+python3 scripts/pblanc_pdf.py --selftest        # 문구 패턴 8종 검증
+python3 scripts/pblanc_pdf.py 공고문.pdf         # 실제 PDF 하나 확인
+```

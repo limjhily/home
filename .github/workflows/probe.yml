@@ -1,0 +1,28 @@
+name: 공고문 PDF 구조 정찰
+
+on:
+  workflow_dispatch:
+    inputs:
+      house_nos:
+        description: "확인할 공고번호 (공백으로 구분). 비워두면 기본값 사용"
+        required: false
+        default: ""
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pdfplumber
+      - name: 정찰 실행
+        run: python3 scripts/probe_applyhome.py ${{ github.event.inputs.house_nos }}
+      - name: 받은 PDF 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: probe-pdf
+          path: probe.pdf
+          if-no-files-found: ignore

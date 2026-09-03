@@ -469,7 +469,8 @@ function detail(n, jeonse){
     <ul class="notes">
       ${n.builder ? `<li>시공사 ${n.builder} · ${n.zone}</li>` : `<li>${n.zone}</li>`}
       <li>전매제한 ${txt_resale(n)} · 실거주의무 ${txt_live(n)}
-          → 입주 후 <b>전세 ${jeonse === null ? "여부는 공고문 확인" : jeonse ? "놓을 수 있음" : "놓을 수 없음"}</b></li>
+          → 입주 후 <b>전세 ${jeonse === null ? "여부는 공고문 확인" : jeonse ? "놓을 수 있음" : "놓을 수 없음"}</b>
+          ${unk(n.resale) && unk(n.live) ? "" : "<br><span style='color:var(--ink-3)'>이 두 항목은 공고문에서 자동으로 읽은 값입니다. 계약 전 원문을 확인하세요.</span>"}</li>
       ${n.notes.map(t=>`<li>${t}</li>`).join("")}
     </ul>
     <a class="golink" href="${n.link}" target="_blank" rel="noopener">공고문 보러 가기 →</a>`;

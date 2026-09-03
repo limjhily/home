@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""
+청약홈 상세 페이지에서 공고문 PDF를 어떻게 찾는지 확인하는 정찰 스크립트.
+
+이 컨테이너에서는 청약홈 접근이 막혀 있어 GitHub Actions 러너에서 돌린다.
+로그만 보면 다음 세 가지를 알 수 있다.
+  1. 상세 페이지에 접근이 되는지 (봇 차단 여부)
+  2. 공고문 PDF 링크가 어떤 형태인지
+  3. PDF에서 전매제한·거주의무가 실제로 뽑히는지
+
+사용법: python3 scripts/probe_applyhome.py 2026000364 [2026000358 ...]
+"""
+import os, re, ssl, sys, json
+from urllib import request, parse
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import pblanc_pdf
+
+DETAIL = "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do"
+UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+
+
+def get(url, referer=None):
+    req = request.Request(url, headers={
+        "User-Agent": UA,
+        "Accept": "text/html,application/xhtml+xml,application/pdf,*/*",
+        "Accept-Language": "ko-KR,ko;q=0.9",
+        **({"Referer": referer} if referer else {}),
+    })
+    ctx = ssl.create_default_context()
+    with request.urlopen(req, timeout=45, context=ctx) as r:
+        return r.status, r.headers.get("Content-Type", ""), r.read()
+
+
+def find_links(html, base):
+    """href / onclick / data-* 안에서 파일 다운로드로 보이는 후보를 모은다."""
+    pats = [
+        r'href\s*=\s*["\']([^"\']+)["\']',
+        r'onclick\s*=\s*["\']([^"\']+)["\']',
+        r'location\.href\s*=\s*["\']([^"\']+)["\']',
+        r'src\s*=\s*["\']([^"\']+)["\']',
+    ]
+    hits = []
+    for p in pats:
+        hits += re.findall(p, html, re.I)
+    keys = ("pdf", "download", "file", "atch", "pblanc", "popup", "view")
+    out = []
+    for h in hits:
+        low = h.lower()
+        if any(k in low for k in keys):
+            out.append(parse.urljoin(base, h.strip()))
+    seen, uniq = set(), []
+    for u in out:
+        if u not in seen:
+            seen.add(u); uniq.append(u)
+    return uniq
+
+
+def probe(no):
+    url = f"{DETAIL}?houseManageNo={no}&pblancNo={no}"
+    print(f"\n{'='*70}\n[공고 {no}] {url}")
+    try:
+        st, ct, body = get(url)
+    except Exception as e:
+        print(f"  ✗ 상세 페이지 접근 실패: {e}")
+        return
+    print(f"  ✓ HTTP {st} · {ct} · {len(body):,} bytes")
+    html = body.decode("utf-8", "replace")
+
+    title = re.search(r"<title[^>]*>(.*?)</title>", html, re.S | re.I)
+    if title:
+        print(f"  제목: {title.group(1).strip()[:70]}")
+
+    # 페이지 안에 전매/거주 문구가 바로 있는지도 확인 (PDF 없이 끝날 수도 있다)
+    plain = re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S | re.I)
+    plain = re.sub(r"<[^>]+>", " ", plain)
+    direct = pblanc_pdf.parse_text(plain)
+    print(f"  상세 페이지 HTML 자체에서 파싱: {direct}")
+    for kw in ("전매", "거주의무", "실거주"):
+        for m in list(re.finditer(kw, plain))[:2]:
+            print(f"    …{plain[max(0,m.start()-45):m.start()+75].strip()[:120]}…")
+
+    links = find_links(html, url)
+    print(f"  파일 후보 링크 {len(links)}개:")
+    for u in links[:25]:
+        print(f"    - {u}")
+
+    for u in links:
+        if not any(k in u.lower() for k in ("pdf", "download", "file", "atch")):
+            continue
+        try:
+            st, ct, body = get(u, referer=url)
+        except Exception as e:
+            print(f"  ✗ {u[:80]} → {e}")
+            continue
+        is_pdf = body[:5] == b"%PDF-" or "pdf" in ct.lower()
+        print(f"  {'✓ PDF' if is_pdf else '· 비PDF'} {st} {ct} {len(body):,}B  {u[:80]}")
+        if is_pdf:
+            open("probe.pdf", "wb").write(body)
+            try:
+                text = pblanc_pdf.pdf_text("probe.pdf", max_pages=25)
+                print(f"    텍스트 {len(text):,}자 추출")
+                print(f"    ▶ 파싱 결과: {pblanc_pdf.parse_text(text)}")
+                for kw in ("전매", "거주의무"):
+                    for m in list(re.finditer(kw, text))[:3]:
+                        print(f"      …{text[max(0,m.start()-50):m.start()+90].replace(chr(10),' ')}…")
+            except Exception as e:
+                print(f"    ✗ PDF 파싱 실패: {e}")
+            return
+
+
+if __name__ == "__main__":
+    nos = sys.argv[1:] or ["2026000364", "2026000358", "2026000371"]
+    for n in nos:
+        probe(n)

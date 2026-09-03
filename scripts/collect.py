@@ -21,6 +21,8 @@ import argparse, json, os, re, sys, time
 from datetime import date, timedelta
 from urllib import request, parse, error
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 BASE = "https://api.odcloud.kr/api/ApplyhomeInfoDetailSvc/v1"
 LIST_OP = "getAPTLttotPblancDetail"   # 공고 목록
 MODEL_OP = "getAPTLttotPblancMdl"     # 주택형별 공급/분양가
@@ -136,6 +138,62 @@ def build(rec, models):
     }
 
 
+def enrich_from_pdf(items, force=False):
+    """각 공고의 상세 페이지에서 공고문 PDF를 찾아 전매제한·거주의무를 채운다.
+
+    실패하면 조용히 넘어간다(값은 None 으로 남고 사이트에 '확인 필요'로 표시).
+    한 번 읽은 공고는 data/pdf_cache.json 에 저장해 다음 실행에서 건너뛴다.
+    """
+    try:
+        import pblanc_pdf
+        from probe_applyhome import get, find_links
+    except Exception as e:
+        print(f"[PDF] 모듈 없음, 건너뜀: {e}", file=sys.stderr)
+        return items
+
+    cache_path = os.path.join(ROOT, "data", "pdf_cache.json")
+    cache = {}
+    if os.path.exists(cache_path) and not force:
+        try: cache = json.load(open(cache_path, encoding="utf-8"))
+        except Exception: pass
+
+    tmp = os.path.join(ROOT, "_pblanc.pdf")
+    hit = cached = fail = 0
+    for it in items:
+        key = it["id"]
+        if key in cache:
+            it.update(cache[key]); cached += 1; continue
+        got = None
+        try:
+            _, _, body = get(it["link"])
+            html = body.decode("utf-8", "replace")
+            for u in find_links(html, it["link"]):
+                if not any(k in u.lower() for k in ("pdf", "download", "file", "atch")):
+                    continue
+                try:
+                    _, ct, blob = get(u, referer=it["link"])
+                except Exception:
+                    continue
+                if blob[:5] != b"%PDF-" and "pdf" not in ct.lower():
+                    continue
+                with open(tmp, "wb") as fp: fp.write(blob)
+                got = pblanc_pdf.parse_pdf(tmp)
+                break
+        except Exception as e:
+            print(f"[PDF] {it['name'][:20]}: {e}", file=sys.stderr)
+
+        if got and (got["resale"] is not None or got["live"] is not None):
+            it.update(got); cache[key] = got; hit += 1
+        else:
+            fail += 1
+    if os.path.exists(tmp): os.remove(tmp)
+
+    with open(cache_path, "w", encoding="utf-8") as fp:
+        json.dump(cache, fp, ensure_ascii=False, indent=1)
+    print(f"[PDF] 추출 성공 {hit} · 캐시 {cached} · 실패 {fail}", file=sys.stderr)
+    return items
+
+
 def apply_overrides(items):
     path = os.path.join(ROOT, "data", "overrides.json")
     if not os.path.exists(path): return items
@@ -184,8 +242,10 @@ def collect(key, days_back, days_fwd, debug):
     return items
 
 
-def save(items):
-    items = apply_overrides(items)
+def save(items, use_pdf=True, force_pdf=False):
+    if use_pdf:
+        items = enrich_from_pdf(items, force_pdf)
+    items = apply_overrides(items)   # 수동 보정이 항상 우선
     items.sort(key=lambda x: x["special"])
     out = {"updated": date.today().strftime("%Y-%m-%d"), "count": len(items), "items": items}
     path = os.path.join(ROOT, "data", "notices.json")
@@ -219,6 +279,8 @@ def main():
     ap.add_argument("--days-forward", type=int, default=90)
     ap.add_argument("--debug", action="store_true")
     ap.add_argument("--selftest", action="store_true", help="키 없이 변환 로직만 검증")
+    ap.add_argument("--no-pdf", action="store_true", help="공고문 PDF 추출 건너뛰기")
+    ap.add_argument("--force-pdf", action="store_true", help="PDF 캐시 무시하고 다시 읽기")
     a = ap.parse_args()
 
     if a.selftest:
@@ -236,7 +298,8 @@ def main():
     key = os.environ.get("DATA_GO_KR_KEY")
     if not key:
         raise SystemExit("DATA_GO_KR_KEY 환경변수가 필요합니다. data.go.kr에서 서비스키를 발급받으세요.")
-    save(collect(key, a.days_back, a.days_forward, a.debug))
+    save(collect(key, a.days_back, a.days_forward, a.debug),
+         use_pdf=not a.no_pdf, force_pdf=a.force_pdf)
 
 
 if __name__ == "__main__":
