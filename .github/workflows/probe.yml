@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "scripts/probe_applyhome.py"
+      - "scripts/probe_reby24.py"
   workflow_dispatch:
     inputs:
       house_nos:
@@ -21,8 +22,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install --quiet pdfplumber
-      - name: 정찰 실행
+      - name: 청약홈 정찰
         run: python3 scripts/probe_applyhome.py ${{ github.event.inputs.house_nos }}
+
+      - name: 분양24 구조 조사
+        if: always()
+        run: python3 scripts/probe_reby24.py
       - name: 받은 PDF 보관
         if: always()
         uses: actions/upload-artifact@v4

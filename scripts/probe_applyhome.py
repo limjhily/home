@@ -105,10 +105,11 @@ def probe(no):
     for u in links[:25]:
         print(f"    - {u}")
 
-    if not links:
+    dl = [u for u in links if any(k in u.lower() for k in ("pdf", "download", "file", "atch"))]
+    if not dl:
         # LH 공공분양처럼 청약홈에 첨부가 없는 경우, 페이지의 모든 링크를 살펴본다
         every = all_links(html, url)
-        print(f"  ── 첨부가 없어 전체 링크 {len(every)}개를 확인합니다 ──")
+        print(f"  ── 다운로드 링크가 없어 전체 링크 {len(every)}개를 확인합니다 ──")
         for u in every[:35]:
             print(f"    · {u[:150]}")
         for kw in ("공고문", "모집공고", "바로가기", "lh.or.kr", "청약플러스"):
