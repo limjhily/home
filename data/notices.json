@@ -1,6 +1,6 @@
 {
- "updated": "2026-09-05",
- "count": 32,
+ "updated": "2026-09-06",
+ "count": 31,
  "items": [
   {
    "id": "2026820006-2026820006",
@@ -354,44 +354,6 @@
    ],
    "notes": [
     "시행사 (주)이노디앤씨"
-   ]
-  },
-  {
-   "id": "2026000376-2026000376",
-   "name": "달서자이 제니크",
-   "region": "대구",
-   "district": "달서구 본리동",
-   "type": "민영",
-   "total": 360,
-   "general": 164,
-   "builder": "지에스건설(주)",
-   "zone": "비규제지역",
-   "special": "2026-08-18",
-   "first": "2026-08-19",
-   "second": "2026-08-20",
-   "result": "2026-08-26",
-   "contract": "2026-09-07 ~ 09-09",
-   "resale": 6,
-   "live": 0,
-   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000376&pblancNo=2026000376",
-   "units": [
-    {
-     "t": "084.7506A",
-     "area": 116.35,
-     "n": 180,
-     "gen": 82,
-     "price": 58660
-    },
-    {
-     "t": "084.8664B",
-     "area": 116.99,
-     "n": 180,
-     "gen": 82,
-     "price": 59730
-    }
-   ],
-   "notes": [
-    "시행사 교보자산신탁(주)"
    ]
   },
   {
