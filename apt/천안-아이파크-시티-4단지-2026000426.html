@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=optional">
 <style>
 :root{
   --bg:#F4F6F9; --surface:#FFFFFF; --surface-2:#EDF1F6; --line:#DBE2EC; --line-2:#C6D0DE;
@@ -76,7 +76,9 @@ header{background:var(--navy); color:#EEF3FB; border-bottom:1px solid var(--line
 
 /* ── 필터 ── */
 .filters{position:sticky; top:0; z-index:20; background:var(--bg);
-  border-bottom:1px solid var(--line); padding:10px 0 8px}
+  border-bottom:1px solid var(--line); padding:10px 0 8px;
+  min-height:104px}                      /* 칩이 만들어지기 전에도 높이를 유지 */
+#list{min-height:70vh}                    /* 목록이 채워질 자리를 미리 확보 */
 .frow{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 .frow + .frow{margin-top:8px}
 .flabel{font-size:11.5px; color:var(--ink-3); letter-spacing:.08em; min-width:38px}
