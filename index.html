@@ -61,6 +61,7 @@ header{background:var(--navy); color:#EEF3FB; border-bottom:1px solid var(--line
 .ad{border:1px dashed var(--line-2); border-radius:var(--r); background:var(--surface-2);
   color:var(--ink-3); font-size:12px; letter-spacing:.06em; text-align:center;
   display:flex; align-items:center; justify-content:center}
+.ad[hidden]{display:none}   /* display:flex 가 hidden 속성을 덮어쓰지 않도록 */
 .ad-top{height:90px; margin:16px 0}
 .ad-infeed{height:110px; margin:6px 0 14px}
 
@@ -180,7 +181,7 @@ footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
 
 <main class="wrap">
   <!-- 구글 애드센스 상단 배너: 승인 후 아래 자리에 <ins class="adsbygoogle"> 코드 삽입 -->
-  <div class="ad ad-top">광고 영역 · 728×90</div>
+  <div class="ad ad-top" id="ad-top" hidden>광고 영역 · 728×90</div>
 
   <div class="filters">
     <div class="frow">
@@ -316,6 +317,10 @@ const LINKS = [
 
 let NOTICES = SAMPLE, LIVE = false;
 
+/* 애드센스 승인 후 true 로 바꾸면 광고 자리가 다시 나타난다.
+   승인 전에는 빈 점선 상자가 미완성 사이트처럼 보여 심사에 불리하다. */
+const ADS_ENABLED = false;
+
 /* ── 렌더링 ── */
 const TODAY = new Date(new Date().toISOString().slice(0,10));
 const DOW = ["일","월","화","수","목","금","토"];
@@ -391,7 +396,7 @@ function render(){
       box = day.querySelector(".cards");
     }
     box.appendChild(card(n));
-    if (++idx === 3){
+    if (++idx === 3 && ADS_ENABLED){
       const ad = document.createElement("div");
       ad.className = "ad ad-infeed"; ad.textContent = "인피드 광고 영역";
       box.appendChild(ad);
@@ -486,6 +491,7 @@ document.getElementById("links").innerHTML = LINKS.map(l =>
   `<a href="${l.u}" target="_blank" rel="noopener"><strong>${l.t}</strong><span>${l.d}</span></a>`).join("");
 
 function init(){
+  document.getElementById("ad-top").hidden = !ADS_ENABLED;
   const regions = ["전체", ...new Set(NOTICES.map(n=>n.region))];
   chips(document.getElementById("f-region"), regions, "region");
   chips(document.getElementById("f-type"), types, "type");
