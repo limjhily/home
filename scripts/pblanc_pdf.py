@@ -8,6 +8,7 @@
   python3 scripts/pblanc_pdf.py --selftest
 """
 import argparse, json, os, re, sys
+from html.parser import HTMLParser
 
 # ── 기간 표기 정규화 ────────────────────────────────────────────────
 _NUM = {"영":0,"일":1,"이":2,"삼":3,"사":4,"오":5,"육":6,"칠":7,"팔":8,"구":9,"십":10}
@@ -140,6 +141,64 @@ def parse_text(text):
     return {"resale": resale, "live": live}
 
 
+# ── HTML 표 읽기 ──────────────────────────────────────────────────
+# LH 공공분양은 공고문 PDF 첨부가 없는 대신, 청약홈 상세 페이지 HTML 안에
+# "입주자모집공고 주요정보" 표가 그대로 들어 있다. 그 표를 PDF와 같은 방식으로 읽는다.
+
+class _TableParser(HTMLParser):
+    """표를 [표][행][칸] 3중 리스트로 뽑는다. colspan 은 같은 값을 반복해 열을 맞춘다."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.tables, self._stack = [], []
+        self._row, self._cell, self._span = None, None, 1
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "table":
+            self._stack.append([])
+        elif tag == "tr" and self._stack:
+            self._row = []
+        elif tag in ("td", "th") and self._row is not None:
+            self._cell = []
+            try: self._span = max(1, min(int(a.get("colspan", 1)), 20))
+            except (TypeError, ValueError): self._span = 1
+
+    def handle_data(self, data):
+        if self._cell is not None:
+            self._cell.append(data)
+
+    def handle_endtag(self, tag):
+        if tag in ("td", "th") and self._cell is not None:
+            text = re.sub(r"\s+", " ", "".join(self._cell)).strip()
+            self._row.extend([text] * self._span)
+            self._cell, self._span = None, 1
+        elif tag == "tr" and self._row is not None:
+            if self._stack: self._stack[-1].append(self._row)
+            self._row = None
+        elif tag == "table" and self._stack:
+            t = self._stack.pop()
+            if t: self.tables.append(t)
+
+
+def html_tables(html):
+    p = _TableParser()
+    try:
+        p.feed(html)
+    except Exception:
+        pass
+    return p.tables
+
+
+def parse_html(html):
+    """청약홈 상세 페이지 HTML → {"resale":…, "live":…, "source":"html"} 또는 None"""
+    hit = parse_tables(html_tables(html))
+    if hit and (hit["resale"] is not None or hit["live"] is not None):
+        hit["source"] = "html"
+        return hit
+    return None
+
+
 # ── PDF 읽기 ────────────────────────────────────────────────────────
 def pdf_text(path, max_pages=25):
     """앞쪽 페이지에 주요 안내사항이 몰려 있어 기본 25쪽만 읽는다."""
@@ -217,8 +276,23 @@ TABLE_CASES = [
 ]
 
 
+HTML_CASE = """
+<div id="printArea"><table class="tbl_st">
+<thead><tr><th colspan="2">시흥거모 A-5블록</th></tr></thead>
+<tbody>
+<tr><th>재당첨제한</th><th>전매제한</th><th>거주의무기간</th><th>분양가상한제</th></tr>
+<tr><td>10년</td><td>5년</td><td>3년</td><td>적용</td></tr>
+</tbody></table></div>
+"""
+
+
 def selftest():
     ok = True
+    got = parse_html(HTML_CASE)
+    want = {"resale": 60, "live": 3, "source": "html"}
+    print(f"[{'OK ' if got == want else '실패'}] HTML 표 → {got}")
+    if got != want: ok = False
+    print()
     for i, (tables, want) in enumerate(TABLE_CASES, 1):
         got = parse_tables(tables)
         mark = "OK " if got == want else "실패"

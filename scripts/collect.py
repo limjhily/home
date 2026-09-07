@@ -197,6 +197,16 @@ def enrich_from_pdf(items, force=False):
         try:
             _, _, body = get(it["link"])
             html = body.decode("utf-8", "replace")
+
+            # 1) 상세 페이지 HTML 안의 "입주자모집공고 주요정보" 표를 먼저 읽는다.
+            #    LH 공공분양은 PDF 첨부가 없고 이 표에만 값이 있다. 다운로드도 필요 없어 빠르다.
+            got = pblanc_pdf.parse_html(html)
+            if got:
+                got.pop("source", None)
+                it.update(got); cache[key] = got; hit += 1
+                continue
+
+            # 2) HTML에 없으면 공고문 PDF를 받아서 읽는다 (민영 공고)
             cands = [u for u in find_links(html, it["link"])
                      if any(k in u.lower() for k in ("pdf", "download", "file", "atch"))]
             if not cands:

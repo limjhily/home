@@ -1,0 +1,233 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko">
+<title>문의하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+:root{
+  --bg:#F4F6F9; --surface:#FFFFFF; --surface-2:#EDF1F6; --line:#DBE2EC; --line-2:#C6D0DE;
+  --ink:#141A24; --ink-2:#4B5667; --ink-3:#78859A;
+  --navy:#1B2A4A; --accent:#2F5DAE; --accent-soft:#E4EBF8;
+  --ok:#0F6B52; --ok-bg:#E1F1EA; --warn:#8E5D08; --warn-bg:#F9EFDA; --off:#6E7B8D; --off-bg:#E9EEF4;
+  --shadow:0 1px 2px rgba(20,26,36,.06), 0 8px 24px -16px rgba(20,26,36,.28);
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1219; --surface:#151B24; --surface-2:#1D2530; --line:#28323F; --line-2:#374354;
+    --ink:#E6EBF2; --ink-2:#A6B2C2; --ink-3:#7A8697;
+    --navy:#C6D5F2; --accent:#82A8EA; --accent-soft:#1B2740;
+    --ok:#63D0A7; --ok-bg:#123125; --warn:#E5B15E; --warn-bg:#332810; --off:#8A96A7; --off-bg:#222B36;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1219; --surface:#151B24; --surface-2:#1D2530; --line:#28323F; --line-2:#374354;
+  --ink:#E6EBF2; --ink-2:#A6B2C2; --ink-3:#7A8697;
+  --navy:#C6D5F2; --accent:#82A8EA; --accent-soft:#1B2740;
+  --ok:#63D0A7; --ok-bg:#123125; --warn:#E5B15E; --warn-bg:#332810; --off:#8A96A7; --off-bg:#222B36;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"IBM Plex Sans KR",-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.6; -webkit-text-size-adjust:100%;
+}
+a{color:var(--accent)}
+.wrap{max-width:940px; margin:0 auto; padding:0 16px}
+.num{font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace; font-variant-numeric:tabular-nums}
+
+/* ── 헤더 ── */
+header{background:var(--navy); color:#EEF3FB; border-bottom:1px solid var(--line)}
+:root[data-theme="dark"] header, :root:not([data-theme="light"]) header{}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header{background:#131A27; color:var(--ink)}}
+:root[data-theme="dark"] header{background:#131A27; color:var(--ink)}
+.hd{display:flex; align-items:baseline; gap:12px; padding:18px 0 16px; flex-wrap:wrap}
+.logo{font-family:"Noto Serif KR",serif; font-weight:700; font-size:22px; letter-spacing:-.02em; color:inherit}
+.logo b{color:#8FB4F5}
+.tag{font-size:12.5px; color:#A9BCDC; letter-spacing:.02em}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag{color:var(--ink-3)}}
+:root[data-theme="dark"] .tag{color:var(--ink-3)}
+.hd .spacer{flex:1}
+.themebtn{background:transparent; border:1px solid rgba(255,255,255,.28); color:inherit; border-radius:99px;
+  font:inherit; font-size:12.5px; padding:4px 12px; cursor:pointer}
+.themebtn:hover{border-color:rgba(255,255,255,.6)}
+
+/* ── 광고 ── */
+.ad{border:1px dashed var(--line-2); border-radius:var(--r); background:var(--surface-2);
+  color:var(--ink-3); font-size:12px; letter-spacing:.06em; text-align:center;
+  display:flex; align-items:center; justify-content:center}
+.ad-top{height:90px; margin:16px 0}
+.ad-infeed{height:110px; margin:6px 0 14px}
+
+/* ── 필터 ── */
+.filters{position:sticky; top:0; z-index:20; background:var(--bg);
+  border-bottom:1px solid var(--line); padding:10px 0 8px}
+.frow{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.frow + .frow{margin-top:8px}
+.flabel{font-size:11.5px; color:var(--ink-3); letter-spacing:.08em; min-width:38px}
+.chip{border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2);
+  border-radius:99px; font:inherit; font-size:13px; padding:4px 12px; cursor:pointer; white-space:nowrap}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#0E1219}}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#0E1219}
+.search{flex:1; min-width:150px; border:1px solid var(--line-2); background:var(--surface);
+  color:var(--ink); border-radius:99px; font:inherit; font-size:13.5px; padding:5px 14px}
+.search::placeholder{color:var(--ink-3)}
+.count{font-size:12.5px; color:var(--ink-3); padding:8px 0 0}
+
+/* ── 타임라인 ── */
+.day{display:grid; grid-template-columns:92px 1fr; gap:16px; padding:18px 0 4px;
+  border-top:1px solid var(--line)}
+.day:first-of-type{border-top:none}
+.daymark{position:sticky; top:96px; align-self:start; padding-top:2px}
+.dnum{font-family:"Noto Serif KR",serif; font-weight:700; font-size:26px; line-height:1; letter-spacing:-.03em}
+.dmon{font-size:12px; color:var(--ink-3); margin-top:3px}
+.dday{font-size:11.5px; color:var(--ink-3)}
+.drel{display:inline-block; margin-top:6px; font-size:11px; padding:1px 7px; border-radius:99px;
+  background:var(--accent-soft); color:var(--accent)}
+.dpast .dnum,.dpast .dmon{color:var(--ink-3)}
+
+.cards{display:flex; flex-direction:column; gap:10px}
+
+/* ── 카드 ── */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow)}
+.card.open{border-color:var(--line-2)}
+.chead{width:100%; text-align:left; background:none; border:0; font:inherit; color:inherit;
+  padding:13px 14px; cursor:pointer; display:block; border-radius:var(--r)}
+.chead:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.ctop{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.cname{font-weight:600; font-size:16px; letter-spacing:-.01em; flex:1; min-width:0}
+.st{font-size:11.5px; padding:2px 9px; border-radius:99px; font-weight:500; white-space:nowrap}
+.st-open{background:var(--ok-bg); color:var(--ok)}
+.st-soon{background:var(--warn-bg); color:var(--warn)}
+.st-done{background:var(--off-bg); color:var(--off)}
+.cmeta{color:var(--ink-2); font-size:13px; margin-top:3px}
+.cmeta .sep{color:var(--line-2); margin:0 6px}
+.cstat{display:flex; gap:18px; margin-top:9px; flex-wrap:wrap}
+.cstat div{font-size:12px; color:var(--ink-3)}
+.cstat strong{display:block; font-size:14.5px; color:var(--ink); font-weight:600;
+  font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace; font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+.flags{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap}
+.flag{font-size:11.5px; padding:2px 8px; border-radius:5px; border:1px solid var(--line);
+  background:var(--surface-2); color:var(--ink-2)}
+.flag.no{color:var(--ok); border-color:color-mix(in srgb, var(--ok) 30%, var(--line)); background:var(--ok-bg)}
+.flag.yes{color:var(--warn); border-color:color-mix(in srgb, var(--warn) 30%, var(--line)); background:var(--warn-bg)}
+
+/* ── 상세 ── */
+.body{border-top:1px solid var(--line); padding:14px}
+.sechd{font-size:11.5px; letter-spacing:.1em; color:var(--ink-3); margin:0 0 7px}
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px}
+table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:400px}
+th,td{padding:7px 10px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap}
+th{background:var(--surface-2); color:var(--ink-3); font-weight:500; font-size:12px; letter-spacing:.02em}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.hi{color:var(--ink); font-weight:600}
+.sched{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden; margin-top:16px}
+.sched div{background:var(--surface); padding:8px 10px}
+.sched dt{font-size:11.5px; color:var(--ink-3); margin:0}
+.sched dd{margin:2px 0 0; font-size:13.5px; font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace}
+.notes{margin:16px 0 0; padding:0; list-style:none; font-size:13px; color:var(--ink-2)}
+.notes li{padding-left:14px; position:relative; margin-bottom:3px}
+.notes li::before{content:"—"; position:absolute; left:0; color:var(--ink-3)}
+.golink{display:inline-block; margin-top:14px; background:var(--accent); color:#fff;
+  text-decoration:none; font-size:13.5px; font-weight:500; padding:8px 16px; border-radius:8px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .golink{color:#0E1219}}
+:root[data-theme="dark"] .golink{color:#0E1219}
+
+/* ── 링크 모음 ── */
+.links{margin:34px 0 0; padding:22px 0 0; border-top:1px solid var(--line)}
+.links h2{font-family:"Noto Serif KR",serif; font-size:17px; margin:0 0 12px; font-weight:600}
+.lgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px}
+.lgrid a{display:block; padding:10px 12px; background:var(--surface); border:1px solid var(--line);
+  border-radius:8px; text-decoration:none; color:var(--ink)}
+.lgrid a:hover{border-color:var(--accent)}
+.lgrid strong{display:block; font-size:14px; font-weight:600}
+.lgrid span{font-size:12px; color:var(--ink-3)}
+
+footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--ink-3)}
+.empty{padding:40px 0; text-align:center; color:var(--ink-3); font-size:14px}
+.sample{margin:14px 0 0; padding:10px 13px; border-radius:8px; background:var(--warn-bg);
+  color:var(--warn); font-size:12.5px; border:1px solid color-mix(in srgb, var(--warn) 25%, transparent)}
+
+@media (max-width:640px){
+  .day{grid-template-columns:1fr; gap:8px; padding-top:14px}
+  .daymark{position:static; display:flex; align-items:baseline; gap:8px}
+  .dnum{font-size:19px}
+  .dmon,.dday{margin:0}
+  .cstat{gap:14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+<style>
+.doc{max-width:720px; margin:0 auto; padding:0 16px 60px}
+.doc h1{font-family:"Noto Serif KR",serif; font-size:24px; margin:28px 0 6px; letter-spacing:-.02em}
+.doc .lead{color:var(--ink-3); font-size:13px; margin:0 0 28px}
+.doc h2{font-family:"Noto Serif KR",serif; font-size:16.5px; margin:30px 0 8px; font-weight:600}
+.doc p, .doc li{color:var(--ink-2); font-size:14.5px; line-height:1.75}
+.doc ul{padding-left:18px; margin:8px 0}
+.doc li{margin-bottom:4px}
+.doc .box{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:14px 16px; margin:14px 0}
+.doc .box p:last-child{margin-bottom:0}
+.doc dt{font-size:12px; color:var(--ink-3); letter-spacing:.04em; margin-top:12px}
+.doc dd{margin:2px 0 0; font-size:15px; color:var(--ink); font-weight:500}
+.doc dl{margin:0}
+.back{display:inline-block; margin-top:34px; font-size:14px; color:var(--accent); text-decoration:none}
+.back:hover{text-decoration:underline}
+</style>
+
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="/" style="text-decoration:none">청약<b>달력</b></a>
+    <span class="tag">정보 오류 제보 · 서비스 제안</span>
+  </div>
+</header>
+
+<main class="doc">
+<h1>문의하기</h1>
+<p class="lead">정보 오류 제보와 서비스 제안을 받습니다.</p>
+
+<p>청약달력은 공공데이터와 입주자모집공고문을 자동으로 수집해 정리합니다.
+자동 수집 과정에서 값이 잘못 표시될 수 있으니, 발견하시면 알려주시면 바로 확인하겠습니다.</p>
+
+<div class="box">
+  <dl>
+    <dt>이메일</dt>
+    <dd>여기에 문의용 이메일 주소를 넣으세요</dd>
+  </dl>
+</div>
+
+<h2>이런 내용을 보내주세요</h2>
+<ul>
+  <li><b>정보 오류</b> — 단지명과 잘못된 항목을 알려주시면 가장 빠릅니다.
+      예: "○○아파트 전매제한이 3년으로 나오는데 공고문에는 1년입니다"</li>
+  <li><b>누락된 공고</b> — 청약홈에 있는데 사이트에 안 보이는 단지</li>
+  <li><b>기능 제안</b> — 추가로 보고 싶은 항목이나 필터</li>
+  <li><b>광고 및 제휴 문의</b></li>
+</ul>
+
+<h2>자주 묻는 것</h2>
+<p><b>왜 전매제한이 "확인 필요"로 나오나요?</b><br>
+청약홈 공공데이터에는 전매제한과 거주의무가 포함되어 있지 않습니다.
+본 사이트는 입주자모집공고문에서 이 값을 자동으로 읽어오는데,
+공고문 양식에 따라 읽지 못하는 경우가 있습니다. 그럴 때 "확인 필요"로 표시하며,
+잘못된 값을 보여드리지 않기 위한 조치입니다.</p>
+
+<p><b>정보가 얼마나 자주 갱신되나요?</b><br>
+매일 오전 6시에 자동으로 갱신됩니다. 화면 아래쪽에 데이터 기준일이 표시됩니다.</p>
+
+<p><b>청약 신청은 여기서 하나요?</b><br>
+아니요. 본 사이트는 정보만 제공합니다. 실제 청약 신청은
+<a href="https://www.applyhome.co.kr" target="_blank" rel="noopener">청약홈</a> 또는
+<a href="https://apply.lh.or.kr" target="_blank" rel="noopener">LH 청약플러스</a>에서 하셔야 합니다.</p>
+<a class="back" href="/">← 청약 목록으로 돌아가기</a>
+</main>
