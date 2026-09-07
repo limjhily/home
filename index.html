@@ -1,7 +1,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <html lang="ko">
-<title>청약달력</title>
+<title>청약달력 · 아파트 청약 일정과 분양가를 한눈에</title>
+<meta name="description" content="전국 아파트 청약을 날짜순으로 정리했습니다. 단지별 분양가, 세대수, 평형별 공급, 전매제한, 실거주의무, 전세 가능 여부를 한 화면에서 확인하세요. 매일 자동 갱신됩니다.">
+<link rel="canonical" href="https://cheongyak.day/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="청약달력">
+<meta property="og:title" content="청약달력 · 아파트 청약 일정과 분양가를 한눈에">
+<meta property="og:description" content="전국 아파트 청약을 날짜순으로. 분양가·세대수·전매제한·실거주의무를 한 화면에서 확인하세요.">
+<meta property="og:url" content="https://cheongyak.day/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<meta name="naver-site-verification" content="">
+<meta name="google-site-verification" content="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap">
@@ -47,7 +58,8 @@ header{background:var(--navy); color:#EEF3FB; border-bottom:1px solid var(--line
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header{background:#131A27; color:var(--ink)}}
 :root[data-theme="dark"] header{background:#131A27; color:var(--ink)}
 .hd{display:flex; align-items:baseline; gap:12px; padding:18px 0 16px; flex-wrap:wrap}
-.logo{font-family:"Noto Serif KR",serif; font-weight:700; font-size:22px; letter-spacing:-.02em; color:inherit}
+.logo{font-family:"Noto Serif KR",serif; font-weight:700; font-size:22px;
+  letter-spacing:-.02em; color:inherit; margin:0; display:inline}
 .logo b{color:#8FB4F5}
 .tag{font-size:12.5px; color:#A9BCDC; letter-spacing:.02em}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag{color:var(--ink-3)}}
@@ -145,6 +157,16 @@ td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
 :root[data-theme="dark"] .golink{color:#0E1219}
 
 /* ── 링크 모음 ── */
+.alllist{margin:34px 0 0; padding:22px 0 0; border-top:1px solid var(--line)}
+.alllist h2{font-family:"Noto Serif KR",serif; font-size:17px; margin:0 0 4px; font-weight:600}
+.alllist .sub{font-size:12.5px; color:var(--ink-3); margin:0 0 12px}
+.alllist ul{list-style:none; padding:0; margin:0; display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:6px}
+.alllist li{font-size:13.5px; line-height:1.5}
+.alllist a{color:var(--ink); text-decoration:none}
+.alllist a:hover{color:var(--accent); text-decoration:underline}
+.alllist .meta{color:var(--ink-3); font-size:12px}
+
 .links{margin:34px 0 0; padding:22px 0 0; border-top:1px solid var(--line)}
 .links h2{font-family:"Noto Serif KR",serif; font-size:17px; margin:0 0 12px; font-weight:600}
 .lgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px}
@@ -172,7 +194,7 @@ footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
 
 <header>
   <div class="wrap hd">
-    <span class="logo">청약<b>달력</b></span>
+    <h1 class="logo">청약<b>달력</b></h1>
     <span class="tag">분양가 · 세대수 · 전매제한 · 실거주의무를 날짜순으로</span>
     <span class="spacer"></span>
     <button class="themebtn" id="tbtn" type="button">화면 전환</button>
@@ -202,6 +224,41 @@ footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
   <div id="list"></div>
 
   <p class="sample" id="sample">현재 표시된 내용은 화면 구성을 확인하기 위한 <b>샘플 데이터</b>입니다. 실제 공고는 청약홈에서 확인하세요.</p>
+
+  <!-- SEO:START 아래 목록은 scripts/build_site.py 가 자동으로 채웁니다. 직접 고치지 마세요. -->
+  <section class="alllist" id="alllist">
+<h2>전체 청약 단지</h2>
+<p class="sub">단지명을 누르면 분양가·평형별 공급·일정을 자세히 볼 수 있습니다. (2026-09-07 기준 26곳)</p>
+<ul>
+<li><a href="/apt/두산위브더제니스-부천-2026000382.html">두산위브더제니스 부천</a><div class="meta">경기 부천시 소사구 · 특별공급 2026-08-19</div></li>
+<li><a href="/apt/포레나힐스테이트-진주-2026000383.html">포레나힐스테이트 진주</a><div class="meta">경남 진주시 이현동 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/쌍용-더-플래티넘-서대문-2026000372.html">쌍용 더 플래티넘 서대문</a><div class="meta">서울 서대문구 홍은동 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/아르티엠-라-테라스-2026000368.html">아르티엠 라 테라스</a><div class="meta">전북 전주시 덕진구 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/상동역-롯데캐슬-시그니처-2026000354.html">상동역 롯데캐슬 시그니처</a><div class="meta">경기 부천시 원미구 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/제일풍경채-첨단3지구-A6BL-2026000342.html">제일풍경채 첨단3지구(A6BL)</a><div class="meta">광주 첨단3지구 A6블록(전남광주통합특별시 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/의왕역-한신더휴-2026000377.html">의왕역 한신더휴</a><div class="meta">경기 의왕시 삼동 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/오남역-서희스타힐스-여의재-1단지-2026000365.html">오남역 서희스타힐스 여의재 1단지</a><div class="meta">경기 남양주시 오남읍 · 특별공급 2026-08-24</div></li>
+<li><a href="/apt/검암역-푸르지오-프라베뉴-B-1BL-공공분양주택-2026000404.html">검암역 푸르지오 프라베뉴 (B-1BL) 공공분양주택</a><div class="meta">인천 서해구 공공주택지구 · 특별공급 2026-08-31</div></li>
+<li><a href="/apt/시티오씨엘-9단지-오션파크뷰-2026000388.html">시티오씨엘 9단지 오션파크뷰</a><div class="meta">인천 미추홀구 학익동 · 특별공급 2026-08-31</div></li>
+<li><a href="/apt/성남복정2-A1블록-신혼희망타운-공공분양-본청약-2026820008.html">성남복정2 A1블록 신혼희망타운(공공분양)(본청약)</a><div class="meta">경기 성남시 수정구 · 특별공급 2026-08-31</div></li>
+<li><a href="/apt/문수데시앙2단지-공가세대-일반공급-2026000401.html">문수데시앙2단지 공가세대 일반공급</a><div class="meta">울산 울주군 청량읍 · 특별공급 2026-09-07</div></li>
+<li><a href="/apt/브라운스톤-월곡-센트럴-2026000399.html">브라운스톤 월곡 센트럴</a><div class="meta">서울 성북구 하월곡동 · 특별공급 2026-09-07</div></li>
+<li><a href="/apt/의정부우정-A2블록-공공분양주택-본청약-2026000409.html">의정부우정 A2블록 공공분양주택(본청약)</a><div class="meta">경기 의정부시 녹양동 · 특별공급 2026-09-07</div></li>
+<li><a href="/apt/대전-경남아너스빌-센텀스카이-2026000202.html">대전 경남아너스빌 센텀스카이</a><div class="meta">대전 중구 대흥동 · 특별공급 2026-09-08</div></li>
+<li><a href="/apt/남양주진접2지구-A-4블록-신혼희망타운-공공분양-잔여세대-추가입주자모집공-2026820009.html">남양주진접2지구 A-4블록 신혼희망타운(공공분양) 잔여세대 추가입주자모집공고</a><div class="meta">경기 남양주시 진접읍 · 특별공급 2026-09-08</div></li>
+<li><a href="/apt/천안-아이파크-시티-4단지-2026000426.html">천안 아이파크 시티 4단지</a><div class="meta">충남 천안시 서북구 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/두정역-푸르지오-그랑피크-2026000423.html">두정역 푸르지오 그랑피크</a><div class="meta">충남 천안시 서북구 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/천안-아이파크-시티-3단지-2026000422.html">천안 아이파크 시티 3단지</a><div class="meta">충남 천안시 서북구 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/남울산-노르웨이숲-조합원-취소분-2회차-2026000420.html">남울산 노르웨이숲(조합원 취소분)(2회차)</a><div class="meta">울산 울주군 온양읍 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/더샵-여주역더퍼스트-2026000394.html">더샵 여주역더퍼스트</a><div class="meta">경기 여주시 홍문동 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/올-뉴-챔피언스시티-1차-2026000419.html">올 뉴 챔피언스시티 1차</a><div class="meta">광주 북구 임동 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/그랑라크-에일린의-뜰-2026000403.html">그랑라크 에일린의 뜰</a><div class="meta">울산 남구 야음동 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/양주회천지구-A-26블록-공공분양주택-2026000416.html">양주회천지구 A-26블록 공공분양주택</a><div class="meta">경기 양주시 덕정동 · 특별공급 2026-09-14</div></li>
+<li><a href="/apt/시흥-은계-에피트-조합원-취소분-2026000393.html">시흥 은계 에피트(조합원 취소분)</a><div class="meta">경기 시흥시 은행동 · 특별공급 2026-09-15</div></li>
+<li><a href="/apt/인천계양지구-A6블록-공공분양주택-본청약-2026000414.html">인천계양지구 A6블록 공공분양주택(본청약)</a><div class="meta">인천 계양구 상야동 · 특별공급 2026-09-17</div></li>
+</ul>
+</section>
+  <!-- SEO:END -->
 
   <section class="links">
     <h2>청약 관련 사이트</h2>

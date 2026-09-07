@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# 네이버
+User-agent: Yeti
+Allow: /
+
+Sitemap: https://cheongyak.day/sitemap.xml

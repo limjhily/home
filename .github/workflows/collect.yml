@@ -35,11 +35,14 @@ jobs:
           DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
         run: python3 scripts/collect.py
 
+      - name: 검색용 정적 페이지 생성
+        run: python3 scripts/build_site.py
+
       - name: 변경분 커밋
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/notices.json data/pdf_cache.json
+          git add data/notices.json data/pdf_cache.json index.html apt sitemap.xml robots.txt
           git diff --staged --quiet && echo "변경 없음" && exit 0
           git commit -m "chore: 청약 데이터 갱신 $(date -u +%Y-%m-%d)"
           git push

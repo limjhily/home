@@ -43,6 +43,9 @@ index.html                     사이트 전체 (샘플 데이터 포함)
 data/notices.json              수집 결과 (자동 생성, 있으면 샘플 대신 사용)
 data/overrides.json            API에 없는 전매제한·실거주의무 수동 보정
 scripts/collect.py             청약홈 OpenAPI 수집기
+scripts/build_site.py          검색용 정적 페이지·sitemap 생성
+apt/                           단지별 상세 페이지 (자동 생성)
+sitemap.xml, robots.txt        검색엔진용 (자동 생성)
 .github/workflows/collect.yml  매일 06:00 KST 자동 수집
 _headers                       Cloudflare Pages 캐시/보안 헤더
 DEPLOY.md                      배포·운영 가이드
@@ -81,3 +84,22 @@ LH 공고는 한 달에 몇 건뿐이라 수동 입력도 현실적이다.
 ### 참고: 이미 만들어둔 도구
 - `scripts/pblanc_pdf.py` — 표(PDF·HTML 공통)에서 기간을 읽는 파서. `--selftest` 로 13종 검증
 - `scripts/probe_applyhome.py` — 청약홈 페이지 구조 정찰. Actions 에서 실행
+
+
+## 검색 노출(SEO) 구조
+
+메인 화면은 자바스크립트로 데이터를 불러온다. 구글은 자바스크립트를 실행하지만
+**네이버 검색봇(Yeti)은 실행하지 않아** 빈 페이지로 본다.
+그래서 수집 직후 `scripts/build_site.py` 가 아래를 만든다.
+
+- `apt/단지명-공고번호.html` — 단지마다 정적 페이지. 사람들은 "○○아파트 청약"처럼
+  단지명으로 검색하므로 이 페이지들이 실제 유입 통로가 된다
+- `index.html` 아래쪽 "전체 청약 단지" 목록 — 검색봇이 각 페이지를 찾아가는 통로
+  (`<!-- SEO:START -->` 사이는 자동 생성 구간이므로 직접 고치지 말 것)
+- `sitemap.xml`, `robots.txt`
+
+### 배포 후 한 번만 해야 하는 등록
+- 구글 서치콘솔 https://search.google.com/search-console → 도메인 등록 → 사이트맵 제출
+- 네이버 서치어드바이저 https://searchadvisor.naver.com → 사이트 등록 → 사이트맵 제출
+- 소유확인 메타태그는 `index.html` 상단의 `google-site-verification`,
+  `naver-site-verification` 값에 넣으면 된다 (지금은 비어 있음)
