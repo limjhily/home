@@ -65,11 +65,13 @@ def page(n, style, updated):
     lo, hi = min(u["price"] for u in units), max(u["price"] for u in units)
     amin = min(u["area"] for u in units)
     amax = max(u["area"] for u in units)
-    title = f"{n['name']} 청약 정보 · 분양가와 일정 | 청약달력"
+    jt = jeonse_text(n)
+    tail = "전세 가능" if jt == "가능" else ("전세 불가" if jt == "불가" else "분양가와 일정")
+    title = f"{n['name']} 청약 정보 · {tail} | 청약달력"
     desc = (f"{n['region']} {n['district']} {n['name']} 청약 정보. "
             f"총 {n['total']:,}세대, 분양가 {won(lo)}~{won(hi)}, "
             f"전용 {amin:.0f}~{amax:.0f}㎡. 특별공급 {n['special']}, "
-            f"전매제한 {txt_resale(n)}, 실거주의무 {txt_live(n)}.")
+            f"전매제한 {txt_resale(n)}, 실거주의무 {txt_live(n)}, 입주 후 전세 {jt}.")
     url = f"{SITE}/apt/{n['_slug']}.html"
 
     rows = "\n".join(
@@ -196,6 +198,134 @@ def page(n, style, updated):
 '''
 
 
+
+def jeonse_page(items, style, updated):
+    """실거주의무·전세 가능 여부를 주제로 한 전용 페이지.
+
+    "실거주의무 없는 아파트", "분양 전세 가능" 같은 검색어를 정면으로 받는다.
+    청약홈 OpenAPI 에는 이 항목이 없어 대부분의 청약 사이트가 목록으로 보여주지 못한다.
+    """
+    ok = [n for n in items if n["live"] == 0]
+    no = [n for n in items if n["live"] and n["live"] > 0]
+    unknown = [n for n in items if n["live"] is None]
+
+    def rows(group):
+        return "\n".join(
+            f'<tr><td class="hi"><a href="/apt/{n["_slug"]}.html">{esc(n["name"])}</a></td>'
+            f'<td>{esc(n["region"])} {esc(n["district"])}</td>'
+            f'<td class="n">{txt_resale(n)}</td>'
+            f'<td class="n">{txt_live(n)}</td>'
+            f'<td class="n">{esc(n["special"] or "-")}</td></tr>'
+            for n in group)
+
+    def block(title, group, note, cls):
+        if not group:
+            return ""
+        return (f'<h2>{title} <span class="cnt {cls}">{len(group)}곳</span></h2>'
+                f'<p>{note}</p>'
+                f'<div class="tblwrap"><table>'
+                f'<thead><tr><th>단지명</th><th>위치</th><th>전매제한</th>'
+                f'<th>실거주의무</th><th>특별공급</th></tr></thead>'
+                f'<tbody>{rows(group)}</tbody></table></div>')
+
+    title = "전세 놓을 수 있는 청약 단지 · 실거주의무 없는 분양 아파트 | 청약달력"
+    desc = (f"분양받은 아파트에 전세를 놓을 수 있는지 한눈에 확인하세요. "
+            f"{updated} 기준 실거주의무가 없어 전세가 가능한 단지 {len(ok)}곳을 정리했습니다. "
+            f"단지별 전매제한 기간도 함께 표시합니다.")
+    url = SITE + "/jeonse.html"
+
+    return f'''<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="청약달력">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{url}">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=optional">
+{style}
+<style>
+.doc{{max-width:820px; margin:0 auto; padding:0 16px 60px}}
+.crumb{{font-size:12.5px; color:var(--ink-3); margin:20px 0 6px}}
+.crumb a{{color:var(--ink-3); text-decoration:none}}
+.doc h1{{font-family:"Noto Serif KR",serif; font-size:26px; margin:0 0 8px; letter-spacing:-.02em;
+  text-wrap:balance}}
+.doc .lead{{color:var(--ink-2); font-size:15px; margin:0 0 22px; line-height:1.7}}
+.doc h2{{font-family:"Noto Serif KR",serif; font-size:18px; margin:34px 0 6px; font-weight:600}}
+.doc p, .doc li{{color:var(--ink-2); font-size:14.5px; line-height:1.75}}
+.cnt{{font-family:"IBM Plex Sans KR",sans-serif; font-size:12.5px; font-weight:500;
+  padding:2px 9px; border-radius:99px; vertical-align:middle; margin-left:4px}}
+.cnt.ok{{background:var(--ok-bg); color:var(--ok)}}
+.cnt.no{{background:var(--warn-bg); color:var(--warn)}}
+.cnt.unk{{background:var(--off-bg); color:var(--off)}}
+.doc table a{{color:var(--ink); text-decoration:none}}
+.doc table a:hover{{color:var(--accent); text-decoration:underline}}
+.doc td{{text-align:left}}
+.doc td.n{{text-align:right}}
+.explain{{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px 18px; margin:26px 0}}
+.explain h3{{font-size:15px; margin:0 0 6px; font-weight:600; color:var(--ink)}}
+.explain h3+p{{margin-top:0}}
+.explain p:last-child{{margin-bottom:0}}
+.warn{{background:var(--warn-bg); color:var(--warn);
+  border:1px solid color-mix(in srgb, var(--warn) 25%, transparent);
+  border-radius:8px; padding:12px 15px; font-size:13.5px; margin:20px 0}}
+.back{{display:inline-block; margin-top:32px; font-size:14px; color:var(--accent); text-decoration:none}}
+</style>
+
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="/" style="text-decoration:none">청약<b>달력</b></a>
+    <span class="tag">분양가 · 세대수 · 전매제한 · 실거주의무를 날짜순으로</span>
+  </div>
+</header>
+
+<main class="doc">
+  <nav class="crumb"><a href="/">청약달력</a> › 실거주의무와 전세</nav>
+  <h1>전세 놓을 수 있는 청약 단지</h1>
+  <p class="lead">분양받은 아파트에 <b>실거주의무가 없으면 입주 후 전세를 놓을 수 있습니다.</b>
+    이 정보는 청약홈 공공데이터에 들어 있지 않아 입주자모집공고문을 직접 열어봐야 알 수 있습니다.
+    청약달력은 공고문에서 이 값을 읽어와 단지별로 정리합니다.
+    <b>{updated} 기준 {len(items)}곳</b>을 확인했습니다.</p>
+
+  {block("전세 가능", ok, "실거주의무가 없어 입주 후 임대를 놓을 수 있는 단지입니다. 다만 전매제한 기간에는 분양권 자체를 팔 수 없습니다.", "ok")}
+  {block("전세 불가", no, "실거주의무 기간에는 본인이 직접 거주해야 하며 임대를 놓을 수 없습니다.", "no")}
+  {block("공고문 확인 필요", unknown, "공고문에서 값을 읽지 못한 단지입니다. 단지명을 눌러 공고문 원문을 확인하세요.", "unk")}
+
+  <div class="explain">
+    <h3>실거주의무란</h3>
+    <p>분양가상한제가 적용되는 주택 등에 붙는 의무로, 당첨자가 일정 기간 그 집에
+      직접 살아야 하는 규정입니다. 이 기간에는 전세나 월세를 놓을 수 없습니다.</p>
+    <h3>전매제한과 무엇이 다른가</h3>
+    <p><b>전매제한</b>은 분양권이나 주택을 <b>파는 것</b>을 막는 규정이고,
+      <b>실거주의무</b>는 <b>남에게 빌려주는 것</b>을 막는 규정입니다.
+      전매제한만 있고 실거주의무가 없다면, 팔 수는 없어도 전세를 놓는 것은 가능합니다.</p>
+    <h3>왜 다른 곳에서는 보기 어려운가</h3>
+    <p>한국부동산원 청약홈이 공개하는 분양정보 API에는 이 두 항목이 포함되어 있지 않습니다.
+      입주자모집공고문 PDF 안의 표에만 들어 있어, 대부분의 청약 정보 서비스는
+      목록에서 이 값을 보여주지 못합니다.</p>
+  </div>
+
+  <div class="warn">여기 표시된 값은 입주자모집공고문에서 자동으로 읽어온 것입니다.
+    제도는 개정될 수 있고 단지별 예외도 있으므로, 계약 전에는 반드시 공고문 원문과
+    사업주체에 확인하시기 바랍니다. 본 페이지는 정보 제공 목적이며 법률 자문이 아닙니다.</div>
+
+  <a class="back" href="/">← 전체 청약 일정 보기</a>
+  <footer style="margin-top:30px">데이터 기준 {updated} · 자료 출처 한국부동산원 청약홈
+    <div style="margin-top:8px; display:flex; gap:14px; flex-wrap:wrap">
+      <a href="/privacy.html">개인정보처리방침</a><a href="/contact.html">문의하기</a>
+    </div>
+  </footer>
+</main>
+'''
+
 def main():
     src = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     style = re.search(r"<style>.*?</style>", src, re.S).group(0)
@@ -215,6 +345,11 @@ def main():
             fp.write(page(n, style, updated))
     print(f"단지 페이지 {len(items)}개 생성", file=sys.stderr)
 
+    with open(os.path.join(ROOT, "jeonse.html"), "w", encoding="utf-8") as fp:
+        fp.write(jeonse_page(items, style, updated))
+    ok_n = sum(1 for n in items if n["live"] == 0)
+    print(f"전세 가능 페이지 생성 (가능 {ok_n}곳)", file=sys.stderr)
+
     # 메인 아래쪽 정적 목록 (검색봇이 각 페이지를 찾아가는 통로)
     lis = "\n".join(
         f'<li><a href="/apt/{n["_slug"]}.html">{esc(n["name"])}</a>'
@@ -232,6 +367,7 @@ def main():
 
     # sitemap.xml
     urls = [(SITE + "/", updated, "daily", "1.0"),
+            (SITE + "/jeonse.html", updated, "daily", "0.9"),
             (SITE + "/privacy.html", updated, "yearly", "0.2"),
             (SITE + "/contact.html", updated, "yearly", "0.2")]
     urls += [(f"{SITE}/apt/{n['_slug']}.html", updated, "weekly", "0.8") for n in items]
