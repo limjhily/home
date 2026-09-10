@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-09",
+ "updated": "2026-09-10",
  "count": 27,
  "items": [
   {
@@ -656,60 +656,6 @@
    ],
    "notes": [
     "시행사 코리아신탁(주)"
-   ]
-  },
-  {
-   "id": "2026820008-2026820008",
-   "name": "성남복정2 A1블록 신혼희망타운(공공분양)(본청약)",
-   "region": "경기",
-   "district": "성남시 수정구",
-   "type": "공공",
-   "total": 594,
-   "general": 0,
-   "builder": "(주)케이알산업, 동성건설(주)",
-   "zone": "투기과열지구",
-   "special": "2026-08-31",
-   "first": "2026-08-31",
-   "second": "2026-09-07",
-   "result": "2026-09-17",
-   "contract": "2026-12-07 ~ 12-10",
-   "resale": null,
-   "live": null,
-   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026820008&pblancNo=2026820008",
-   "units": [
-    {
-     "t": "055.9700A",
-     "area": 83.65,
-     "n": 145,
-     "gen": 0,
-     "price": 79831
-    },
-    {
-     "t": "055.9700B",
-     "area": 83.65,
-     "n": 12,
-     "gen": 0,
-     "price": 79831
-    },
-    {
-     "t": "055.9800C",
-     "area": 83.66,
-     "n": 6,
-     "gen": 0,
-     "price": 79845
-    },
-    {
-     "t": "056.9400T",
-     "area": 85.1,
-     "n": 3,
-     "gen": 0,
-     "price": 81214
-    }
-   ],
-   "notes": [
-    "분양가상한제 적용 단지",
-    "공공택지",
-    "시행사 한국토지주택공사 서울지역본부"
    ]
   },
   {
@@ -1691,6 +1637,72 @@
    ]
   },
   {
+   "id": "2026000314-2026000314",
+   "name": "중동역 다채로움 더원",
+   "region": "경기",
+   "district": "부천시 소사구",
+   "type": "민영",
+   "total": 39,
+   "general": 18,
+   "builder": "주식회사 부성종합건설",
+   "zone": "비규제지역",
+   "special": "2026-09-21",
+   "first": "2026-09-22",
+   "second": "2026-09-23",
+   "result": "2026-10-08",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 12,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000314&pblancNo=2026000314",
+   "units": [
+    {
+     "t": "054.8244",
+     "area": 73.46,
+     "n": 7,
+     "gen": 3,
+     "price": 54900
+    },
+    {
+     "t": "059.9935B",
+     "area": 81.54,
+     "n": 4,
+     "gen": 3,
+     "price": 61000
+    },
+    {
+     "t": "060.7403",
+     "area": 81.73,
+     "n": 8,
+     "gen": 3,
+     "price": 61200
+    },
+    {
+     "t": "084.9888A",
+     "area": 112.46,
+     "n": 2,
+     "gen": 2,
+     "price": 75300
+    },
+    {
+     "t": "084.9933B",
+     "area": 112.47,
+     "n": 7,
+     "gen": 2,
+     "price": 79300
+    },
+    {
+     "t": "084.9894C",
+     "area": 112.88,
+     "n": 11,
+     "gen": 5,
+     "price": 79600
+    }
+   ],
+   "notes": [
+    "시행사 송내동 성우아파트 소규모재건축정비사업조합"
+   ]
+  },
+  {
    "id": "2026000431-2026000431",
    "name": "오남역 서희스타힐스 여의재 3단지 (조합원 취소분)",
    "region": "경기",
@@ -1705,8 +1717,8 @@
    "second": "2026-09-23",
    "result": "2026-10-06",
    "contract": "2026-10-17 ~ 10-19",
-   "resale": null,
-   "live": null,
+   "resale": 6,
+   "live": 0,
    "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000431&pblancNo=2026000431",
    "units": [
     {
