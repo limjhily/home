@@ -1,6 +1,6 @@
 {
- "updated": "2026-09-12",
- "count": 31,
+ "updated": "2026-09-13",
+ "count": 29,
  "items": [
   {
    "id": "2026000383-2026000383",
@@ -324,110 +324,6 @@
    "notes": [
     "분양가상한제 적용 단지",
     "시행사 첨단678피에프브이 주식회사"
-   ]
-  },
-  {
-   "id": "2026000377-2026000377",
-   "name": "의왕역 한신더휴",
-   "region": "경기",
-   "district": "의왕시 삼동",
-   "type": "민영",
-   "total": 108,
-   "general": 49,
-   "builder": "한신공영(주)",
-   "zone": "투기과열지구",
-   "special": "2026-08-24",
-   "first": "2026-08-25",
-   "second": "2026-08-27",
-   "result": "2026-09-02",
-   "contract": "2026-09-14 ~ 09-16",
-   "resale": 36,
-   "live": 0,
-   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000377&pblancNo=2026000377",
-   "units": [
-    {
-     "t": "049.9881",
-     "area": 70.28,
-     "n": 64,
-     "gen": 25,
-     "price": 56300
-    },
-    {
-     "t": "059.9920B",
-     "area": 84.07,
-     "n": 12,
-     "gen": 6,
-     "price": 72500
-    },
-    {
-     "t": "074.9930",
-     "area": 104.25,
-     "n": 14,
-     "gen": 9,
-     "price": 85700
-    },
-    {
-     "t": "084.9861B",
-     "area": 117.9,
-     "n": 18,
-     "gen": 9,
-     "price": 94000
-    }
-   ],
-   "notes": [
-    "시행사 우성4차아파트 및 주변가로주택정비사업조합"
-   ]
-  },
-  {
-   "id": "2026000365-2026000365",
-   "name": "오남역 서희스타힐스 여의재 1단지",
-   "region": "경기",
-   "district": "남양주시 오남읍",
-   "type": "민영",
-   "total": 180,
-   "general": 91,
-   "builder": "(주)서희건설",
-   "zone": "비규제지역",
-   "special": "2026-08-24",
-   "first": "2026-08-25",
-   "second": "2026-08-26",
-   "result": "2026-09-01",
-   "contract": "2026-09-14 ~ 09-16",
-   "resale": 6,
-   "live": 0,
-   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000365&pblancNo=2026000365",
-   "units": [
-    {
-     "t": "059.7153A",
-     "area": 83.95,
-     "n": 83,
-     "gen": 40,
-     "price": 55400
-    },
-    {
-     "t": "059.9642B",
-     "area": 84.99,
-     "n": 63,
-     "gen": 31,
-     "price": 54800
-    },
-    {
-     "t": "075.4603",
-     "area": 104.83,
-     "n": 19,
-     "gen": 11,
-     "price": 65900
-    },
-    {
-     "t": "084.9596",
-     "area": 117.93,
-     "n": 15,
-     "gen": 9,
-     "price": 71900
-    }
-   ],
-   "notes": [
-    "시행사 양지7지구 1단지 지역주택조합"
    ]
   },
   {
