@@ -1,13 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<html lang="ko">
 <title>청약달력 · 청약 일정과 전세 가능 여부를 한눈에</title>
-<meta name="description" content="분양받은 아파트에 전세를 놓을 수 있는지 한눈에 확인하세요. 전국 청약을 날짜순으로 정리하고, 공고문에서 읽어온 전매제한·실거주의무·전세 가능 여부를 단지마다 표시합니다. 매일 자동 갱신.">
+<meta name="description" content="분양 아파트의 전세 가능 여부와 전매제한·실거주의무를 단지별로 정리. 전국 청약 일정을 날짜순으로 매일 자동 갱신합니다.">
 <link rel="canonical" href="https://cheongyak.day/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="청약달력">
 <meta property="og:title" content="청약달력 · 청약 일정과 전세 가능 여부를 한눈에">
-<meta property="og:description" content="분양받은 아파트에 전세를 놓을 수 있는지 한눈에. 전매제한·실거주의무를 공고문에서 읽어 단지마다 표시합니다.">
+<meta property="og:description" content="분양 아파트의 전세 가능 여부와 전매제한·실거주의무를 단지별로 정리. 전국 청약 일정 매일 자동 갱신.">
 <meta property="og:url" content="https://cheongyak.day/">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
@@ -120,10 +122,12 @@ header{background:var(--navy); color:#EEF3FB; border-bottom:1px solid var(--line
 .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow)}
 .card.open{border-color:var(--line-2)}
 .chead{width:100%; text-align:left; background:none; border:0; font:inherit; color:inherit;
-  padding:13px 14px; cursor:pointer; display:block; border-radius:var(--r)}
+  padding:2px 14px 13px; cursor:pointer; display:block; border-radius:var(--r)}
 .chead:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
-.ctop{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.ctop{display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:13px 14px 0}
 .cname{font-weight:600; font-size:16px; letter-spacing:-.01em; flex:1; min-width:0}
+.cname a, a.cname{color:inherit; text-decoration:none}
+.cname a:hover, a.cname:hover{color:var(--accent); text-decoration:underline}
 .st{font-size:11.5px; padding:2px 9px; border-radius:99px; font-weight:500; white-space:nowrap}
 .st-open{background:var(--ok-bg); color:var(--ok)}
 .st-soon{background:var(--warn-bg); color:var(--warn)}
@@ -200,6 +204,8 @@ footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
 @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
 </style>
 
+</head>
+<body>
 <header>
   <div class="wrap hd">
     <h1 class="logo">청약<b>달력</b></h1>
@@ -216,17 +222,17 @@ footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
   <div class="filters">
     <div class="frow">
       <span class="flabel">지역</span>
-      <span id="f-region"></span>
+      <span id="f-region"><!-- CHIPS:START --><button class="chip" type="button" aria-pressed="true">전체</button><button class="chip" type="button" aria-pressed="false">경남</button><button class="chip" type="button" aria-pressed="false">서울</button><button class="chip" type="button" aria-pressed="false">전북</button><button class="chip" type="button" aria-pressed="false">경기</button><button class="chip" type="button" aria-pressed="false">광주</button><button class="chip" type="button" aria-pressed="false">인천</button><button class="chip" type="button" aria-pressed="false">울산</button><button class="chip" type="button" aria-pressed="false">대전</button><button class="chip" type="button" aria-pressed="false">충남</button><!-- CHIPS:END --></span>
     </div>
     <div class="frow">
       <span class="flabel">유형</span>
-      <span id="f-type"></span>
+      <span id="f-type"><button class="chip" type="button" aria-pressed="true">전체</button><button class="chip" type="button" aria-pressed="false">민영</button><button class="chip" type="button" aria-pressed="false">공공</button></span>
       <input class="search" id="q" type="search" placeholder="단지명 · 지역 검색" autocomplete="off">
     </div>
     <div class="frow" style="margin-top:8px">
-      <div class="count" id="count"></div>
+      <div class="count" id="count">단지 18곳 · 특별공급일 순</div>
       <button class="chip" id="jeonsebtn" type="button" aria-pressed="false">전세 가능만</button>
-      <button class="chip" id="pastbtn" type="button" hidden></button>
+      <button class="chip" id="pastbtn" type="button" aria-pressed="false">지난 공고 11건 보기</button>
     </div>
   </div>
 
@@ -236,9 +242,401 @@ footer{margin:28px 0 0; padding:16px 0 40px; border-top:1px solid var(--line);
       공고문에서 직접 읽어옵니다.</span>
   </a>
 
-  <div id="list"></div>
+  <!-- HOME:START 목록은 scripts/build_site.py 가 자동으로 채웁니다. 직접 고치지 마세요. -->
+  <div id="list">
+<section class="day"><div class="daymark">
+          <div><div class="dnum num">7</div>
+          <div class="dmon">9월 · 월</div></div>
+          
+        </div><div class="cards">
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/의정부우정-A2블록-공공분양주택-본청약-2026000409.html">의정부우정 A2블록 공공분양주택(본청약)</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="의정부우정 A2블록 공공분양주택(본청약) 상세 정보 펼치기">
+      <div class="cmeta">경기 의정부시 녹양동<span class="sep">|</span>공공<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>463</strong></div>
+        <div>일반공급<strong>27</strong></div>
+        <div>분양가<strong>4억 ~ 4.1억</strong></div>
+        <div>전용면적<strong>84~84㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag ">전매제한 확인 필요</span>
+        <span class="flag ">실거주의무 확인 필요</span>
+        <span class="flag ">전세 확인 필요</span>
+      </div>
+    </button>
+  </article>
+</div></section>
+<section class="day"><div class="daymark">
+          <div><div class="dnum num">14</div>
+          <div class="dmon">9월 · 월</div></div>
+          <span class="drel">오늘</span>
+        </div><div class="cards">
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/천안-아이파크-시티-4단지-2026000426.html">천안 아이파크 시티 4단지</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="천안 아이파크 시티 4단지 상세 정보 펼치기">
+      <div class="cmeta">충남 천안시 서북구<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>777</strong></div>
+        <div>일반공급<strong>489</strong></div>
+        <div>분양가<strong>5.7억 ~ 8.1억</strong></div>
+        <div>전용면적<strong>113~155㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 없음</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/두정역-푸르지오-그랑피크-2026000423.html">두정역 푸르지오 그랑피크</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="두정역 푸르지오 그랑피크 상세 정보 펼치기">
+      <div class="cmeta">충남 천안시 서북구<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>1,438</strong></div>
+        <div>일반공급<strong>779</strong></div>
+        <div>분양가<strong>3.6억 ~ 6.9억</strong></div>
+        <div>전용면적<strong>82~155㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 없음</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/천안-아이파크-시티-3단지-2026000422.html">천안 아이파크 시티 3단지</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="천안 아이파크 시티 3단지 상세 정보 펼치기">
+      <div class="cmeta">충남 천안시 서북구<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>851</strong></div>
+        <div>일반공급<strong>537</strong></div>
+        <div>분양가<strong>5.8억 ~ 8.1억</strong></div>
+        <div>전용면적<strong>113~156㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 없음</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/남울산-노르웨이숲-조합원-취소분-2회차-2026000420.html">남울산 노르웨이숲(조합원 취소분)(2회차)</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="남울산 노르웨이숲(조합원 취소분)(2회차) 상세 정보 펼치기">
+      <div class="cmeta">울산 울주군 온양읍<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>52</strong></div>
+        <div>일반공급<strong>18</strong></div>
+        <div>분양가<strong>3.3억 ~ 4.9억</strong></div>
+        <div>전용면적<strong>81~113㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 6개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/더샵-여주역더퍼스트-2026000394.html">더샵 여주역더퍼스트</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="더샵 여주역더퍼스트 상세 정보 펼치기">
+      <div class="cmeta">경기 여주시 홍문동<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>696</strong></div>
+        <div>일반공급<strong>313</strong></div>
+        <div>분양가<strong>5.1억 ~ 5.2억</strong></div>
+        <div>전용면적<strong>112~113㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 6개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/올-뉴-챔피언스시티-1차-2026000419.html">올 뉴 챔피언스시티 1차</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="올 뉴 챔피언스시티 1차 상세 정보 펼치기">
+      <div class="cmeta">광주 북구 임동<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>3,216</strong></div>
+        <div>일반공급<strong>1,736</strong></div>
+        <div>분양가<strong>8.4억 ~ 31.6억</strong></div>
+        <div>전용면적<strong>112~291㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 6개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/그랑라크-에일린의-뜰-2026000403.html">그랑라크 에일린의 뜰</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="그랑라크 에일린의 뜰 상세 정보 펼치기">
+      <div class="cmeta">울산 남구 야음동<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>1,153</strong></div>
+        <div>일반공급<strong>540</strong></div>
+        <div>분양가<strong>5.7억 ~ 8.7억</strong></div>
+        <div>전용면적<strong>84~132㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 6개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/양주회천지구-A-26블록-공공분양주택-2026000416.html">양주회천지구 A-26블록 공공분양주택</a>
+      <span class="st st-open">접수중</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="양주회천지구 A-26블록 공공분양주택 상세 정보 펼치기">
+      <div class="cmeta">경기 양주시 덕정동<span class="sep">|</span>공공<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>792</strong></div>
+        <div>일반공급<strong>119</strong></div>
+        <div>분양가<strong>3.5억 ~ 4.9억</strong></div>
+        <div>전용면적<strong>83~117㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag ">전매제한 확인 필요</span>
+        <span class="flag ">실거주의무 확인 필요</span>
+        <span class="flag ">전세 확인 필요</span>
+      </div>
+    </button>
+  </article>
+</div></section>
+<section class="day"><div class="daymark">
+          <div><div class="dnum num">15</div>
+          <div class="dmon">9월 · 화</div></div>
+          <span class="drel">D-1</span>
+        </div><div class="cards">
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/시흥-은계-에피트-조합원-취소분-2026000393.html">시흥 은계 에피트(조합원 취소분)</a>
+      <span class="st st-open">D-1</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="시흥 은계 에피트(조합원 취소분) 상세 정보 펼치기">
+      <div class="cmeta">경기 시흥시 은행동<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>24</strong></div>
+        <div>일반공급<strong>15</strong></div>
+        <div>분양가<strong>3.1억 ~ 4.8억</strong></div>
+        <div>전용면적<strong>55~84㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 12개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+</div></section>
+<section class="day"><div class="daymark">
+          <div><div class="dnum num">17</div>
+          <div class="dmon">9월 · 목</div></div>
+          <span class="drel">D-3</span>
+        </div><div class="cards">
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/인천계양지구-A6블록-공공분양주택-본청약-2026000414.html">인천계양지구 A6블록 공공분양주택(본청약)</a>
+      <span class="st st-open">D-3</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="인천계양지구 A6블록 공공분양주택(본청약) 상세 정보 펼치기">
+      <div class="cmeta">인천 계양구 상야동<span class="sep">|</span>공공<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>663</strong></div>
+        <div>일반공급<strong>38</strong></div>
+        <div>분양가<strong>5억 ~ 7.2억</strong></div>
+        <div>전용면적<strong>81~116㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag ">전매제한 확인 필요</span>
+        <span class="flag ">실거주의무 확인 필요</span>
+        <span class="flag ">전세 확인 필요</span>
+      </div>
+    </button>
+  </article>
+</div></section>
+<section class="day"><div class="daymark">
+          <div><div class="dnum num">21</div>
+          <div class="dmon">9월 · 월</div></div>
+          <span class="drel">D-7</span>
+        </div><div class="cards">
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/화서역-호수공원-아너스빌-2026000449.html">화서역 호수공원 아너스빌</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="화서역 호수공원 아너스빌 상세 정보 펼치기">
+      <div class="cmeta">경기 수원시 권선구<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>476</strong></div>
+        <div>일반공급<strong>323</strong></div>
+        <div>분양가<strong>8.9억 ~ 9.1억</strong></div>
+        <div>전용면적<strong>109~128㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 12개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/문수로-비스타-더파크-2026000441.html">문수로 비스타 더파크</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="문수로 비스타 더파크 상세 정보 펼치기">
+      <div class="cmeta">울산 남구 무거동<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>700</strong></div>
+        <div>일반공급<strong>317</strong></div>
+        <div>분양가<strong>6.2억 ~ 8.3억</strong></div>
+        <div>전용면적<strong>92~113㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 6개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/힐스테이트-고덕엘리스트-A65BL-공공분양주택-2026000438.html">힐스테이트 고덕엘리스트 A65BL 공공분양주택</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="힐스테이트 고덕엘리스트 A65BL 공공분양주택 상세 정보 펼치기">
+      <div class="cmeta">경기 평택시 고덕동<span class="sep">|</span>공공<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>837</strong></div>
+        <div>일반공급<strong>125</strong></div>
+        <div>분양가<strong>5.6억 ~ 5.7억</strong></div>
+        <div>전용면적<strong>109~110㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag yes">전매제한 36개월</span>
+        <span class="flag yes">실거주의무 3년</span>
+        <span class="flag yes">전세 불가</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/힐스테이트-고덕엘리스트-A12BL-공공분양주택-2026000437.html">힐스테이트 고덕엘리스트 A12BL 공공분양주택</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="힐스테이트 고덕엘리스트 A12BL 공공분양주택 상세 정보 펼치기">
+      <div class="cmeta">경기 평택시 고덕동<span class="sep">|</span>공공<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>942</strong></div>
+        <div>일반공급<strong>141</strong></div>
+        <div>분양가<strong>5.7억 ~ 5.8억</strong></div>
+        <div>전용면적<strong>109~110㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag yes">전매제한 36개월</span>
+        <span class="flag yes">실거주의무 3년</span>
+        <span class="flag yes">전세 불가</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/더샵-분당하이스트-2026000103.html">더샵 분당하이스트</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="더샵 분당하이스트 상세 정보 펼치기">
+      <div class="cmeta">경기 성남시 분당구<span class="sep">|</span>민영<span class="sep">|</span>투기과열지구</div>
+      <div class="cstat">
+        <div>총 세대<strong>143</strong></div>
+        <div>일반공급<strong>66</strong></div>
+        <div>분양가<strong>21.6억 ~ 29.8억</strong></div>
+        <div>전용면적<strong>92~117㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag yes">전매제한 36개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/중동역-다채로움-더원-2026000314.html">중동역 다채로움 더원</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="중동역 다채로움 더원 상세 정보 펼치기">
+      <div class="cmeta">경기 부천시 소사구<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>39</strong></div>
+        <div>일반공급<strong>18</strong></div>
+        <div>분양가<strong>5.5억 ~ 8억</strong></div>
+        <div>전용면적<strong>73~113㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 12개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/오남역-서희스타힐스-여의재-3단지-조합원-취소분-2026000431.html">오남역 서희스타힐스 여의재 3단지 (조합원 취소분)</a>
+      <span class="st st-open">D-7</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="오남역 서희스타힐스 여의재 3단지 (조합원 취소분) 상세 정보 펼치기">
+      <div class="cmeta">경기 남양주시 오남읍<span class="sep">|</span>민영<span class="sep">|</span>비규제지역</div>
+      <div class="cstat">
+        <div>총 세대<strong>133</strong></div>
+        <div>일반공급<strong>69</strong></div>
+        <div>분양가<strong>5.3억 ~ 7.1억</strong></div>
+        <div>전용면적<strong>84~118㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag no">전매제한 6개월</span>
+        <span class="flag no">실거주의무 없음</span>
+        <span class="flag no">전세 가능</span>
+      </div>
+    </button>
+  </article>
+</div></section>
+</div>
+  <!-- HOME:END -->
 
-  <p class="sample" id="sample">현재 표시된 내용은 화면 구성을 확인하기 위한 <b>샘플 데이터</b>입니다. 실제 공고는 청약홈에서 확인하세요.</p>
 
   <!-- SEO:START 아래 목록은 scripts/build_site.py 가 자동으로 채웁니다. 직접 고치지 마세요. -->
   <section class="alllist" id="alllist">
@@ -498,11 +896,12 @@ function card(n){
   const el = document.createElement("article");
   el.className = "card";
   el.innerHTML = `
-    <button class="chead" type="button" aria-expanded="false">
-      <span class="ctop">
-        <span class="cname">${n.name}</span>
-        <span class="st ${cls}">${label}</span>
-      </span>
+    <div class="ctop">
+      ${n.slug ? `<a class="cname" href="/apt/${encodeURI(n.slug)}.html">${n.name}</a>`
+               : `<span class="cname">${n.name}</span>`}
+      <span class="st ${cls}">${label}</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="${n.name} 상세 정보 펼치기">
       <div class="cmeta">${n.region} ${n.district}<span class="sep">|</span>${n.type}<span class="sep">|</span>${n.zone}</div>
       <div class="cstat">
         <div>총 세대<strong>${n.total.toLocaleString()}</strong></div>
@@ -518,7 +917,8 @@ function card(n){
     </button>`;
 
   const btn = el.querySelector(".chead");
-  btn.onclick = () => {
+  btn.onclick = (e) => {
+    if (e.target.closest("a")) return;   // 단지명 링크는 상세 페이지로 이동
     const open = el.classList.toggle("open");
     btn.setAttribute("aria-expanded", open);
     if (open) el.appendChild(detail(n, jeonse));
@@ -580,8 +980,14 @@ function init(){
     jb.setAttribute("aria-pressed", state.jeonse);
     render();
   };
-  const banner = document.getElementById("sample");
-  if (LIVE) banner.remove();
+  /* 실데이터를 못 읽었을 때만 안내를 띄운다.
+     정적 HTML 에 박아두면 자바스크립트를 실행하지 않는 검색봇이 이 문구만 읽는다. */
+  if (!LIVE){
+    const p = document.createElement("p");
+    p.className = "sample"; p.id = "sample";
+    p.innerHTML = "현재 표시된 내용은 화면 구성을 확인하기 위한 <b>샘플 데이터</b>입니다. 실제 공고는 청약홈에서 확인하세요.";
+    document.getElementById("list").after(p);
+  }
   render();
 }
 
@@ -607,3 +1013,5 @@ document.getElementById("tbtn").onclick = () => {
   document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
 };
 </script>
+</body>
+</html>

@@ -11,7 +11,9 @@
 수집(collect.py) 직후에 실행한다.
 """
 import html, json, os, re, sys
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
+
+KST = timezone(timedelta(hours=9))
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://cheongyak.day"
@@ -68,10 +70,16 @@ def page(n, style, updated):
     jt = jeonse_text(n)
     tail = "전세 가능" if jt == "가능" else ("전세 불가" if jt == "불가" else "분양가와 일정")
     title = f"{n['name']} 청약 정보 · {tail} | 청약달력"
-    desc = (f"{n['region']} {n['district']} {n['name']} 청약 정보. "
-            f"총 {n['total']:,}세대, 분양가 {won(lo)}~{won(hi)}, "
-            f"전용 {amin:.0f}~{amax:.0f}㎡. 특별공급 {n['special']}, "
-            f"전매제한 {txt_resale(n)}, 실거주의무 {txt_live(n)}, 입주 후 전세 {jt}.")
+    # 검색결과에 그대로 노출되는 문장이라 짧게 쓰고, 값을 못 읽은 항목은 넣지 않는다.
+    # ("확인 필요" 가 반복되면 아는 것이 없는 페이지처럼 보인다)
+    desc = (f"{n['region']} {n['district']} · 총 {n['total']:,}세대 · "
+            f"분양가 {won(lo)}~{won(hi)}. 특별공급 {n['special']}. ")
+    if not unk(n["live"]):
+        desc += f"실거주의무 {txt_live(n)} → 입주 후 전세 {jt}."
+    elif not unk(n["resale"]):
+        desc += f"전매제한 {txt_resale(n)}. 평형별 공급·분양가와 청약 일정을 정리했습니다."
+    else:
+        desc += "평형별 공급·분양가와 청약 일정을 정리했습니다."
     url = f"{SITE}/apt/{n['_slug']}.html"
 
     rows = "\n".join(
@@ -99,9 +107,11 @@ def page(n, style, updated):
         ],
     }, ensure_ascii=False)
 
-    return f'''<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    return f'''<!DOCTYPE html>
 <html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}">
@@ -143,6 +153,8 @@ def page(n, style, updated):
 .back{{display:inline-block; margin-top:34px; font-size:14px; color:var(--accent); text-decoration:none}}
 </style>
 <script type="application/ld+json">{ld}</script>
+</head>
+<body>
 
 <header>
   <div class="wrap hd">
@@ -195,6 +207,8 @@ def page(n, style, updated):
     </div>
   </footer>
 </main>
+</body>
+</html>
 '''
 
 
@@ -234,9 +248,11 @@ def jeonse_page(items, style, updated):
             f"단지별 전매제한 기간도 함께 표시합니다.")
     url = SITE + "/jeonse.html"
 
-    return f'''<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    return f'''<!DOCTYPE html>
 <html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}">
@@ -279,6 +295,8 @@ def jeonse_page(items, style, updated):
   border-radius:8px; padding:12px 15px; font-size:13.5px; margin:20px 0}}
 .back{{display:inline-block; margin-top:32px; font-size:14px; color:var(--accent); text-decoration:none}}
 </style>
+</head>
+<body>
 
 <header>
   <div class="wrap hd">
@@ -324,7 +342,89 @@ def jeonse_page(items, style, updated):
     </div>
   </footer>
 </main>
+</body>
+</html>
 '''
+
+
+def home_list(items):
+    """메인의 카드 목록을 정적 HTML 로 미리 그린다.
+
+    두 가지를 동시에 해결한다.
+      1) 자바스크립트가 목록을 그리는 순간 아래 내용이 통째로 밀려 내려가던 문제(CLS)
+      2) 자바스크립트를 실행하지 않는 네이버 검색봇이 메인을 빈 페이지로 보던 문제
+    화면에 보이는 결과는 index.html 의 render() 가 그리는 것과 같다.
+    """
+    today = datetime.now(KST).date()
+    dow = ["월", "화", "수", "목", "금", "토", "일"]
+
+    def dt(v):
+        return date.fromisoformat(str(v)[:10])
+
+    def closed(n):
+        return dt(n["second"] or n["first"] or n["special"]) < today
+
+    def status(n):
+        if today > dt(n["contract"][:10]):
+            return "종료", "st-done"
+        if today > dt(n["second"]):
+            return "발표 대기", "st-done"
+        if today >= dt(n["special"]):
+            return "접수중", "st-open"
+        days = (dt(n["special"]) - today).days
+        return (f"D-{days}", "st-open") if days <= 7 else ("예정", "st-soon")
+
+    def card(n):
+        label, cls = status(n)
+        prices = [u["price"] for u in n["units"]]
+        areas = [u["area"] for u in n["units"]]
+        cls_resale = "" if unk(n["resale"]) else ("no" if n["resale"] <= 12 else "yes")
+        cls_live = "" if unk(n["live"]) else ("yes" if n["live"] else "no")
+        jt = jeonse_text(n)
+        cls_j = "" if jt == "공고문 확인 필요" else ("no" if jt == "가능" else "yes")
+        j_label = "확인 필요" if jt == "공고문 확인 필요" else jt
+        return f'''<article class="card">
+    <div class="ctop">
+      <a class="cname" href="/apt/{esc(n["_slug"])}.html">{esc(n["name"])}</a>
+      <span class="st {cls}">{label}</span>
+    </div>
+    <button class="chead" type="button" aria-expanded="false" aria-label="{esc(n["name"])} 상세 정보 펼치기">
+      <div class="cmeta">{esc(n["region"])} {esc(n["district"])}<span class="sep">|</span>{esc(n["type"])}<span class="sep">|</span>{esc(n["zone"])}</div>
+      <div class="cstat">
+        <div>총 세대<strong>{n["total"]:,}</strong></div>
+        <div>일반공급<strong>{n["general"]:,}</strong></div>
+        <div>분양가<strong>{won(min(prices))} ~ {won(max(prices))}</strong></div>
+        <div>전용면적<strong>{min(areas):.0f}~{max(areas):.0f}㎡</strong></div>
+      </div>
+      <div class="flags">
+        <span class="flag {cls_resale}">전매제한 {txt_resale(n)}</span>
+        <span class="flag {cls_live}">실거주의무 {txt_live(n)}</span>
+        <span class="flag {cls_j}">전세 {j_label}</span>
+      </div>
+    </button>
+  </article>'''
+
+    rows = sorted((n for n in items if not closed(n)), key=lambda n: n["special"])
+    out, cur = [], None
+    for n in rows:
+        if n["special"] != cur:
+            if cur is not None:
+                out.append("</div></section>")
+            cur = n["special"]
+            d0 = dt(cur)
+            diff = (d0 - today).days
+            rel = ("<span class=\"drel\">오늘</span>" if diff == 0 else
+                   f"<span class=\"drel\">D-{diff}</span>" if 0 < diff <= 14 else "")
+            out.append(f'''<section class="day"><div class="daymark">
+          <div><div class="dnum num">{d0.day}</div>
+          <div class="dmon">{d0.month}월 · {dow[d0.weekday()]}</div></div>
+          {rel}
+        </div><div class="cards">''')
+        out.append(card(n))
+    if cur is not None:
+        out.append("</div></section>")
+    return "\n".join(out)
+
 
 def main():
     src = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
@@ -345,10 +445,52 @@ def main():
             fp.write(page(n, style, updated))
     print(f"단지 페이지 {len(items)}개 생성", file=sys.stderr)
 
+    # 메인 화면 자바스크립트가 카드 제목을 상세 페이지 링크로 걸 수 있도록 slug 를 데이터에 남긴다
+    # (_slug 는 빌드용 내부 값이라 저장하지 않는다)
+    dump = dict(data)
+    dump["items"] = [{**{k: v for k, v in n.items() if k != "_slug"}, "slug": n["_slug"]}
+                     for n in items]
+    with open(os.path.join(ROOT, "data", "notices.json"), "w", encoding="utf-8") as fp:
+        json.dump(dump, fp, ensure_ascii=False, indent=1)
+
     with open(os.path.join(ROOT, "jeonse.html"), "w", encoding="utf-8") as fp:
         fp.write(jeonse_page(items, style, updated))
     ok_n = sum(1 for n in items if n["live"] == 0)
     print(f"전세 가능 페이지 생성 (가능 {ok_n}곳)", file=sys.stderr)
+
+    # 메인 카드 목록을 정적으로 미리 그려 넣는다 (CLS 방지 + 검색봇이 본문을 읽게)
+    src = re.sub(r"<!-- HOME:START.*?HOME:END -->",
+                 '<!-- HOME:START 목록은 scripts/build_site.py 가 자동으로 채웁니다. 직접 고치지 마세요. -->\n'
+                 '  <div id="list">\n' + home_list(items) + '\n</div>\n  <!-- HOME:END -->',
+                 src, count=1, flags=re.S)
+
+    # 지역 칩도 미리 심는다. 자바스크립트가 만들 때까지 비어 있으면
+    # 필터 영역 높이가 늘어나며 아래 내용이 통째로 밀린다(CLS).
+    regions, seen = ["전체"], set()
+    for n in items:
+        if n["region"] not in seen:
+            seen.add(n["region"]); regions.append(n["region"])
+    chips = "".join(
+        f'<button class="chip" type="button" aria-pressed="{"true" if i == 0 else "false"}">{esc(r)}</button>'
+        for i, r in enumerate(regions))
+    src = re.sub(r"<!-- CHIPS:START -->.*?<!-- CHIPS:END -->",
+                 "<!-- CHIPS:START -->" + chips + "<!-- CHIPS:END -->",
+                 src, count=1, flags=re.S)
+
+    # 개수 표시와 "지난 공고" 버튼도 미리 채운다. 비어 있다가 채워지면 한 줄이 늘어난다.
+    today = datetime.now(KST).date()
+    def _closed(n):
+        return date.fromisoformat(str(n["second"] or n["first"] or n["special"])[:10]) < today
+    shown = sum(1 for n in items if not _closed(n))
+    hidden_n = len(items) - shown
+    src = re.sub(r'<div class="count" id="count">.*?</div>',
+                 f'<div class="count" id="count">단지 {shown}곳 · 특별공급일 순</div>',
+                 src, count=1, flags=re.S)
+    past_btn = (f'<button class="chip" id="pastbtn" type="button" aria-pressed="false">'
+                f'지난 공고 {hidden_n}건 보기</button>' if hidden_n else
+                '<button class="chip" id="pastbtn" type="button" hidden></button>')
+    src = re.sub(r'<button class="chip" id="pastbtn".*?</button>', past_btn,
+                 src, count=1, flags=re.S)
 
     # 메인 아래쪽 정적 목록 (검색봇이 각 페이지를 찾아가는 통로)
     lis = "\n".join(

@@ -7,3 +7,16 @@
 
 /index.html
   Cache-Control: public, max-age=300
+
+# 단지 상세는 하루 한 번만 바뀐다. 엣지에 캐시해 원본 요청을 줄인다.
+/apt/*
+  Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
+
+/jeonse.html
+  Cache-Control: public, max-age=600, s-maxage=3600, stale-while-revalidate=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=3600
