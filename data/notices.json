@@ -1,6 +1,6 @@
 {
- "updated": "2026-09-17",
- "count": 25,
+ "updated": "2026-09-18",
+ "count": 33,
  "items": [
   {
    "id": "2026000404-2026000404",
@@ -1593,6 +1593,338 @@
    ]
   },
   {
+   "id": "2026820011-2026820011",
+   "name": "시흥하중지구 A-4블록 신혼희망타운(공공분양) 추가입주자모집",
+   "region": "경기",
+   "district": "시흥시 하중동",
+   "type": "공공",
+   "total": 61,
+   "general": 0,
+   "builder": "한신공영(주)",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-28",
+   "second": "2026-09-29",
+   "result": "2026-10-08",
+   "contract": "2026-12-29 ~ 12-30",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026820011&pblancNo=2026820011",
+   "units": [
+    {
+     "t": "055.0000O",
+     "area": 84.01,
+     "n": 1,
+     "gen": 0,
+     "price": 36707
+    },
+    {
+     "t": "056.0000O",
+     "area": 85.57,
+     "n": 60,
+     "gen": 0,
+     "price": 39358
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 경기남부지역본부"
+   ]
+  },
+  {
+   "id": "2026000448-2026000448",
+   "name": "숭의역 노르웨이숲 더 스카이",
+   "region": "인천",
+   "district": "미추홀구 숭의동",
+   "type": "민영",
+   "total": 35,
+   "general": 16,
+   "builder": "주식회사 유림E&C",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-29",
+   "second": "2026-09-30",
+   "result": "2026-10-07",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 12,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000448&pblancNo=2026000448",
+   "units": [
+    {
+     "t": "069.7032",
+     "area": 100.38,
+     "n": 13,
+     "gen": 6,
+     "price": 57874
+    },
+    {
+     "t": "084.9818",
+     "area": 124.48,
+     "n": 22,
+     "gen": 10,
+     "price": 73237
+    }
+   ],
+   "notes": [
+    "시행사 숭의역2단지지역주택조합"
+   ]
+  },
+  {
+   "id": "2026000446-2026000446",
+   "name": "진주 판문지구 레이크써밋 웰가",
+   "region": "경남",
+   "district": "진주시 판문동",
+   "type": "민영",
+   "total": 690,
+   "general": 344,
+   "builder": "흥한주택종합건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-29",
+   "second": "2026-09-30",
+   "result": "2026-10-08",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 0,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000446&pblancNo=2026000446",
+   "units": [
+    {
+     "t": "078.8382",
+     "area": 101.26,
+     "n": 130,
+     "gen": 58,
+     "price": 50300
+    },
+    {
+     "t": "084.9115A",
+     "area": 111.19,
+     "n": 203,
+     "gen": 91,
+     "price": 55600
+    },
+    {
+     "t": "084.9519B",
+     "area": 113.13,
+     "n": 277,
+     "gen": 125,
+     "price": 55300
+    },
+    {
+     "t": "119.6206",
+     "area": 145.3,
+     "n": 76,
+     "gen": 66,
+     "price": 72200
+    },
+    {
+     "t": "182.9263",
+     "area": 236.65,
+     "n": 4,
+     "gen": 4,
+     "price": 139500
+    }
+   ],
+   "notes": [
+    "시행사 주식회사 하나자산신탁"
+   ]
+  },
+  {
+   "id": "2026000445-2026000445",
+   "name": "삼천 하늘채 라비엘",
+   "region": "전북",
+   "district": "전주시 완산구",
+   "type": "민영",
+   "total": 116,
+   "general": 51,
+   "builder": "코오롱글로벌 주식회사",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-29",
+   "second": "2026-09-30",
+   "result": "2026-10-07",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 0,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000445&pblancNo=2026000445",
+   "units": [
+    {
+     "t": "059.9831",
+     "area": 79.62,
+     "n": 70,
+     "gen": 31,
+     "price": 38827
+    },
+    {
+     "t": "074.9225A",
+     "area": 99.11,
+     "n": 1,
+     "gen": 1,
+     "price": 49307
+    },
+    {
+     "t": "074.9823B",
+     "area": 100.28,
+     "n": 45,
+     "gen": 19,
+     "price": 49392
+    }
+   ],
+   "notes": [
+    "시행사 삼천주공3 재건축정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000443-2026000443",
+   "name": "에코델타시티 금강펜테리움 에코리버",
+   "region": "부산",
+   "district": "강서구 강동동",
+   "type": "민영",
+   "total": 358,
+   "general": 127,
+   "builder": "(주)금강주택",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-29",
+   "second": "2026-09-30",
+   "result": "2026-10-07",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 12,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000443&pblancNo=2026000443",
+   "units": [
+    {
+     "t": "059.9986A",
+     "area": 83.92,
+     "n": 183,
+     "gen": 64,
+     "price": 51100
+    },
+    {
+     "t": "059.9992B",
+     "area": 84.45,
+     "n": 175,
+     "gen": 63,
+     "price": 53200
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "시행사 (주)펜토건설"
+   ]
+  },
+  {
+   "id": "2026000436-2026000436",
+   "name": "더샵 시에르네(조합원취소분)(2회차)",
+   "region": "울산",
+   "district": "중구 학성동",
+   "type": "민영",
+   "total": 29,
+   "general": 13,
+   "builder": "㈜포스코이앤씨",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-29",
+   "second": "2026-09-30",
+   "result": "2026-10-07",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 6,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000436&pblancNo=2026000436",
+   "units": [
+    {
+     "t": "074.9469",
+     "area": 103.42,
+     "n": 1,
+     "gen": 1,
+     "price": 68400
+    },
+    {
+     "t": "075.9849",
+     "area": 105.8,
+     "n": 1,
+     "gen": 1,
+     "price": 68600
+    },
+    {
+     "t": "084.9630A",
+     "area": 108.44,
+     "n": 14,
+     "gen": 6,
+     "price": 74900
+    },
+    {
+     "t": "084.9650B",
+     "area": 108.71,
+     "n": 5,
+     "gen": 2,
+     "price": 75100
+    },
+    {
+     "t": "084.8968C",
+     "area": 109.37,
+     "n": 8,
+     "gen": 3,
+     "price": 74000
+    }
+   ],
+   "notes": [
+    "시행사 학성동지역주택조합"
+   ]
+  },
+  {
+   "id": "2026000424-2026000424",
+   "name": "쌍용 더 플래티넘 센텀",
+   "region": "부산",
+   "district": "수영구 망미동",
+   "type": "민영",
+   "total": 53,
+   "general": 31,
+   "builder": "쌍용건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-09-28",
+   "first": "2026-09-29",
+   "second": "2026-09-30",
+   "result": "2026-10-07",
+   "contract": "2026-10-19 ~ 10-21",
+   "resale": 6,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000424&pblancNo=2026000424",
+   "units": [
+    {
+     "t": "063.1378A",
+     "area": 85.91,
+     "n": 5,
+     "gen": 5,
+     "price": 93820
+    },
+    {
+     "t": "063.0513B",
+     "area": 86.54,
+     "n": 2,
+     "gen": 2,
+     "price": 91630
+    },
+    {
+     "t": "074.3998B",
+     "area": 101.2,
+     "n": 3,
+     "gen": 3,
+     "price": 110210
+    },
+    {
+     "t": "084.0948",
+     "area": 113.42,
+     "n": 43,
+     "gen": 21,
+     "price": 132100
+    }
+   ],
+   "notes": [
+    "시행사 수영구 망미동 지역주택조합"
+   ]
+  },
+  {
    "id": "2026000454-2026000454",
    "name": "천안 용곡 두산위브(조합원 취소분)",
    "region": "충남",
@@ -1635,6 +1967,79 @@
    ],
    "notes": [
     "시행사 용곡두산위브지역주택조합"
+   ]
+  },
+  {
+   "id": "2026000453-2026000453",
+   "name": "광명 시티프라디움 에듀하임",
+   "region": "경기",
+   "district": "광명시 소하동",
+   "type": "민영",
+   "total": 426,
+   "general": 190,
+   "builder": "(주)시티건설, (주)시티종합건설, (주)시티",
+   "zone": "투기과열지구",
+   "special": "2026-09-29",
+   "first": "2026-09-30",
+   "second": "2026-10-02",
+   "result": "2026-10-12",
+   "contract": "2026-10-24 ~ 10-26",
+   "resale": 36,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000453&pblancNo=2026000453",
+   "units": [
+    {
+     "t": "059.7421B",
+     "area": 78.3,
+     "n": 87,
+     "gen": 42,
+     "price": 87700
+    },
+    {
+     "t": "059.9742A",
+     "area": 78.5,
+     "n": 21,
+     "gen": 10,
+     "price": 87900
+    },
+    {
+     "t": "084.9648B",
+     "area": 109.15,
+     "n": 21,
+     "gen": 10,
+     "price": 119700
+    },
+    {
+     "t": "084.8481A",
+     "area": 109.18,
+     "n": 86,
+     "gen": 36,
+     "price": 118500
+    },
+    {
+     "t": "084.9558C",
+     "area": 109.18,
+     "n": 105,
+     "gen": 44,
+     "price": 118000
+    },
+    {
+     "t": "084.9796D",
+     "area": 109.56,
+     "n": 21,
+     "gen": 10,
+     "price": 119800
+    },
+    {
+     "t": "084.9149E",
+     "area": 110.28,
+     "n": 85,
+     "gen": 38,
+     "price": 118000
+    }
+   ],
+   "notes": [
+    "시행사 (주)시티글로벌"
    ]
   }
  ]
