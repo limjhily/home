@@ -1427,8 +1427,8 @@
    "second": "2026-10-14",
    "result": "2026-10-20",
    "contract": "2026-11-02 ~ 11-04",
-   "resale": null,
-   "live": null,
+   "resale": 6,
+   "live": 0,
    "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000468&pblancNo=2026000468",
    "units": [
     {
@@ -1632,8 +1632,8 @@
    "second": "2026-10-14",
    "result": "2026-10-20",
    "contract": "2026-11-02 ~ 11-04",
-   "resale": null,
-   "live": null,
+   "resale": 6,
+   "live": 0,
    "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000386&pblancNo=2026000386",
    "units": [
     {
