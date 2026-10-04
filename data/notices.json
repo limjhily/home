@@ -1,52 +1,7 @@
 {
- "updated": "2026-10-03",
- "count": 30,
+ "updated": "2026-10-04",
+ "count": 28,
  "items": [
-  {
-   "id": "2026000202-2026000202",
-   "name": "대전 경남아너스빌 센텀스카이",
-   "region": "대전",
-   "district": "중구 대흥동",
-   "type": "민영",
-   "total": 142,
-   "general": 67,
-   "builder": "경남기업(주)",
-   "zone": "비규제지역",
-   "special": "2026-09-08",
-   "first": "2026-09-09",
-   "second": "2026-09-10",
-   "result": "2026-09-16",
-   "contract": "2026-09-28 ~ 09-30",
-   "resale": 6,
-   "live": 0,
-   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000202&pblancNo=2026000202",
-   "units": [
-    {
-     "t": "084.2259A",
-     "area": 116.47,
-     "n": 72,
-     "gen": 33,
-     "price": 59600
-    },
-    {
-     "t": "084.5328B",
-     "area": 116.57,
-     "n": 54,
-     "gen": 25,
-     "price": 59900
-    },
-    {
-     "t": "084.8209C",
-     "area": 117.12,
-     "n": 16,
-     "gen": 9,
-     "price": 59400
-    }
-   ],
-   "notes": [
-    "시행사 탑스텐빌라드애월제주(주)"
-   ]
-  },
   {
    "id": "2026000426-2026000426",
    "name": "천안 아이파크 시티 4단지",
@@ -295,51 +250,6 @@
    ],
    "notes": [
     "시행사 울산온양발리스타지역주택조합"
-   ]
-  },
-  {
-   "id": "2026000394-2026000394",
-   "name": "더샵 여주역더퍼스트",
-   "region": "경기",
-   "district": "여주시 홍문동",
-   "type": "민영",
-   "total": 696,
-   "general": 313,
-   "builder": "(주)포스코이앤씨",
-   "zone": "비규제지역",
-   "special": "2026-09-14",
-   "first": "2026-09-15",
-   "second": "2026-09-16",
-   "result": "2026-09-22",
-   "contract": "2026-10-06 ~ 10-08",
-   "resale": 6,
-   "live": 0,
-   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000394&pblancNo=2026000394",
-   "units": [
-    {
-     "t": "084.8414C",
-     "area": 112.39,
-     "n": 26,
-     "gen": 10,
-     "price": 50786
-    },
-    {
-     "t": "084.6536A",
-     "area": 112.41,
-     "n": 546,
-     "gen": 247,
-     "price": 51965
-    },
-    {
-     "t": "084.0452B",
-     "area": 113.05,
-     "n": 124,
-     "gen": 56,
-     "price": 51860
-    }
-   ],
-   "notes": [
-    "시행사 한국투자부동산신탁 주식회사"
    ]
   },
   {
