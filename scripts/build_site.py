@@ -6,7 +6,11 @@
 자바스크립트를 실행하지 않아 빈 페이지로 본다. 그래서
   1) 단지마다 정적 HTML 페이지를 만들고
   2) 메인 아래쪽에 그 페이지들로 가는 목록을 심고
-  3) sitemap.xml / robots.txt 를 만든다.
+  3) sitemap.xml / robots.txt / 404.html 을 만든다.
+
+수집 목록에서 빠진(접수가 끝난) 단지도 페이지를 지우지 않는다.
+단지명 검색은 당첨 발표·계약·입주 때까지 계속 들어오기 때문이다.
+data/archive.json 에 보관해 두고 "청약 마감" 표시를 붙여 계속 만든다.
 
 수집(collect.py) 직후에 실행한다.
 """
@@ -16,6 +20,7 @@ from datetime import date
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://cheongyak.day"
 APT_DIR = os.path.join(ROOT, "apt")
+ARCHIVE = os.path.join(ROOT, "data", "archive.json")
 
 DOW = ["월", "화", "수", "목", "금", "토", "일"]
 
@@ -66,9 +71,10 @@ def page(n, style, updated):
     amin = min(u["area"] for u in units)
     amax = max(u["area"] for u in units)
     jt = jeonse_text(n)
+    closed = n.get("_closed")
     tail = "전세 가능" if jt == "가능" else ("전세 불가" if jt == "불가" else "분양가와 일정")
     title = f"{n['name']} 청약 정보 · {tail} | 청약달력"
-    desc = (f"{n['region']} {n['district']} {n['name']} 청약 정보. "
+    desc = (f"{n['region']} {n['district']} {n['name']} 청약 정보{' (청약 마감)' if closed else ''}. "
             f"총 {n['total']:,}세대, 분양가 {won(lo)}~{won(hi)}, "
             f"전용 {amin:.0f}~{amax:.0f}㎡. 특별공급 {n['special']}, "
             f"전매제한 {txt_resale(n)}, 실거주의무 {txt_live(n)}, 입주 후 전세 {jt}.")
@@ -89,6 +95,11 @@ def page(n, style, updated):
                        ("당첨자 발표", "result"), ("계약", "contract")][1:])
 
     notes = "".join(f"<li>{esc(t)}</li>" for t in n.get("notes", []))
+
+    banner = (f'<div class="closed"><b>청약 마감</b> 이 단지는 청약 접수가 끝났습니다. '
+              f'당첨자 발표 {esc(n["result"] or "-")} · 계약 {esc(n["contract"] or "-")}. '
+              f'지금 접수 중인 단지는 <a href="/">전체 청약 일정</a>에서 볼 수 있습니다.</div>'
+              if closed else "")
 
     ld = json.dumps({
         "@context": "https://schema.org",
@@ -136,6 +147,10 @@ def page(n, style, updated):
 .doc .notes li{{margin-bottom:4px}}
 .warn{{background:var(--warn-bg); color:var(--warn); border:1px solid color-mix(in srgb, var(--warn) 25%, transparent);
   border-radius:8px; padding:11px 14px; font-size:13px; margin:16px 0}}
+.closed{{background:var(--off-bg); color:var(--ink-2); border-radius:8px; padding:11px 14px;
+  font-size:13.5px; line-height:1.7; margin:0 0 18px}}
+.closed b{{color:var(--off); margin-right:6px}}
+.closed a{{color:var(--accent)}}
 .golink{{display:inline-block; margin-top:8px; background:var(--accent); color:#fff;
   text-decoration:none; font-size:14px; font-weight:500; padding:9px 18px; border-radius:8px}}
 @media (prefers-color-scheme: dark){{:root:not([data-theme="light"]) .golink{{color:#0E1219}}}}
@@ -156,6 +171,7 @@ def page(n, style, updated):
   <h1>{esc(n["name"])} 청약 정보</h1>
   <p class="where">{esc(n["region"])} {esc(n["district"])} · {esc(n["type"])}주택 · {esc(n["zone"])}
      {" · 시공 " + esc(n["builder"]) if n.get("builder") else ""}</p>
+  {banner}
 
   <dl class="keyfacts">
     <div><dt>총 세대수</dt><dd>{n["total"]:,}</dd></div>
@@ -188,7 +204,7 @@ def page(n, style, updated):
   <p><a class="golink" href="{esc(n["link"])}" target="_blank" rel="noopener">청약홈에서 공고문 보기 →</a></p>
 
   <a class="back" href="/">← 전체 청약 일정 보기</a>
-  <footer style="margin-top:30px">데이터 기준 {updated} · 자료 출처 한국부동산원 청약홈 ·
+  <footer style="margin-top:30px">데이터 기준 {closed or updated} · 자료 출처 한국부동산원 청약홈 ·
     정보 제공 목적이며 법적 효력이 없습니다.
     <div style="margin-top:8px; display:flex; gap:14px; flex-wrap:wrap">
       <a href="/privacy.html">개인정보처리방침</a><a href="/contact.html">문의하기</a>
@@ -326,6 +342,37 @@ def jeonse_page(items, style, updated):
 </main>
 '''
 
+def not_found_page(style):
+    """없는 주소용. Cloudflare Pages 는 루트의 404.html 을 404 상태로 돌려준다.
+    이 파일이 없으면 메인 페이지를 200 으로 내보내 구글이 soft 404 로 본다."""
+    return f'''<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko">
+<title>페이지를 찾을 수 없습니다 | 청약달력</title>
+<meta name="robots" content="noindex">
+{style}
+<style>
+.doc{{max-width:760px; margin:0 auto; padding:60px 16px}}
+.doc h1{{font-family:"Noto Serif KR",serif; font-size:24px; margin:0 0 10px}}
+.doc p{{color:var(--ink-2); font-size:14.5px; line-height:1.75}}
+.doc a{{color:var(--accent)}}
+</style>
+
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="/" style="text-decoration:none">청약<b>달력</b></a>
+    <span class="tag">분양가 · 세대수 · 전매제한 · 실거주의무를 날짜순으로</span>
+  </div>
+</header>
+
+<main class="doc">
+  <h1>페이지를 찾을 수 없습니다</h1>
+  <p>주소가 바뀌었거나 없는 페이지입니다.</p>
+  <p><a href="/">전체 청약 일정 보기</a> · <a href="/jeonse.html">전세 가능 단지 보기</a></p>
+</main>
+'''
+
+
 def main():
     src = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     style = re.search(r"<style>.*?</style>", src, re.S).group(0)
@@ -334,16 +381,34 @@ def main():
     items = data["items"]
     updated = data.get("updated", str(date.today()))
 
-    os.makedirs(APT_DIR, exist_ok=True)
-    for f in os.listdir(APT_DIR):          # 지난 공고 페이지는 정리한다
-        if f.endswith(".html"):
-            os.remove(os.path.join(APT_DIR, f))
-
+    # 지난 공고 보관. 목록에서 빠진 날을 _closed 로 남긴다.
+    archive = json.load(open(ARCHIVE, encoding="utf-8")) if os.path.exists(ARCHIVE) else {}
+    current = {n["id"] for n in items}
     for n in items:
+        archive[n["id"]] = n
+    for k, n in archive.items():
+        if k not in current and not n.get("_closed"):
+            n["_closed"] = updated
+    with open(ARCHIVE, "w", encoding="utf-8") as fp:
+        json.dump({k: {f: v for f, v in n.items() if f != "_slug"} for k, n in archive.items()},
+                  fp, ensure_ascii=False, indent=1)
+    closed = sorted((n for k, n in archive.items() if k not in current),
+                    key=lambda n: n["_closed"], reverse=True)
+
+    os.makedirs(APT_DIR, exist_ok=True)
+    keep = set()
+    for n in items + closed:
         n["_slug"] = slug(n["name"], n["id"].split("-")[0])
+        keep.add(n["_slug"] + ".html")
         with open(os.path.join(APT_DIR, n["_slug"] + ".html"), "w", encoding="utf-8") as fp:
             fp.write(page(n, style, updated))
-    print(f"단지 페이지 {len(items)}개 생성", file=sys.stderr)
+    for f in os.listdir(APT_DIR):          # 단지명이 바뀌어 주소가 달라진 옛 파일만 정리
+        if f.endswith(".html") and f not in keep:
+            os.remove(os.path.join(APT_DIR, f))
+    print(f"단지 페이지 {len(items)}개 + 마감 {len(closed)}개 생성", file=sys.stderr)
+
+    with open(os.path.join(ROOT, "404.html"), "w", encoding="utf-8") as fp:
+        fp.write(not_found_page(style))
 
     with open(os.path.join(ROOT, "jeonse.html"), "w", encoding="utf-8") as fp:
         fp.write(jeonse_page(items, style, updated))
@@ -371,6 +436,7 @@ def main():
             (SITE + "/privacy.html", updated, "yearly", "0.2"),
             (SITE + "/contact.html", updated, "yearly", "0.2")]
     urls += [(f"{SITE}/apt/{n['_slug']}.html", updated, "weekly", "0.8") for n in items]
+    urls += [(f"{SITE}/apt/{n['_slug']}.html", n["_closed"], "monthly", "0.5") for n in closed]
     body = "\n".join(
         f"  <url><loc>{u}</loc><lastmod>{m}</lastmod>"
         f"<changefreq>{c}</changefreq><priority>{p}</priority></url>"

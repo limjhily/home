@@ -23,12 +23,15 @@
 ```
 index.html         메인. 스타일(<style>)은 여기 한 곳에만 있고 다른 페이지가 가져다 쓴다
 jeonse.html        전세 가능 단지 모음 (자동 생성)
-apt/*.html         단지별 상세 페이지 (자동 생성, 현재 26개)
+404.html           없는 주소용 (자동 생성). 없으면 Cloudflare 가 메인을 200 으로 내보내 soft 404 가 된다
+apt/*.html         단지별 상세 페이지 (자동 생성). 접수가 끝난 단지도 "청약 마감" 표시로 계속 남긴다
 privacy.html       개인정보처리방침 (수동)
 contact.html       문의 (수동) · contact@cheongyak.day
 data/notices.json  수집 결과 (자동 생성)
 data/overrides.json  자동 추출이 틀렸을 때 손으로 덮어쓰는 값
 data/pdf_cache.json  이미 읽은 공고 건너뛰기용 (자동)
+data/archive.json  지금까지 나온 모든 공고 보관 (자동). 목록에서 빠진 날이 _closed
+                   단지명 검색은 마감 뒤에도 들어오므로 지난 페이지를 지우지 않으려고 둔다
 scripts/collect.py       청약홈 OpenAPI 수집 + 공고문에서 전매제한·거주의무 추출
 scripts/pblanc_pdf.py    표(PDF·HTML 공통) 파서. --selftest 로 13종 검증
 scripts/build_site.py    정적 페이지·sitemap·robots.txt 생성
@@ -40,8 +43,8 @@ _headers           Cloudflare Pages 캐시/보안 헤더
 ## 손대면 안 되는 곳
 
 - `index.html` 의 `<!-- SEO:START -->` ~ `<!-- SEO:END -->` 구간 — `build_site.py` 가 덮어쓴다
-- `apt/`, `jeonse.html`, `sitemap.xml`, `robots.txt` — 전부 자동 생성. 고치려면 `build_site.py` 를 고칠 것
-- `data/notices.json`, `data/pdf_cache.json` — 자동 생성
+- `apt/`, `jeonse.html`, `404.html`, `sitemap.xml`, `robots.txt` — 전부 자동 생성. 고치려면 `build_site.py` 를 고칠 것
+- `data/notices.json`, `data/pdf_cache.json`, `data/archive.json` — 자동 생성. archive 를 지우면 지난 단지 페이지가 사라진다
 
 ## 작업 흐름
 
