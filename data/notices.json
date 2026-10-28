@@ -1,6 +1,6 @@
 {
- "updated": "2026-10-27",
- "count": 32,
+ "updated": "2026-10-28",
+ "count": 34,
  "items": [
   {
    "id": "2026000498-2026000498",
@@ -2092,6 +2092,84 @@
     "분양가상한제 적용 단지",
     "공공택지",
     "시행사 서울주택도시개발공사"
+   ]
+  },
+  {
+   "id": "2026000435-2026000435",
+   "name": "삼도이동 2지구 토지임대부 공공분양주택",
+   "region": "제주",
+   "district": "제주시 삼도이동",
+   "type": "공공",
+   "total": 40,
+   "general": 8,
+   "builder": "국토건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-11-16",
+   "first": "2026-11-17",
+   "second": "2026-11-18",
+   "result": "2026-11-25",
+   "contract": "2027-01-25 ~ 01-29",
+   "resale": null,
+   "live": 5,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000435&pblancNo=2026000435",
+   "units": [
+    {
+     "t": "049.5837A",
+     "area": 73.31,
+     "n": 8,
+     "gen": 2,
+     "price": 25200
+    },
+    {
+     "t": "059.9783A",
+     "area": 87.84,
+     "n": 32,
+     "gen": 6,
+     "price": 30197
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "시행사 제주특별자치도개발공사"
+   ]
+  },
+  {
+   "id": "2026000434-2026000434",
+   "name": "삼도이동 1지구 토지임대부 공공분양주택",
+   "region": "제주",
+   "district": "제주시 삼도이동",
+   "type": "공공",
+   "total": 32,
+   "general": 6,
+   "builder": "국토건설(주)",
+   "zone": "비규제지역",
+   "special": "2026-11-16",
+   "first": "2026-11-17",
+   "second": "2026-11-18",
+   "result": "2026-11-24",
+   "contract": "2027-01-25 ~ 01-29",
+   "resale": null,
+   "live": 5,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000434&pblancNo=2026000434",
+   "units": [
+    {
+     "t": "049.5837A",
+     "area": 71.95,
+     "n": 8,
+     "gen": 2,
+     "price": 25235
+    },
+    {
+     "t": "059.9783A",
+     "area": 86.2,
+     "n": 24,
+     "gen": 4,
+     "price": 30233
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "시행사 제주특별자치도개발공사"
    ]
   }
  ]
