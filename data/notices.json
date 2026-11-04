@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-03",
- "count": 38,
+ "updated": "2026-11-04",
+ "count": 40,
  "items": [
   {
    "id": "2026000466-2026000466",
@@ -2255,6 +2255,98 @@
    ],
    "notes": [
     "시행사 한국투자부동산신탁(주)"
+   ]
+  },
+  {
+   "id": "2026820014-2026820014",
+   "name": "남양주왕숙 A-2블록 신혼희망타운(공공분양) 잔여세대 추가입주자모집공고",
+   "region": "경기",
+   "district": "남양주시 퇴계원읍",
+   "type": "공공",
+   "total": 32,
+   "general": 0,
+   "builder": "계룡건설산업(주), 미래이앤시(주), (주)오스코",
+   "zone": "비규제지역",
+   "special": "2026-11-11",
+   "first": "2026-11-11",
+   "second": "2026-11-12",
+   "result": "2026-11-19",
+   "contract": "2027-02-01 ~ 02-02",
+   "resale": null,
+   "live": null,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026820014&pblancNo=2026820014",
+   "units": [
+    {
+     "t": "046.0000O",
+     "area": 67.17,
+     "n": 18,
+     "gen": 0,
+     "price": 35276
+    },
+    {
+     "t": "055.0000O",
+     "area": 79.79,
+     "n": 14,
+     "gen": 0,
+     "price": 41908
+    }
+   ],
+   "notes": [
+    "분양가상한제 적용 단지",
+    "공공택지",
+    "시행사 한국토지주택공사 경기북부지역본부"
+   ]
+  },
+  {
+   "id": "2026000554-2026000554",
+   "name": "리첼 에듀포레 경산역",
+   "region": "경북",
+   "district": "경산시 사정동",
+   "type": "민영",
+   "total": 201,
+   "general": 91,
+   "builder": "에쓰와이이앤씨",
+   "zone": "비규제지역",
+   "special": "2026-11-13",
+   "first": "2026-11-16",
+   "second": "2026-11-17",
+   "result": "2026-11-23",
+   "contract": "2026-12-04 ~ 12-06",
+   "resale": 0,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000554&pblancNo=2026000554",
+   "units": [
+    {
+     "t": "062.2537",
+     "area": 83.14,
+     "n": 42,
+     "gen": 16,
+     "price": 48070
+    },
+    {
+     "t": "084.9417C",
+     "area": 111.41,
+     "n": 35,
+     "gen": 19,
+     "price": 61063
+    },
+    {
+     "t": "084.9417A",
+     "area": 111.55,
+     "n": 77,
+     "gen": 36,
+     "price": 63363
+    },
+    {
+     "t": "084.8838B",
+     "area": 112.26,
+     "n": 47,
+     "gen": 20,
+     "price": 63811
+    }
+   ],
+   "notes": [
+    "시행사 강변사정동지역주택조합"
    ]
   },
   {
