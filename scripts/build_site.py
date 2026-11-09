@@ -21,6 +21,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://cheongyak.day"
 APT_DIR = os.path.join(ROOT, "apt")
 ARCHIVE = os.path.join(ROOT, "data", "archive.json")
+# 주소는 확장자 없이 쓴다. Cloudflare Pages 가 .html 주소를 확장자 없는 주소로
+# 308 리다이렉트하므로, canonical·sitemap 에 .html 을 쓰면 구글이 두 주소를 서로의
+# 대체 페이지로 보고 어느 쪽도 색인하지 않는다(2026-11 서치콘솔 경고).
 
 DOW = ["월", "화", "수", "목", "금", "토", "일"]
 
@@ -78,7 +81,7 @@ def page(n, style, updated):
             f"총 {n['total']:,}세대, 분양가 {won(lo)}~{won(hi)}, "
             f"전용 {amin:.0f}~{amax:.0f}㎡. 특별공급 {n['special']}, "
             f"전매제한 {txt_resale(n)}, 실거주의무 {txt_live(n)}, 입주 후 전세 {jt}.")
-    url = f"{SITE}/apt/{n['_slug']}.html"
+    url = f"{SITE}/apt/{n['_slug']}"
 
     rows = "\n".join(
         f'<tr><td class="hi">{esc(type_name(u))}</td><td class="n">{u["area"]:.2f}㎡</td>'
@@ -207,7 +210,7 @@ def page(n, style, updated):
   <footer style="margin-top:30px">데이터 기준 {closed or updated} · 자료 출처 한국부동산원 청약홈 ·
     정보 제공 목적이며 법적 효력이 없습니다.
     <div style="margin-top:8px; display:flex; gap:14px; flex-wrap:wrap">
-      <a href="/privacy.html">개인정보처리방침</a><a href="/contact.html">문의하기</a>
+      <a href="/privacy">개인정보처리방침</a><a href="/contact">문의하기</a>
     </div>
   </footer>
 </main>
@@ -227,7 +230,7 @@ def jeonse_page(items, style, updated):
 
     def rows(group):
         return "\n".join(
-            f'<tr><td class="hi"><a href="/apt/{n["_slug"]}.html">{esc(n["name"])}</a></td>'
+            f'<tr><td class="hi"><a href="/apt/{n["_slug"]}">{esc(n["name"])}</a></td>'
             f'<td>{esc(n["region"])} {esc(n["district"])}</td>'
             f'<td class="n">{txt_resale(n)}</td>'
             f'<td class="n">{txt_live(n)}</td>'
@@ -248,7 +251,7 @@ def jeonse_page(items, style, updated):
     desc = (f"분양받은 아파트에 전세를 놓을 수 있는지 한눈에 확인하세요. "
             f"{updated} 기준 실거주의무가 없어 전세가 가능한 단지 {len(ok)}곳을 정리했습니다. "
             f"단지별 전매제한 기간도 함께 표시합니다.")
-    url = SITE + "/jeonse.html"
+    url = SITE + "/jeonse"
 
     return f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -336,7 +339,7 @@ def jeonse_page(items, style, updated):
   <a class="back" href="/">← 전체 청약 일정 보기</a>
   <footer style="margin-top:30px">데이터 기준 {updated} · 자료 출처 한국부동산원 청약홈
     <div style="margin-top:8px; display:flex; gap:14px; flex-wrap:wrap">
-      <a href="/privacy.html">개인정보처리방침</a><a href="/contact.html">문의하기</a>
+      <a href="/privacy">개인정보처리방침</a><a href="/contact">문의하기</a>
     </div>
   </footer>
 </main>
@@ -368,7 +371,7 @@ def not_found_page(style):
 <main class="doc">
   <h1>페이지를 찾을 수 없습니다</h1>
   <p>주소가 바뀌었거나 없는 페이지입니다.</p>
-  <p><a href="/">전체 청약 일정 보기</a> · <a href="/jeonse.html">전세 가능 단지 보기</a></p>
+  <p><a href="/">전체 청약 일정 보기</a> · <a href="/jeonse">전세 가능 단지 보기</a></p>
 </main>
 '''
 
@@ -417,7 +420,7 @@ def main():
 
     # 메인 아래쪽 정적 목록 (검색봇이 각 페이지를 찾아가는 통로)
     lis = "\n".join(
-        f'<li><a href="/apt/{n["_slug"]}.html">{esc(n["name"])}</a>'
+        f'<li><a href="/apt/{n["_slug"]}">{esc(n["name"])}</a>'
         f'<div class="meta">{esc(n["region"])} {esc(n["district"])} · 특별공급 {esc(n["special"])}</div></li>'
         for n in items)
     block = (f'<section class="alllist" id="alllist">\n'
@@ -432,11 +435,11 @@ def main():
 
     # sitemap.xml
     urls = [(SITE + "/", updated, "daily", "1.0"),
-            (SITE + "/jeonse.html", updated, "daily", "0.9"),
-            (SITE + "/privacy.html", updated, "yearly", "0.2"),
-            (SITE + "/contact.html", updated, "yearly", "0.2")]
-    urls += [(f"{SITE}/apt/{n['_slug']}.html", updated, "weekly", "0.8") for n in items]
-    urls += [(f"{SITE}/apt/{n['_slug']}.html", n["_closed"], "monthly", "0.5") for n in closed]
+            (SITE + "/jeonse", updated, "daily", "0.9"),
+            (SITE + "/privacy", updated, "yearly", "0.2"),
+            (SITE + "/contact", updated, "yearly", "0.2")]
+    urls += [(f"{SITE}/apt/{n['_slug']}", updated, "weekly", "0.8") for n in items]
+    urls += [(f"{SITE}/apt/{n['_slug']}", n["_closed"], "monthly", "0.5") for n in closed]
     body = "\n".join(
         f"  <url><loc>{u}</loc><lastmod>{m}</lastmod>"
         f"<changefreq>{c}</changefreq><priority>{p}</priority></url>"

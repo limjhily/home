@@ -71,6 +71,9 @@ python3 -m http.server 8000                # 로컬 확인 (file:// 로 열면 J
 - 폰트는 `display=optional` 이다. `swap` 으로 되돌리면 한글 폰트가 늦게 올 때
   레이아웃이 밀려 CLS 가 0.68 까지 나빠진다(측정값). 지금은 0.02.
 - `.filters` 의 `min-height`, `#list` 의 `min-height` 도 같은 이유로 넣었다. 지우지 말 것.
+- 주소는 확장자 없이 쓴다(`/apt/단지명-번호`, `/jeonse`). Cloudflare Pages 가 `.html` 주소를
+  확장자 없는 주소로 308 리다이렉트하므로, canonical·sitemap·내부 링크에 `.html` 을 쓰면
+  구글이 두 주소 모두 "대체 페이지"로 보고 색인하지 않는다(2026-11 서치콘솔 경고로 발견).
 - 구글 서치콘솔·네이버 서치어드바이저 등록 완료. 사이트맵 제출 완료.
 - `index.html` 의 `naver-site-verification` 메타태그를 지우면 네이버 소유확인이 풀린다.
 
