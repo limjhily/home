@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-13",
- "count": 37,
+ "updated": "2026-11-14",
+ "count": 43,
  "items": [
   {
    "id": "2026000514-2026000514",
@@ -2189,6 +2189,259 @@
    ]
   },
   {
+   "id": "2026000566-2026000566",
+   "name": "호반써밋 초량",
+   "region": "부산",
+   "district": "동구 초량3동",
+   "type": "민영",
+   "total": 236,
+   "general": 99,
+   "builder": "(주)호반건설",
+   "zone": "비규제지역",
+   "special": "2026-11-23",
+   "first": "2026-11-24",
+   "second": "2026-11-25",
+   "result": "2026-12-01",
+   "contract": "2026-12-14 ~ 12-16",
+   "resale": 6,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000566&pblancNo=2026000566",
+   "units": [
+    {
+     "t": "059.9942B",
+     "area": 82.25,
+     "n": 42,
+     "gen": 18,
+     "price": 54820
+    },
+    {
+     "t": "059.9445A",
+     "area": 82.44,
+     "n": 59,
+     "gen": 24,
+     "price": 56320
+    },
+    {
+     "t": "070.9993A",
+     "area": 96.68,
+     "n": 35,
+     "gen": 17,
+     "price": 62830
+    },
+    {
+     "t": "084.9763A",
+     "area": 110.26,
+     "n": 100,
+     "gen": 40,
+     "price": 74680
+    }
+   ],
+   "notes": [
+    "시행사 초량3구역주택재개발정비사업조합"
+   ]
+  },
+  {
+   "id": "2026000563-2026000563",
+   "name": "더샵 트리센트(조합원 자격상실 세대분)",
+   "region": "부산",
+   "district": "남구 문현동",
+   "type": "민영",
+   "total": 103,
+   "general": 43,
+   "builder": "(주)포스코이앤씨",
+   "zone": "비규제지역",
+   "special": "2026-11-23",
+   "first": "2026-11-24",
+   "second": "2026-11-25",
+   "result": "2026-12-01",
+   "contract": "2026-12-13 ~ 12-15",
+   "resale": 6,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000563&pblancNo=2026000563",
+   "units": [
+    {
+     "t": "059.5981",
+     "area": 81.39,
+     "n": 58,
+     "gen": 26,
+     "price": 62800
+    },
+    {
+     "t": "075.4145",
+     "area": 101.96,
+     "n": 25,
+     "gen": 9,
+     "price": 76000
+    },
+    {
+     "t": "084.4817",
+     "area": 114.29,
+     "n": 20,
+     "gen": 8,
+     "price": 84900
+    }
+   ],
+   "notes": [
+    "시행사 문현마루지역주택조합"
+   ]
+  },
+  {
+   "id": "2026000560-2026000560",
+   "name": "해링턴 플레이스 문래",
+   "region": "서울",
+   "district": "영등포구",
+   "type": "민영",
+   "total": 218,
+   "general": 101,
+   "builder": "효성중공업 주식회사",
+   "zone": "투기과열지구",
+   "special": "2026-11-23",
+   "first": "2026-11-24",
+   "second": "2026-11-26",
+   "result": "2026-12-02",
+   "contract": "2026-12-14 ~ 12-16",
+   "resale": 36,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000560&pblancNo=2026000560",
+   "units": [
+    {
+     "t": "084.9894C",
+     "area": 108.74,
+     "n": 54,
+     "gen": 25,
+     "price": 177500
+    },
+    {
+     "t": "084.9409A",
+     "area": 109.7,
+     "n": 110,
+     "gen": 51,
+     "price": 182700
+    },
+    {
+     "t": "084.9708B",
+     "area": 110.43,
+     "n": 54,
+     "gen": 25,
+     "price": 178500
+    }
+   ],
+   "notes": [
+    "시행사 우리자산신탁 주식회사"
+   ]
+  },
+  {
+   "id": "2026000558-2026000558",
+   "name": "화정1지구 아르엘",
+   "region": "울산",
+   "district": "동구 화정동",
+   "type": "민영",
+   "total": 802,
+   "general": 370,
+   "builder": "(주)서한",
+   "zone": "비규제지역",
+   "special": "2026-11-23",
+   "first": "2026-11-24",
+   "second": "2026-11-25",
+   "result": "2026-12-01",
+   "contract": "2026-12-14 ~ 12-17",
+   "resale": 6,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000558&pblancNo=2026000558",
+   "units": [
+    {
+     "t": "059.9860A",
+     "area": 81.57,
+     "n": 70,
+     "gen": 26,
+     "price": 43590
+    },
+    {
+     "t": "084.9906B",
+     "area": 113.48,
+     "n": 48,
+     "gen": 16,
+     "price": 55830
+    },
+    {
+     "t": "084.9980A",
+     "area": 114.22,
+     "n": 487,
+     "gen": 191,
+     "price": 56690
+    },
+    {
+     "t": "084.9990C",
+     "area": 114.51,
+     "n": 45,
+     "gen": 15,
+     "price": 56690
+    },
+    {
+     "t": "101.9560T",
+     "area": 135.74,
+     "n": 8,
+     "gen": 5,
+     "price": 59550
+    },
+    {
+     "t": "101.9938A",
+     "area": 136.22,
+     "n": 144,
+     "gen": 117,
+     "price": 61310
+    }
+   ],
+   "notes": [
+    "시행사 화정1지구이다음피에프브이 주식회사/(주)서한"
+   ]
+  },
+  {
+   "id": "2026000540-2026000540",
+   "name": "엘리프 논산 디에디션",
+   "region": "충남",
+   "district": "논산시 내동3지구",
+   "type": "민영",
+   "total": 499,
+   "general": 231,
+   "builder": "계룡건설산업 주식회사",
+   "zone": "비규제지역",
+   "special": "2026-11-23",
+   "first": "2026-11-24",
+   "second": "2026-11-25",
+   "result": "2026-12-02",
+   "contract": "2026-12-14 ~ 12-17",
+   "resale": 0,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000540&pblancNo=2026000540",
+   "units": [
+    {
+     "t": "084.9946A",
+     "area": 111.47,
+     "n": 372,
+     "gen": 169,
+     "price": 53200
+    },
+    {
+     "t": "084.9680C",
+     "area": 112.07,
+     "n": 37,
+     "gen": 20,
+     "price": 50800
+    },
+    {
+     "t": "084.9806B",
+     "area": 112.27,
+     "n": 90,
+     "gen": 42,
+     "price": 53200
+    }
+   ],
+   "notes": [
+    "시행사 한국자산신탁(주)"
+   ]
+  },
+  {
    "id": "2026000576-2026000576",
    "name": "아르뮤제자이",
    "region": "경기",
@@ -2313,6 +2566,58 @@
     "분양가상한제 적용 단지",
     "공공택지",
     "시행사 남광토건 주식회사"
+   ]
+  },
+  {
+   "id": "2026000505-2026000505",
+   "name": "경희궁 에피트",
+   "region": "서울",
+   "district": "종로구 교남동",
+   "type": "민영",
+   "total": 134,
+   "general": 62,
+   "builder": "에이치엘디앤아이한라 주식회사",
+   "zone": "투기과열지구",
+   "special": "2026-11-25",
+   "first": "2026-11-26",
+   "second": "2026-11-30",
+   "result": "2026-12-04",
+   "contract": "2026-12-16 ~ 12-18",
+   "resale": 36,
+   "live": 0,
+   "link": "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?houseManageNo=2026000505&pblancNo=2026000505",
+   "units": [
+    {
+     "t": "039.9342",
+     "area": 54.24,
+     "n": 5,
+     "gen": 5,
+     "price": 118241
+    },
+    {
+     "t": "059.9926",
+     "area": 78.37,
+     "n": 31,
+     "gen": 13,
+     "price": 189843
+    },
+    {
+     "t": "084.9940B",
+     "area": 110.99,
+     "n": 45,
+     "gen": 19,
+     "price": 251744
+    },
+    {
+     "t": "084.9794A",
+     "area": 111.36,
+     "n": 53,
+     "gen": 25,
+     "price": 257484
+    }
+   ],
+   "notes": [
+    "시행사 한국투자부동산신탁 주식회사"
    ]
   }
  ]
