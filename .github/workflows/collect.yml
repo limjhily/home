@@ -12,6 +12,7 @@ on:
     paths:
       - "scripts/**"
       - "data/overrides.json"
+      - "data/yt/digest-*.json"   # 유튜버 주간 요약을 Merge 하면 페이지를 만든다
       - ".github/workflows/collect.yml"
 
 permissions:
@@ -43,6 +44,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/notices.json data/pdf_cache.json data/archive.json index.html jeonse.html 404.html apt sitemap.xml robots.txt
+          [ -d trend ] && git add trend   # 주간 요약이 아직 없으면 폴더도 없다
           git diff --staged --quiet && echo "변경 없음" && exit 0
           git commit -m "chore: 청약 데이터 갱신 $(date -u +%Y-%m-%d)"
+          git pull --rebase
           git push

@@ -5,3 +5,6 @@ __pycache__/
 *.pyc
 _pblanc.pdf
 probe.pdf
+
+# 로컬 비밀 키
+.env

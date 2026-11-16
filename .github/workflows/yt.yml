@@ -1,0 +1,72 @@
+name: 유튜버 주간 요약
+
+on:
+  schedule:
+    - cron: "0 19 * * *"   # 매일 04:00 KST (UTC 19:00). 청약 수집(06:00)과 겹치지 않게 2시간 앞
+  workflow_dispatch:
+    inputs:
+      digest:
+        description: "주간 종합과 검토 요청(PR)도 지금 만들기"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: yt-trend
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 봇 이름 설정
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # 새 영상을 분류하고 부동산 영상을 하루 12편까지 요약한다 (Gemini 무료 한도 안)
+      - name: 새 영상 수집·요약
+        run: python3 scripts/yt_trend.py collect
+
+      - name: 영상 데이터 커밋
+        run: |
+          git add data/yt/videos.json
+          git diff --staged --quiet && echo "변경 없음" && exit 0
+          git commit -m "chore: 유튜브 영상 요약 갱신 $(date -u +%Y-%m-%d)"
+          git pull --rebase
+          git push
+
+      # 월요일 새벽(KST)에 지난 7일을 정리해 검토 요청을 올린다.
+      # 사람이 읽고 Merge 해야 사이트에 게시된다. 주간 종합 파일만 올리고 페이지는
+      # Merge 뒤 청약 수집 워크플로가 만든다(sitemap 을 여기서 건드리면 충돌이 난다).
+      - name: 주간 종합 + 검토 요청
+        if: github.event.inputs.digest == 'true' || github.event_name == 'schedule'
+        run: |
+          if [ "${{ github.event.inputs.digest }}" != "true" ] && [ "$(TZ=Asia/Seoul date +%u)" != "1" ]; then
+            echo "월요일이 아니라 건너뜀"; exit 0
+          fi
+          python3 scripts/yt_trend.py digest
+          file=$(ls data/yt/digest-*.json | tail -1)
+          week=$(basename "$file" .json | sed 's/digest-//')
+          python3 scripts/yt_trend.py prbody > /tmp/body.md
+          git checkout -B "trend-$week"
+          git add "$file"
+          git commit -m "유튜버 주간 요약 $week"
+          git push -f origin "trend-$week"
+          title="유튜버 주간 요약 $week: $(head -1 /tmp/body.md | sed 's/^# //')"
+          if gh pr view "trend-$week" --json state -q .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit "trend-$week" --title "$title" --body-file /tmp/body.md
+          else
+            gh pr create --base main --head "trend-$week" --title "$title" --body-file /tmp/body.md
+          fi

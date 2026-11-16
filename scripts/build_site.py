@@ -14,8 +14,8 @@ data/archive.json 에 보관해 두고 "청약 마감" 표시를 붙여 계속 �
 
 수집(collect.py) 직후에 실행한다.
 """
-import html, json, os, re, sys
-from datetime import date
+import glob, html, json, os, re, sys
+from datetime import date, datetime, timedelta
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://cheongyak.day"
@@ -345,6 +345,226 @@ def jeonse_page(items, style, updated):
 </main>
 '''
 
+OUTLOOK_CLS = {"상승": "up", "하락": "down", "보합": "flat", "혼조": "mix", "판단 없음": "none"}
+
+# 주간 요약은 메인과 따로 디자인한다(넓은 여백, 큰 제목, 연회색 위 둥근 카드).
+# 한글 웹폰트를 기다리면 레이아웃이 밀리므로 시스템 폰트만 쓴다.
+TREND_CSS = """
+:root{
+  --bg:#FFFFFF; --band:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --ink-2:#424245; --ink-3:#6E6E73;
+  --line:#D2D2D7; --link:#0066CC;
+  --up:#D70015; --up-bg:#FDEBEC; --down:#0071E3; --down-bg:#E8F1FD;
+  --mix:#B64400; --mix-bg:#FDF0E6; --none:#6E6E73; --none-bg:#EDEDF0;
+  --nav:rgba(255,255,255,.72);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --band:#101012; --card:#1D1D1F; --ink:#F5F5F7; --ink-2:#D2D2D7; --ink-3:#86868B;
+    --line:#424245; --link:#2997FF;
+    --up:#FF6961; --up-bg:#3A1618; --down:#2997FF; --down-bg:#0E2440;
+    --mix:#FF9F45; --mix-bg:#3A2410; --none:#A1A1A6; --none-bg:#2C2C2E;
+    --nav:rgba(22,22,23,.72);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --band:#101012; --card:#1D1D1F; --ink:#F5F5F7; --ink-2:#D2D2D7; --ink-3:#86868B;
+  --line:#424245; --link:#2997FF;
+  --up:#FF6961; --up-bg:#3A1618; --down:#2997FF; --down-bg:#0E2440;
+  --mix:#FF9F45; --mix-bg:#3A2410; --none:#A1A1A6; --none-bg:#2C2C2E;
+  --nav:rgba(22,22,23,.72);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
+  font-size:17px; line-height:1.55; letter-spacing:-.01em; -webkit-font-smoothing:antialiased;
+  word-break:keep-all; overflow-wrap:break-word}
+a{color:var(--link); text-decoration:none}
+a:hover{text-decoration:underline}
+.in{max-width:980px; margin:0 auto; padding:0 22px}
+
+.nav{position:sticky; top:0; z-index:10; background:var(--nav);
+  -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid color-mix(in srgb, var(--line) 50%, transparent)}
+.nav .in{display:flex; align-items:center; justify-content:space-between; height:48px}
+.nav .logo{color:var(--ink); font-weight:600; font-size:17px; letter-spacing:-.02em}
+.nav .logo:hover{text-decoration:none}
+.nav .links{display:flex; gap:22px; font-size:13px}
+.nav .links a{color:var(--ink-2)}
+
+.hero{text-align:center; padding:84px 0 64px}
+.eyebrow{font-size:17px; font-weight:600; color:var(--up); margin:0 0 10px}
+.hero h1{font-size:clamp(32px, 5.4vw, 56px); line-height:1.08; font-weight:700;
+  letter-spacing:-.035em; margin:0 auto; max-width:860px; text-wrap:balance}
+.hero .span{font-size:15px; color:var(--ink-3); margin:18px 0 0}
+.hero .lead{font-size:clamp(19px, 2.2vw, 22px); line-height:1.5; color:var(--ink-2);
+  max-width:720px; margin:28px auto 0; text-wrap:pretty}
+
+.band{background:var(--band); padding:80px 0}
+.band h2, .vids h2{font-size:clamp(28px, 4vw, 40px); font-weight:700; letter-spacing:-.03em;
+  line-height:1.1; margin:0 0 8px; text-align:center}
+.band .sub, .vids .sub{text-align:center; color:var(--ink-3); font-size:17px; margin:0 0 44px}
+
+.stats{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:16px}
+.stat{background:var(--card); border-radius:18px; padding:26px 24px; text-align:center}
+.stat .n{font-size:56px; font-weight:700; letter-spacing:-.04em; line-height:1; font-variant-numeric:tabular-nums}
+.stat .l{font-size:15px; color:var(--ink-3); margin-top:8px}
+.stat.up .n{color:var(--up)} .stat.down .n{color:var(--down)}
+.stat.mix .n{color:var(--mix)} .stat.flat .n, .stat.none .n{color:var(--none)}
+.meter{display:flex; height:8px; border-radius:99px; overflow:hidden; gap:3px; margin:26px auto 0; max-width:640px}
+.meter i{display:block} .meter .up{background:var(--up)} .meter .down{background:var(--down)}
+.meter .mix{background:var(--mix)} .meter .flat, .meter .none{background:var(--none); opacity:.5}
+
+.cols{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:64px}
+.col{background:var(--card); border-radius:18px; padding:30px 28px}
+.col h3{font-size:21px; font-weight:700; letter-spacing:-.02em; margin:0 0 14px}
+.col ul{margin:0; padding:0; list-style:none}
+.col li{font-size:15px; line-height:1.6; color:var(--ink-2); padding:12px 0;
+  border-top:1px solid color-mix(in srgb, var(--line) 60%, transparent)}
+.col li:first-child{border-top:0; padding-top:0}
+
+.vids{padding:96px 0}
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(420px, 100%), 1fr)); gap:20px}
+.v{background:var(--band); border-radius:22px; padding:30px 30px 26px; display:flex; flex-direction:column; min-width:0}
+.v .who{display:flex; align-items:center; justify-content:space-between; gap:10px;
+  font-size:13px; color:var(--ink-3)}
+.v .who b{color:var(--ink); font-weight:600; font-size:14px}
+.pill{flex:none; font-size:12px; font-weight:600; padding:4px 11px; border-radius:99px}
+.pill.up{color:var(--up); background:var(--up-bg)} .pill.down{color:var(--down); background:var(--down-bg)}
+.pill.mix{color:var(--mix); background:var(--mix-bg)} .pill.flat, .pill.none{color:var(--none); background:var(--none-bg)}
+.v h3{font-size:21px; line-height:1.35; font-weight:700; letter-spacing:-.025em; margin:14px 0 14px; text-wrap:pretty}
+.v ul{margin:0; padding-left:18px; color:var(--ink-2); font-size:15px; line-height:1.6}
+.v li{margin:0 0 8px}
+.v .adv{font-size:14px; color:var(--ink-2); background:var(--card); border-radius:12px; padding:12px 14px; margin:8px 0 0}
+.v .adv b{color:var(--ink)}
+.v .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:14px}
+.v .tags span{font-size:12px; color:var(--ink-3); background:var(--card); padding:4px 10px; border-radius:99px}
+.v .tags a{font-size:12px; background:var(--card); padding:4px 10px; border-radius:99px}
+.v .go{margin-top:auto; padding-top:20px; font-size:15px; display:flex; gap:8px; align-items:baseline}
+.v .go b{flex:none; font-weight:400; white-space:nowrap}
+.v .go span{color:var(--ink-3); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+
+.foot{border-top:1px solid color-mix(in srgb, var(--line) 60%, transparent); padding:22px 0 48px;
+  font-size:12px; line-height:1.7; color:var(--ink-3)}
+.foot p{margin:0 0 8px}
+
+@media (max-width:640px){
+  .in{padding:0 16px}
+  .hero{padding:56px 0 44px}
+  .band, .vids{padding:56px 0}
+  .stats{grid-template-columns:repeat(2, 1fr); gap:12px}
+  .stat{padding:20px 12px} .stat .n{font-size:44px}
+  .cols{margin-top:40px}
+  .grid{grid-template-columns:1fr}
+  .v{padding:24px 20px 20px; border-radius:18px}
+  .nav .links a:not(:first-child){display:none}
+}
+"""
+
+
+def trend_page(d, videos, apts):
+    """부동산 유튜버 주간 요약 (scripts/yt_trend.py 가 만든 data/yt/ 를 읽는다).
+
+    유튜버별 요약을 나열하는 데서 그치지 않고, 맨 위에 의견 분포와 종합을 둔다.
+    요약만 늘어놓은 페이지는 구글이 저품질 대량 생성물로 보기 쉽다.
+    """
+    made = datetime.fromisoformat(d["made"])
+    start = made - timedelta(days=7)
+    span = f"{start.month}월 {start.day}일 – {made.month}월 {made.day}일"
+    url = f"{SITE}/trend/{d['week']}"
+    title = f"부동산 유튜버 주간 요약 ({span}) | 청약달력"
+    desc = f"{span} 주요 부동산 유튜브 채널의 시장 전망을 한눈에. {d['overview'][:90]}"
+
+    norm = lambda s: re.sub(r"\s+", "", s)
+    def apt_link(name):
+        for n in apts:
+            if norm(name) and (norm(name) in norm(n["name"]) or norm(n["name"]) in norm(name)):
+                return f'<a href="/apt/{n["_slug"]}">{esc(name)}</a>'
+        return f"<span>{esc(name)}</span>"
+
+    cnt = d["outlook_count"]
+    shown = [k for k in OUTLOOK_CLS if cnt.get(k)]
+    stats = "".join(f'<div class="stat {OUTLOOK_CLS[k]}"><div class="n">{cnt[k]}</div>'
+                    f'<div class="l">{k}</div></div>' for k in shown)
+    meter = "".join(f'<i class="{OUTLOOK_CLS[k]}" style="flex:{cnt[k]}"></i>' for k in shown)
+    channels = len({v["channel"] for v in videos})
+
+    def li(xs):
+        return "".join(f"<li>{esc(x)}</li>" for x in xs)
+
+    cards = []
+    for v in videos:
+        s = v["summary"]
+        tags = "".join(apt_link(c) for c in s["complexes"][:6])
+        tags += "".join(f"<span>{esc(r)}</span>" for r in s["regions"][:6])
+        cards.append(f'''<article class="v">
+  <div class="who"><div><b>{esc(v["channel"])}</b> · {esc(s["speaker"])}</div>
+    <span class="pill {OUTLOOK_CLS.get(s["outlook"], "none")}">{esc(s["outlook"])}</span></div>
+  <h3>{esc(s["headline"])}</h3>
+  <ul>{li(s["points"])}</ul>
+  {f'<p class="adv"><b>권하는 것</b> {esc(s["advice"])}</p>' if s["advice"] else ""}
+  {f'<div class="tags">{tags}</div>' if tags else ""}
+  <a class="go" href="{esc(v["url"])}" target="_blank" rel="noopener"><b>영상 보기 ›</b>
+    <span>{v["published"][5:10].replace("-", ".")} · {esc(v["title"])}</span></a>
+</article>''')
+
+    return f'''<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="청약달력">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{url}">
+<meta property="og:locale" content="ko_KR">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<style>{TREND_CSS}</style>
+
+<nav class="nav"><div class="in">
+  <a class="logo" href="/">청약달력</a>
+  <div class="links"><a href="/">청약 일정</a><a href="/jeonse">전세 가능 단지</a></div>
+</div></nav>
+
+<main>
+  <section class="hero"><div class="in">
+    <p class="eyebrow">부동산 유튜버 주간 요약</p>
+    <h1>{esc(d["title"])}</h1>
+    <p class="span">{span} · 채널 {channels}곳 · 영상 {len(videos)}편</p>
+    <p class="lead">{esc(d["overview"])}</p>
+  </div></section>
+
+  <section class="band"><div class="in">
+    <h2>이번 주, 집값을 어떻게 봤나</h2>
+    <p class="sub">영상 {len(videos)}편이 앞으로의 집값을 어떻게 전망했는지 셌습니다.</p>
+    <div class="stats">{stats}</div>
+    <div class="meter">{meter}</div>
+
+    <div class="cols">
+      <div class="col"><h3>같은 방향으로 본 것</h3><ul>{li(d["consensus"])}</ul></div>
+      <div class="col"><h3>의견이 갈린 것</h3><ul>{li(d["disagreements"])}</ul></div>
+      <div class="col"><h3>자주 나온 이슈</h3><ul>{li(d["hot_topics"])}</ul></div>
+    </div>
+  </div></section>
+
+  <section class="vids"><div class="in">
+    <h2>영상별 요약</h2>
+    <p class="sub">핵심만 세 줄로. 자세한 내용은 원본 영상에서.</p>
+    <div class="grid">{"".join(cards)}</div>
+  </div></section>
+</main>
+
+<footer class="foot"><div class="in">
+  <p>이 요약은 AI가 영상을 보고 정리한 것으로, 출연자의 실제 발언과 다를 수 있습니다.
+    정확한 내용은 원본 영상에서 확인하세요. 투자 권유가 아니며, 각 의견은 해당 출연자의 것입니다.</p>
+  <p><a href="/">청약달력</a> · <a href="/privacy">개인정보처리방침</a> · <a href="/contact">문의하기</a></p>
+</div></footer>
+'''
+
+
 def not_found_page(style):
     """없는 주소용. Cloudflare Pages 는 루트의 404.html 을 404 상태로 돌려준다.
     이 파일이 없으면 메인 페이지를 200 으로 내보내 구글이 soft 404 로 본다."""
@@ -418,6 +638,20 @@ def main():
     ok_n = sum(1 for n in items if n["live"] == 0)
     print(f"전세 가능 페이지 생성 (가능 {ok_n}곳)", file=sys.stderr)
 
+    # 부동산 유튜버 주간 요약
+    trends = []
+    yt_videos = os.path.join(ROOT, "data", "yt", "videos.json")
+    if os.path.exists(yt_videos):
+        yv = json.load(open(yt_videos, encoding="utf-8"))
+        os.makedirs(os.path.join(ROOT, "trend"), exist_ok=True)
+        for p in sorted(glob.glob(os.path.join(ROOT, "data", "yt", "digest-*.json"))):
+            d = json.load(open(p, encoding="utf-8"))
+            vids = [yv[i] for i in d["videos"] if i in yv and yv[i].get("summary")]
+            with open(os.path.join(ROOT, "trend", d["week"] + ".html"), "w", encoding="utf-8") as fp:
+                fp.write(trend_page(d, vids, items + closed))
+            trends.append(d)
+        print(f"유튜버 주간 요약 {len(trends)}개 생성", file=sys.stderr)
+
     # 메인 아래쪽 정적 목록 (검색봇이 각 페이지를 찾아가는 통로)
     lis = "\n".join(
         f'<li><a href="/apt/{n["_slug"]}">{esc(n["name"])}</a>'
@@ -440,6 +674,7 @@ def main():
             (SITE + "/contact", updated, "yearly", "0.2")]
     urls += [(f"{SITE}/apt/{n['_slug']}", updated, "weekly", "0.8") for n in items]
     urls += [(f"{SITE}/apt/{n['_slug']}", n["_closed"], "monthly", "0.5") for n in closed]
+    urls += [(f"{SITE}/trend/{d['week']}", d["made"][:10], "weekly", "0.7") for d in trends]
     body = "\n".join(
         f"  <url><loc>{u}</loc><lastmod>{m}</lastmod>"
         f"<changefreq>{c}</changefreq><priority>{p}</priority></url>"

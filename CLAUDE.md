@@ -36,6 +36,11 @@ scripts/collect.py       청약홈 OpenAPI 수집 + 공고문에서 전매제한
 scripts/pblanc_pdf.py    표(PDF·HTML 공통) 파서. --selftest 로 13종 검증
 scripts/build_site.py    정적 페이지·sitemap·robots.txt 생성
 scripts/probe_applyhome.py  청약홈 구조 정찰 (디버깅용)
+scripts/yt_trend.py      부동산 유튜버 주간 요약 (영상 수집·분류·요약·주간 종합)
+data/yt_channels.json    요약할 유튜브 채널 목록 (수동). 한 달에 한 번 점검
+data/yt/videos.json      영상별 분류·요약 (자동)
+data/yt/digest-*.json    주간 종합 (자동 생성, 검토 요청을 Merge 해야 main 에 들어온다)
+trend/*.html             주간 요약 페이지 (자동 생성)
 sitemap.xml, robots.txt  자동 생성
 _headers           Cloudflare Pages 캐시/보안 헤더
 ```
@@ -58,6 +63,20 @@ python3 -m http.server 8000                # 로컬 확인 (file:// 로 열면 J
 `scripts/` 나 `data/overrides.json` 을 고쳐서 push 하면 수집 워크플로가 자동으로
 다시 돌아 데이터와 페이지가 갱신된다. 봇이 커밋하는 파일은 트리거 목록에 없어
 무한 반복은 일어나지 않는다.
+
+## 유튜버 주간 요약
+
+`.github/workflows/yt.yml` 이 매일 04:00(KST) 채널 목록의 새 영상을 받아 제목으로
+부동산 영상만 고르고, Gemini 에 유튜브 링크를 넘겨 요약한다. 월요일에는 지난 7일을
+종합해 검토 요청(PR)을 올린다. **사람이 읽고 Merge 해야 게시된다** (AI 요약이 출연자
+발언과 다를 수 있어서). Merge 하면 청약 수집 워크플로가 `/trend/주차` 페이지를 만든다.
+
+- Gemini 는 **무료 등급만** 쓴다. 키는 결제를 연결하지 않은 `cheongyak` 프로젝트 것.
+  무료 한도가 모델마다 하루 20회라 하루 12편까지만 요약하고 나머지는 다음 날로 넘긴다.
+  결제를 연결하면 유튜브 영상 입력이 유료가 되니 연결하지 말 것.
+- 영상 목록은 YouTube Data API 로 받는다. RSS 는 404 가 잦아 예비로만 둔다.
+- GitHub Secrets: `GEMINI_API_KEY`, `YOUTUBE_API_KEY`. 로컬은 `.env`.
+- 주간 페이지 디자인(`TREND_CSS`)은 메인과 따로다. 시스템 폰트만 쓴다.
 
 ## 알려진 한계
 
